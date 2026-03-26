@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mongoose Crash Course — CRUD Lab</title>
+  <meta name="description" content="Interactive Mongoose CRUD operations playground — learn all Mongoose concepts hands-on" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            brand: { 50:'#f0fdf4', 100:'#dcfce7', 400:'#4ade80', 500:'#22c55e', 600:'#16a34a', 700:'#15803d', 900:'#14532d' },
+            dark: { 800:'#1e2433', 850:'#171e2d', 900:'#111827', 950:'#0d1117' }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out',
+            'slide-up': 'slideUp 0.3s ease-out',
+            'pulse-slow': 'pulse 3s ease-in-out infinite',
+          },
+          keyframes: {
+            fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } },
+            slideUp: { from: { opacity: 0, transform: 'translateY(12px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #0d1117; color: #e6edf3; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #1e2433; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    .glass { background: rgba(30,36,51,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); }
+    .glow-green { box-shadow: 0 0 30px rgba(34,197,94,0.15); }
+    .glow-red { box-shadow: 0 0 30px rgba(239,68,68,0.15); }
+    .tab-active { background: linear-gradient(135deg, #22c55e20, #16a34a10); border-color: #22c55e; color: #4ade80; }
+    .method-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; }
+    .concept-tag { font-size: 0.6rem; letter-spacing: 0.08em; }
+    .json-viewer { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; line-height: 1.6; }
+    .input-field { background: #111827; border: 1px solid #374151; color: #e6edf3; transition: all 0.2s; }
+    .input-field:focus { outline: none; border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.1); }
+    .btn-primary { background: linear-gradient(135deg, #22c55e, #16a34a); transition: all 0.2s; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(34,197,94,0.3); }
+    .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); transition: all 0.2s; }
+    .btn-danger:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(239,68,68,0.3); }
+    .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); transition: all 0.2s; }
+    .btn-warning:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(245,158,11,0.3); }
+    .user-card { background: #1e2433; border: 1px solid #2d3748; transition: all 0.2s; }
+    .user-card:hover { border-color: #22c55e40; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 1000; animation: slideUp 0.3s ease-out; }
+    .concept-highlight { background: linear-gradient(135deg, #22c55e08, transparent); border-left: 3px solid #22c55e; }
+    pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body class="min-h-screen">
+
+<!-- ── HEADER ── -->
+<header class="sticky top-0 z-50 glass border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-xl shadow-lg">🍃</div>
+      <div>
+        <h1 class="text-sm font-bold text-white">Mongoose Crash Course</h1>
+        <p class="text-xs text-gray-500">Interactive CRUD Lab</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div id="db-status" class="flex items-center gap-2 px-3 py-1.5 rounded-full glass text-xs">
+        <div id="status-dot" class="w-2 h-2 rounded-full bg-gray-500 animate-pulse-slow"></div>
+        <span id="status-text" class="text-gray-400">Connecting…</span>
+      </div>
+      <span id="user-count-badge" class="hidden px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-medium border border-green-500/20"></span>
+    </div>
+  </div>
+</header>
+
+<!-- ── CONCEPT LEGEND ── -->
+<div class="max-w-7xl mx-auto px-4 pt-5 pb-0">
+  <div class="glass rounded-2xl p-4 mb-5">
+    <p class="text-xs text-gray-500 font-medium uppercase tracking-widest mb-3">📚 Mongoose Concepts Covered</p>
+    <div class="flex flex-wrap gap-2">
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 uppercase font-semibold">Schema & SchemaTypes</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase font-semibold">Validators</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 uppercase font-semibold">Virtual Fields</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 uppercase font-semibold">Instance Methods</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 uppercase font-semibold">Static Methods</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 uppercase font-semibold">Middleware / Hooks</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 uppercase font-semibold">Indexes</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/20 uppercase font-semibold">Aggregation</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase font-semibold">CRUD Queries</span>
+      <span class="concept-tag px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 uppercase font-semibold">Query Modifiers</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN LAYOUT ── -->
+<main class="max-w-7xl mx-auto px-4 pb-10">
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
+
+    <!-- ── LEFT PANEL: Operations ── -->
+    <div class="lg:col-span-2 space-y-4">
+
+      <!-- TABS -->
+      <div class="glass rounded-2xl p-1 flex gap-1">
+        <button onclick="switchTab('create')" id="tab-create" class="tab-btn flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all tab-active">
+          ✦ Create
+        </button>
+        <button onclick="switchTab('read')" id="tab-read" class="tab-btn flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-gray-400 hover:text-white">
+          ⊕ Read
+        </button>
+        <button onclick="switchTab('update')" id="tab-update" class="tab-btn flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-gray-400 hover:text-white">
+          ✎ Update
+        </button>
+        <button onclick="switchTab('delete')" id="tab-delete" class="tab-btn flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-gray-400 hover:text-white">
+          ✗ Delete
+        </button>
+      </div>
+
+      <!-- ── CREATE PANEL ── -->
+      <div id="panel-create" class="panel space-y-4 animate-fade-in">
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-semibold text-white text-sm">Create User</h2>
+            <div class="flex gap-1.5">
+              <span class="method-badge px-2 py-0.5 rounded bg-green-500/20 text-green-400">POST</span>
+              <span class="method-badge px-2 py-0.5 rounded bg-gray-700 text-gray-300">/api/users</span>
+            </div>
+          </div>
+          <div class="concept-highlight rounded-r-lg p-3 mb-4 text-xs text-gray-400">
+            <strong class="text-green-400">Concepts:</strong> Model.create(), Schema validators, pre/post-save hooks, virtual fields, instance methods
+          </div>
+          <div class="space-y-3">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Name *</label>
+                <input id="c-name" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="e.g. Alice" />
+              </div>
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Age</label>
+                <input id="c-age" type="number" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="e.g. 21" />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs text-gray-400 mb-1 block">Email *</label>
+              <input id="c-email" type="email" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="alice@example.com" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Role</label>
+                <select id="c-role" class="input-field w-full rounded-lg px-3 py-2 text-sm">
+                  <option value="student">student</option>
+                  <option value="teacher">teacher</option>
+                  <option value="admin">admin</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Score (0–100)</label>
+                <input id="c-score" type="number" min="0" max="100" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="e.g. 85" />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs text-gray-400 mb-1 block">Skills (comma separated)</label>
+              <input id="c-skills" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="JavaScript, Node.js, MongoDB" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">City</label>
+                <input id="c-city" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="Bengaluru" />
+              </div>
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">State</label>
+                <input id="c-state" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="Karnataka" />
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="c-active" type="checkbox" checked class="w-4 h-4 accent-green-500" />
+              <label class="text-xs text-gray-400">Active User</label>
+            </div>
+            <button onclick="createUser()" class="btn-primary w-full py-2.5 rounded-xl text-sm font-semibold text-white">
+              ✦ Create User
+            </button>
+          </div>
+        </div>
+
+        <!-- Bulk Create -->
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-semibold text-white text-sm">Bulk Insert</h2>
+            <span class="method-badge px-2 py-0.5 rounded bg-green-500/20 text-green-400">Model.insertMany()</span>
+          </div>
+          <button onclick="bulkCreate()" class="btn-primary w-full py-2 rounded-xl text-sm font-semibold text-white">
+            ⚡ Insert 5 Sample Users
+          </button>
+        </div>
+      </div>
+
+      <!-- ── READ PANEL ── -->
+      <div id="panel-read" class="panel hidden space-y-4 animate-fade-in">
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-semibold text-white text-sm">Read All Users</h2>
+            <div class="flex gap-1.5">
+              <span class="method-badge px-2 py-0.5 rounded bg-blue-500/20 text-blue-400">GET</span>
+              <span class="method-badge px-2 py-0.5 rounded bg-gray-700 text-gray-300">/api/users</span>
+            </div>
+          </div>
+          <div class="concept-highlight rounded-r-lg p-3 mb-4 text-xs text-gray-400">
+            <strong class="text-blue-400">Concepts:</strong> Model.find(), .select(), .sort(), .limit(), .skip(), $regex filter, countDocuments()
+          </div>
+          <div class="space-y-3">
+            <div>
+              <label class="text-xs text-gray-400 mb-1 block">Search by name</label>
+              <input id="r-search" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="Search name…" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Filter by role</label>
+                <select id="r-role" class="input-field w-full rounded-lg px-3 py-2 text-sm">
+                  <option value="">All roles</option>
+                  <option value="student">student</option>
+                  <option value="teacher">teacher</option>
+                  <option value="admin">admin</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Sort by</label>
+                <select id="r-sort" class="input-field w-full rounded-lg px-3 py-2 text-sm">
+                  <option value="-createdAt">Newest first</option>
+                  <option value="createdAt">Oldest first</option>
+                  <option value="-score">Highest score</option>
+                  <option value="name">Name A–Z</option>
+                </select>
+              </div>
+            </div>
+            <button onclick="readAll()" class="btn-primary w-full py-2.5 rounded-xl text-sm font-semibold text-white">
+              ⊕ Fetch All Users
+            </button>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-semibold text-white text-sm">Read by ID</h2>
+            <span class="method-badge px-2 py-0.5 rounded bg-blue-500/20 text-blue-400">findById()</span>
+          </div>
+          <div class="space-y-3">
+            <input id="r-id" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="Paste MongoDB ObjectId…" />
+            <button onclick="readById()" class="btn-primary w-full py-2 rounded-xl text-sm font-semibold text-white">🔍 Find by ID</button>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-semibold text-white text-sm">Top Scorers</h2>
+            <span class="method-badge px-2 py-0.5 rounded bg-purple-500/20 text-purple-400">Static Method</span>
+          </div>
+          <p class="text-xs text-gray-500 mb-3">Calls <code class="text-purple-400">User.getTopScorers()</code> — a custom static method with <code>.sort().limit()</code></p>
+          <button onclick="getTopScorers()" class="w-full py-2 rounded-xl text-sm font-semibold text-white border border-purple-500/30 hover:bg-purple-500/10 transition-all">
+            🏆 Get Top Scorers
+          </button>
+        </div>
+      </div>
+
+      <!-- ── UPDATE PANEL ── -->
+      <div id="panel-update" class="panel hidden space-y-4 animate-fade-in">
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-semibold text-white text-sm">Update User</h2>
+            <div class="flex gap-1.5">
+              <span class="method-badge px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">PUT</span>
+              <span class="method-badge px-2 py-0.5 rounded bg-gray-700 text-gray-300">/api/users/:id</span>
+            </div>
+          </div>
+          <div class="concept-highlight rounded-r-lg p-3 mb-4 text-xs text-gray-400">
+            <strong class="text-yellow-400">Concepts:</strong> findByIdAndUpdate(), { new: true }, { runValidators: true }, pre-save hooks
+          </div>
+          <div class="space-y-3">
+            <div>
+              <label class="text-xs text-gray-400 mb-1 block">User ID *</label>
+              <input id="u-id" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="MongoDB ObjectId" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Name</label>
+                <input id="u-name" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="New name" />
+              </div>
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Age</label>
+                <input id="u-age" type="number" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="New age" />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs text-gray-400 mb-1 block">Email</label>
+              <input id="u-email" type="email" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="New email" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Role</label>
+                <select id="u-role" class="input-field w-full rounded-lg px-3 py-2 text-sm">
+                  <option value="">No change</option>
+                  <option value="student">student</option>
+                  <option value="teacher">teacher</option>
+                  <option value="admin">admin</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs text-gray-400 mb-1 block">Score</label>
+                <input id="u-score" type="number" min="0" max="100" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="0–100" />
+              </div>
+            </div>
+            <button onclick="updateUser()" class="btn-warning w-full py-2.5 rounded-xl text-sm font-semibold text-white">
+              ✎ Update User
+            </button>
+          </div>
+        </div>
+
+        <!-- Add Skill -->
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-semibold text-white text-sm">Add Skill (Instance Method)</h2>
+            <span class="method-badge px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">doc.addSkill()</span>
+          </div>
+          <div class="concept-highlight rounded-r-lg p-3 mb-3 text-xs text-gray-400">
+            Calls <code class="text-yellow-400">user.addSkill(skill)</code> — a custom instance method defined in the schema
+          </div>
+          <div class="space-y-3">
+            <input id="sk-id" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="User ID" />
+            <input id="sk-skill" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="New skill (e.g. React)" />
+            <button onclick="addSkill()" class="btn-warning w-full py-2 rounded-xl text-sm font-semibold text-white">+ Add Skill</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DELETE PANEL ── -->
+      <div id="panel-delete" class="panel hidden space-y-4 animate-fade-in">
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-semibold text-white text-sm">Delete User</h2>
+            <div class="flex gap-1.5">
+              <span class="method-badge px-2 py-0.5 rounded bg-red-500/20 text-red-400">DELETE</span>
+              <span class="method-badge px-2 py-0.5 rounded bg-gray-700 text-gray-300">/api/users/:id</span>
+            </div>
+          </div>
+          <div class="concept-highlight rounded-r-lg p-3 mb-4 text-xs text-gray-400">
+            <strong class="text-red-400">Concepts:</strong> findByIdAndDelete(), pre-deleteOne hook, document middleware
+          </div>
+          <div class="space-y-3">
+            <div>
+              <label class="text-xs text-gray-400 mb-1 block">User ID *</label>
+              <input id="d-id" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="MongoDB ObjectId to delete" />
+            </div>
+            <div class="p-3 rounded-xl bg-red-500/5 border border-red-500/20 text-xs text-red-300">
+              ⚠️ This action is permanent. The document will be removed from MongoDB.
+            </div>
+            <button onclick="deleteUser()" class="btn-danger w-full py-2.5 rounded-xl text-sm font-semibold text-white">
+              ✗ Delete User
+            </button>
+          </div>
+        </div>
+
+        <!-- Delete All -->
+        <div class="glass rounded-2xl p-5">
+          <h2 class="font-semibold text-white text-sm mb-3">Delete All Users</h2>
+          <p class="text-xs text-gray-500 mb-3">Uses <code class="text-red-400">Model.deleteMany({})</code> — clears the entire collection.</p>
+          <button onclick="deleteAll()" class="btn-danger w-full py-2 rounded-xl text-sm font-semibold text-white opacity-75 hover:opacity-100">
+            🗑️ Delete Everything
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RIGHT PANEL: Results + Users ── -->
+    <div class="lg:col-span-3 space-y-4">
+
+      <!-- Stats Bar -->
+      <div id="stats-bar" class="glass rounded-2xl p-4 hidden">
+        <p class="text-xs text-gray-500 uppercase tracking-widest mb-3 font-medium">📊 Aggregation Stats</p>
+        <div id="stats-content" class="grid grid-cols-3 gap-3"></div>
+      </div>
+
+      <!-- API Response Viewer -->
+      <div class="glass rounded-2xl overflow-hidden">
+        <div class="px-5 py-3 border-b border-white/5 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">API Response</span>
+            <span id="resp-badge" class="hidden method-badge px-2 py-0.5 rounded"></span>
+          </div>
+          <button onclick="clearResponse()" class="text-xs text-gray-600 hover:text-gray-400 transition">clear</button>
+        </div>
+        <div id="response-box" class="json-viewer text-gray-400 p-5 min-h-[120px] max-h-[300px] overflow-y-auto">
+          <span class="text-gray-600">// Make an API call to see the response here…</span>
+        </div>
+      </div>
+
+      <!-- Users Grid -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-semibold text-white flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+            Users Collection
+          </h2>
+          <button onclick="loadUsers()" class="text-xs text-green-400 hover:text-green-300 transition border border-green-500/20 px-3 py-1 rounded-full">↻ Refresh</button>
+        </div>
+        <div id="users-grid" class="grid grid-cols-1 gap-3">
+          <div class="glass rounded-xl p-8 text-center text-gray-600 text-sm">
+            No users loaded. Click <strong class="text-gray-400">Refresh</strong> or fetch all users.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ── TOAST ── -->
+<div id="toast" class="toast hidden">
+  <div id="toast-inner" class="glass px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2.5 shadow-2xl border"></div>
+</div>
+
+<script>
+const API = 'http://localhost:3000/api';
+
+// ── Helpers ──
+const $ = id => document.getElementById(id);
+const val = id => $(id)?.value?.trim() ?? '';
+
+function showToast(msg, type = 'success') {
+  const colors = { success: 'border-green-500/30 text-green-400', error: 'border-red-500/30 text-red-400', info: 'border-blue-500/30 text-blue-400' };
+  const icons = { success: '✓', error: '✗', info: 'ℹ' };
+  const t = $('toast'), ti = $('toast-inner');
+  ti.className = `glass px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2.5 shadow-2xl border ${colors[type]}`;
+  ti.innerHTML = `<span class="text-base">${icons[type]}</span><span>${msg}</span>`;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+function displayResponse(data, status = 200) {
+  const box = $('response-box');
+  const badge = $('resp-badge');
+  const isOk = status < 400;
+  const color = isOk ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400';
+  badge.className = `method-badge px-2 py-0.5 rounded ${color}`;
+  badge.textContent = status;
+  badge.classList.remove('hidden');
+  box.innerHTML = `<pre>${syntaxHighlight(JSON.stringify(data, null, 2))}</pre>`;
+  box.scrollTop = 0;
+}
+
+function syntaxHighlight(json) {
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+\.?\d*)/g, match => {
+    let cls = 'color:#a78bfa'; // number
+    if (/^"/.test(match)) cls = /:$/.test(match) ? 'color:#60a5fa' : 'color:#86efac'; // key or string
+    else if (/true|false/.test(match)) cls = 'color:#fb923c';
+    else if (/null/.test(match)) cls = 'color:#94a3b8';
+    return `<span style="${cls}">${match}</span>`;
+  });
+}
+
+function clearResponse() {
+  $('response-box').innerHTML = '<span class="text-gray-600">// Cleared…</span>';
+  $('resp-badge').classList.add('hidden');
+}
+
+async function apiFetch(path, method = 'GET', body = null) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  try {
+    const res = await fetch(`${API}${path}`, opts);
+    const data = await res.json();
+    displayResponse(data, res.status);
+    return { ok: res.ok, data, status: res.status };
+  } catch (e) {
+    displayResponse({ error: e.message }, 500);
+    showToast('Server not reachable. Is it running?', 'error');
+    return { ok: false };
+  }
+}
+
+// ── Tab switching ──
+function switchTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('tab-active');
+    b.classList.add('text-gray-400');
+  });
+  $(`panel-${name}`).classList.remove('hidden');
+  const bt = $(`tab-${name}`);
+  bt.classList.add('tab-active');
+  bt.classList.remove('text-gray-400');
+}
+
+// ── Health check ──
+async function checkHealth() {
+  try {
+    const res = await fetch(`${API}/health`);
+    const data = await res.json();
+    const dot = $('status-dot'), txt = $('status-text');
+    if (data.db === 'connected') {
+      dot.className = 'w-2 h-2 rounded-full bg-green-500';
+      txt.className = 'text-green-400';
+      txt.textContent = 'DB Connected';
+    } else {
+      dot.className = 'w-2 h-2 rounded-full bg-red-500';
+      txt.className = 'text-red-400';
+      txt.textContent = 'DB Disconnected';
+    }
+  } catch {
+    $('status-dot').className = 'w-2 h-2 rounded-full bg-gray-500';
+    $('status-text').textContent = 'Server Offline';
+    $('status-text').className = 'text-gray-500';
+  }
+}
+
+// ── CREATE ──
+async function createUser() {
+  const skillsRaw = val('c-skills');
+  const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+  const body = { name: val('c-name'), email: val('c-email') };
+  if (val('c-age')) body.age = Number(val('c-age'));
+  if (val('c-role')) body.role = val('c-role');
+  if (val('c-score')) body.score = Number(val('c-score'));
+  if (skills.length) body.skills = skills;
+  if (val('c-city') || val('c-state')) body.address = { city: val('c-city'), state: val('c-state') };
+  body.isActive = $('c-active').checked;
+
+  const { ok, data } = await apiFetch('/users', 'POST', body);
+  if (ok) {
+    showToast(`User "${data.data?.name}" created!`, 'success');
+    loadUsers();
+  } else {
+    showToast(data.message || 'Create failed', 'error');
+  }
+}
+
+// ── BULK CREATE ──
+async function bulkCreate() {
+  const samples = [
+    { name: 'Aditya Kumar', email: `aditya${Date.now()}@dev.com`, age: 22, role: 'student', score: 78, skills: ['Python', 'ML'], isActive: true },
+    { name: 'Priya Sharma', email: `priya${Date.now()}@dev.com`, age: 28, role: 'teacher', score: 92, skills: ['Java', 'Spring'], isActive: true },
+    { name: 'Ravi Nair', email: `ravi${Date.now()}@dev.com`, age: 19, role: 'student', score: 55, skills: ['HTML', 'CSS'], isActive: true },
+    { name: 'Meera Iyer', email: `meera${Date.now()}@dev.com`, age: 35, role: 'admin', score: 99, skills: ['MongoDB', 'Docker'], isActive: true },
+    { name: 'Kiran Patel', email: `kiran${Date.now()}@dev.com`, age: 24, role: 'student', score: 67, skills: ['React', 'Node.js'], isActive: false },
+  ];
+  const { ok, data } = await apiFetch('/users/bulk', 'POST', samples);
+  if (ok) { showToast(`${data.count} users inserted!`, 'success'); loadUsers(); }
+  else showToast(data.message || 'Bulk insert failed', 'error');
+}
+
+// ── READ ALL ──
+async function readAll() {
+  const params = new URLSearchParams();
+  if (val('r-search')) params.set('search', val('r-search'));
+  if (val('r-role')) params.set('role', val('r-role'));
+  if (val('r-sort')) params.set('sort', val('r-sort'));
+  const { ok, data } = await apiFetch(`/users?${params}`);
+  if (ok) { renderUsers(data.data); showToast(`${data.total} users found`, 'info'); }
+}
+
+// ── READ BY ID ──
+async function readById() {
+  const id = val('r-id');
+  if (!id) return showToast('Enter a User ID', 'error');
+  const { ok } = await apiFetch(`/users/${id}`);
+  if (!ok) showToast('User not found', 'error');
+}
+
+// ── TOP SCORERS ──
+async function getTopScorers() {
+  const { ok, data } = await apiFetch('/users/top-scorers?limit=5');
+  if (ok) { renderUsers(data.data); showToast('Top 5 scorers loaded', 'info'); }
+}
+
+// ── UPDATE ──
+async function updateUser() {
+  const id = val('u-id');
+  if (!id) return showToast('Enter a User ID', 'error');
+  const body = {};
+  if (val('u-name')) body.name = val('u-name');
+  if (val('u-email')) body.email = val('u-email');
+  if (val('u-age')) body.age = Number(val('u-age'));
+  if (val('u-role')) body.role = val('u-role');
+  if (val('u-score')) body.score = Number(val('u-score'));
+  if (!Object.keys(body).length) return showToast('Fill at least one field to update', 'error');
+  const { ok, data } = await apiFetch(`/users/${id}`, 'PUT', body);
+  if (ok) { showToast('User updated!', 'success'); loadUsers(); }
+  else showToast(data.message || 'Update failed', 'error');
+}
+
+// ── ADD SKILL ──
+async function addSkill() {
+  const id = val('sk-id'), skill = val('sk-skill');
+  if (!id || !skill) return showToast('Enter User ID and skill', 'error');
+  const { ok } = await apiFetch(`/users/${id}/skills`, 'PATCH', { skill });
+  if (ok) { showToast(`Skill "${skill}" added!`, 'success'); loadUsers(); }
+  else showToast('Add skill failed', 'error');
+}
+
+// ── DELETE ──
+async function deleteUser() {
+  const id = val('d-id');
+  if (!id) return showToast('Enter a User ID', 'error');
+  const { ok, data } = await apiFetch(`/users/${id}`, 'DELETE');
+  if (ok) { showToast('User deleted', 'success'); loadUsers(); }
+  else showToast(data.message || 'Delete failed', 'error');
+}
+
+// ── DELETE ALL ──
+async function deleteAll() {
+  if (!confirm('Delete ALL users? This cannot be undone.')) return;
+  try {
+    const res = await fetch(`${API}/users?all=true`, { method: 'DELETE' });
+  } catch {}
+  // Fallback: delete all one by one from loaded list
+  const cards = document.querySelectorAll('[data-user-id]');
+  let count = 0;
+  for (const card of cards) {
+    await apiFetch(`/users/${card.dataset.userId}`, 'DELETE');
+    count++;
+  }
+  showToast(`${count} users deleted`, 'success');
+  loadUsers();
+}
+
+// ── LOAD & RENDER USERS ──
+async function loadUsers() {
+  const { ok, data } = await apiFetch('/users?limit=50');
+  if (ok) {
+    renderUsers(data.data);
+    const badge = $('user-count-badge');
+    badge.textContent = `${data.total} users`;
+    badge.classList.remove('hidden');
+  }
+  loadStats();
+}
+
+function renderUsers(users) {
+  const grid = $('users-grid');
+  if (!users || !users.length) {
+    grid.innerHTML = '<div class="glass rounded-xl p-8 text-center text-gray-600 text-sm">No users found in database.</div>';
+    return;
+  }
+  const roleColors = { student: 'bg-blue-500/15 text-blue-400 border-blue-500/20', teacher: 'bg-purple-500/15 text-purple-400 border-purple-500/20', admin: 'bg-red-500/15 text-red-400 border-red-500/20' };
+  grid.innerHTML = users.map(u => `
+    <div class="user-card rounded-xl p-4 animate-fade-in cursor-pointer" data-user-id="${u._id}" onclick="selectUser('${u._id}', '${u.name}')">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-green-500/30 to-blue-500/30 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+            ${u.name.charAt(0).toUpperCase()}
+          </div>
+          <div class="min-w-0">
+            <div class="font-semibold text-white text-sm truncate">${u.name}</div>
+            <div class="text-xs text-gray-500 truncate">${u.email}</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <span class="text-xs px-2 py-0.5 rounded-full border ${roleColors[u.role] || 'bg-gray-500/15 text-gray-400 border-gray-500/20'}">${u.role}</span>
+          <div class="w-2 h-2 rounded-full ${u.isActive ? 'bg-green-500' : 'bg-gray-600'}"></div>
+        </div>
+      </div>
+      <div class="mt-3 flex items-center gap-4">
+        <div class="flex-1 bg-dark-900 rounded-full h-1.5 overflow-hidden">
+          <div class="h-full rounded-full bg-gradient-to-r from-green-500 to-blue-500" style="width:${u.score ?? 0}%"></div>
+        </div>
+        <span class="text-xs font-mono text-gray-400">${u.score ?? 0}/100</span>
+      </div>
+      ${u.skills?.length ? `<div class="mt-2 flex flex-wrap gap-1">${u.skills.slice(0,4).map(s => `<span class="text-xs px-1.5 py-0.5 rounded bg-white/5 text-gray-400">${s}</span>`).join('')}${u.skills.length > 4 ? `<span class="text-xs px-1.5 py-0.5 rounded bg-white/5 text-gray-500">+${u.skills.length-4}</span>` : ''}</div>` : ''}
+      <div class="mt-2 flex items-center justify-between">
+        <span class="text-xs text-gray-700 font-mono">${u._id.slice(-8)}…</span>
+        ${u.age ? `<span class="text-xs text-gray-600">Age ${u.age}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectUser(id, name) {
+  // Auto-fill ID fields when clicking a user card
+  ['r-id','u-id','d-id','sk-id'].forEach(f => { if ($(f)) $(f).value = id; });
+  showToast(`Selected: ${name} — ID copied to all forms`, 'info');
+}
+
+// ── STATS ──
+async function loadStats() {
+  const { ok, data } = await apiFetch('/users/stats');
+  if (!ok || !data.byRole?.length) return;
+  const bar = $('stats-bar'), content = $('stats-content');
+  bar.classList.remove('hidden');
+  const roleColors2 = { student: '#3b82f6', teacher: '#a855f7', admin: '#ef4444' };
+  content.innerHTML = data.byRole.map(r => `
+    <div class="glass rounded-xl p-3">
+      <div class="text-xs text-gray-500 mb-1 capitalize">${r._id || 'unknown'}</div>
+      <div class="text-xl font-bold text-white">${r.count}</div>
+      <div class="text-xs text-gray-500 mt-1">Avg Score: <span class="text-green-400 font-mono">${(r.avgScore||0).toFixed(1)}</span></div>
+    </div>
+  `).join('') + `
+    <div class="glass rounded-xl p-3">
+      <div class="text-xs text-gray-500 mb-1">Total / Active</div>
+      <div class="text-xl font-bold text-white">${data.active}<span class="text-gray-600 text-sm">/${data.total}</span></div>
+      <div class="text-xs text-gray-500 mt-1">Active Users</div>
+    </div>
+  `;
+}
+
+// ── Init ──
+checkHealth();
+loadUsers();
+setInterval(checkHealth, 15000);
+</script>
+</body>
+</html>
