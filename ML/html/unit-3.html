@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 — Convolutional Neural Networks | CS-601 ML</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+<nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+  <ul class="max-w-5xl mx-auto flex flex-wrap gap-x-4 gap-y-1 px-4 py-3 text-sm">
+    <li><a href="index.html" class="text-slate-400 hover:text-white">🎯 Dashboard</a></li>
+    <li><a href="unit-1.html" class="text-slate-400 hover:text-white">U1 Foundations</a></li>
+    <li><a href="unit-2.html" class="text-slate-400 hover:text-white">U2 Neural Nets</a></li>
+    <li><a href="unit-3.html" class="text-indigo-400 font-semibold">U3 CNN</a></li>
+    <li><a href="unit-4.html" class="text-slate-400 hover:text-white">U4 RNN &amp; RL</a></li>
+    <li><a href="unit-5.html" class="text-slate-400 hover:text-white">U5 SVM &amp; Apps</a></li>
+    <li><a href="numericals.html" class="text-slate-400 hover:text-white">🔢 Numericals</a></li>
+  </ul>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+
+<h1 class="text-3xl font-bold text-white mb-2">Unit 3 — Convolutional Neural Networks (CNN)</h1>
+
+<div class="border-l-4 border-indigo-500 bg-indigo-500/5 p-4 rounded-r-xl my-4">
+  <p><strong class="text-white">Exam weight: ~16.7% of offered marks but on a 3-paper HOT STREAK: padding/pooling/CNN-architecture/TensorFlow asked in May-24, Dec-24 AND Jun-25. Diagram-heavy = easy 7s.</strong></p>
+</div>
+
+<!-- ============ PYQ TABLE ============ -->
+<section id="pyq" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">PYQ Questions from this Unit</h2>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Year</th><th class="px-3 py-2">Question (condensed)</th><th class="px-3 py-2">Marks</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Principal component analysis for dimension reduction</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">How CNN operates; why image is downscaled while filter count increases toward output</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Transfer learning benefits + Inception net architecture in detail</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Identify + fix overfitting/underfitting in a CNN model</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Types of padding in CNNs</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Types of transfer learning — feature extraction vs fine-tuning</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Why high-dimensional data is challenging (curse of dimensionality)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">CNN architecture — hierarchical feature extraction through layers</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">How pooling layers reduce spatial dimensions</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Role of TensorFlow in implementing/training CNNs</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Inception network (short note)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Process of implementing CNN in TensorFlow</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Define padding + how it works</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Dimension reduction in detail</td><td class="px-3 py-2">7</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4 text-slate-300"><strong class="text-white">Read of the table:</strong> CNN mechanics (padding/pooling/architecture) + TensorFlow + dimension reduction have appeared in <strong class="text-white">three consecutive papers</strong>. Prepare the diagrams below until you can draw them from memory — every 7-marker in this unit rewards a labelled diagram.</p>
+</section>
+
+<!-- ============ 1. CNN MEANING & WORKING ============ -->
+<section id="cnn-working" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">1. Convolutional Neural Network — Meaning &amp; Working <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23, Dec-24 — MUST DO</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> A Convolutional Neural Network (CNN) is a deep neural network designed for grid-like data (images), which automatically learns a <strong class="text-white">hierarchy of features</strong> using three ideas — <strong class="text-white">local receptive fields, weight sharing, and subsampling</strong> — instead of connecting every pixel to every neuron.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">Why CNN instead of a plain ANN? <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 supports May-23 answer</span></h3>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Point</th><th class="px-3 py-2">Plain ANN (fully connected)</th><th class="px-3 py-2">CNN</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Input handling</td><td class="px-3 py-2">Flattens image, loses spatial layout</td><td class="px-3 py-2">Keeps 2-D structure of image</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Parameters</td><td class="px-3 py-2">Huge (every pixel × every neuron)</td><td class="px-3 py-2">Few (small shared filters)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">e.g. 32×32×3 image → 100 neurons</td><td class="px-3 py-2">3072 × 100 = <strong class="text-white">3,07,200 weights</strong></td><td class="px-3 py-2">6 filters of 5×5×3 → 450 weights + 6 biases = <strong class="text-white">456 params</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Translation invariance</td><td class="px-3 py-2">No — cat at corner ≠ cat at centre</td><td class="px-3 py-2">Yes — same filter slides everywhere</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Overfitting risk</td><td class="px-3 py-2">High</td><td class="px-3 py-2">Lower (fewer parameters)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">How a CNN operates (step-by-step) <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 May-23 direct question</span></h3>
+  <ol class="list-decimal list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Input layer</strong> — takes raw image as a 3-D volume <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Width × Height × Channels</code> (e.g. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">32×32×3</code> for RGB).</li>
+    <li><strong class="text-white">Convolution layer</strong> — small filters (3×3, 5×5) slide over the image, computing dot products → produce <strong class="text-white">feature maps</strong> that detect edges, corners, textures.</li>
+    <li><strong class="text-white">Activation (ReLU)</strong> — applies <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = max(0, x)</code> element-wise → adds non-linearity, keeps training fast.</li>
+    <li><strong class="text-white">Pooling (subsampling) layer</strong> — shrinks each feature map (e.g. 2×2 max pool halves width and height) → fewer computations + small shift invariance.</li>
+    <li><strong class="text-white">Repeat Conv → ReLU → Pool</strong> — each repetition extracts <strong class="text-white">higher-level features</strong> (edges → shapes → parts → objects).</li>
+    <li><strong class="text-white">Flatten</strong> — final 3-D volume is unrolled into a 1-D vector.</li>
+    <li><strong class="text-white">Dense (fully connected) layers</strong> — combine all features for reasoning/classification.</li>
+    <li><strong class="text-white">Output + Loss layer</strong> — softmax gives class probabilities; loss (cross-entropy) is computed and weights are updated by backpropagation + gradient descent.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Full CNN pipeline diagram (DRAW THIS in every architecture answer)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+ INPUT        CONV + ReLU     POOL        CONV + ReLU     POOL       FLATTEN     DENSE     SOFTMAX
+32x32x3  --&gt;  28x28x6    --&gt;  14x14x6 --&gt; 10x10x16   --&gt;  5x5x16 --&gt; 400x1  --&gt;  120 --&gt; 10 classes
+(image)      (6 filters      (2x2 max    (16 filters     (2x2 max   (1-D        (FC      (probab-
+              of 5x5)         pool)       of 5x5)         pool)      vector)     layer)    ilities)
+
+  low-level features  ------------&gt;  mid-level  ------------&gt;  high-level  ---&gt;  decision
+  (edges, colours)                  (shapes, corners)         (parts, objects)</pre>
+  <p class="mt-2 text-slate-400 italic">(This is essentially LeNet-5 — name-drop it for extra credit.)</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">Hierarchical feature extraction <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 Dec-24 direct question</span></h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Early conv layers</strong> → detect <strong class="text-white">low-level features</strong>: edges, lines, colour blobs.</li>
+    <li><strong class="text-white">Middle conv layers</strong> → combine edges into <strong class="text-white">mid-level features</strong>: corners, curves, textures, simple shapes.</li>
+    <li><strong class="text-white">Deep conv layers</strong> → combine shapes into <strong class="text-white">high-level features</strong>: eyes, wheels, faces, whole objects.</li>
+    <li><strong class="text-white">Dense layers</strong> → combine high-level features to make the final class decision.</li>
+    <li>Each layer builds ON TOP of the previous layer's output — this stacking is what "deep" means.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">Why is the image downscaled while filter count increases? <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 May-23 direct question</span></h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Spatial size shrinks (downscaling):</strong> pooling + stride reduce W×H → computation stays affordable, and each deeper neuron sees a <strong class="text-white">larger receptive field</strong> of the original image (a 3×3 filter on a pooled map "sees" 6×6 of the original).</li>
+    <li><strong class="text-white">Number of filters grows (e.g. 6 → 16 → 32 → 64):</strong> deeper layers must represent <strong class="text-white">many more feature combinations</strong> (there are few edge types, but thousands of possible object parts) — more filters = more feature vocabulary.</li>
+    <li>Net effect: the network <strong class="text-white">trades spatial resolution for semantic richness</strong> — WHERE information decreases, WHAT information increases.</li>
+    <li>Memory stays balanced: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×6 ≈ 4700 values</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">5×5×16 = 400 values</code> — the volume gets "taller and thinner".</li>
+  </ul>
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example to close with:</strong> classifying handwritten digits (MNIST 28×28): layer-1 filters find strokes, layer-2 finds loops/junctions, dense layer decides "this loop-on-a-stick is a 9".</p>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (How CNN operates / CNN architecture):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Open with the definition of CNN (local receptive fields + weight sharing + subsampling).</li>
+      <li>Headings: (i) Input volume, (ii) Convolution + ReLU, (iii) Pooling, (iv) Flatten, (v) Dense, (vi) Softmax + loss.</li>
+      <li>Draw the <strong class="text-white">full pipeline diagram</strong> with sizes (32×32×3 → … → 10 classes) and label low/mid/high-level features under it.</li>
+      <li>If asked "why downscale + more filters": add the resolution-vs-richness trade-off paragraph.</li>
+      <li>Close with the MNIST digit example.</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> writing "CNN has convolution layers" without ever explaining WHAT convolution computes (the sliding dot product). Always show one small worked convolution.</p>
+  </div>
+</section>
+
+<!-- ============ 2. INPUT CHANNELS ============ -->
+<section id="input-channels" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">2. Input Channels (RGB) <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, cheap 2-3 marks inside any answer</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> Input channels are the <strong class="text-white">depth slices</strong> of the input volume — separate 2-D grids that together describe each pixel.</p>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Grayscale image</strong> → 1 channel → shape <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">H × W × 1</code> (MNIST: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×1</code>).</li>
+    <li><strong class="text-white">Colour image</strong> → 3 channels (Red, Green, Blue) → shape <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">H × W × 3</code> (CIFAR-10: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">32×32×3</code>).</li>
+    <li>A filter always has the <strong class="text-white">same depth as its input</strong>: a "3×3 filter" on an RGB image is really <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">3×3×3</code> = 27 weights (+1 bias).</li>
+    <li>One filter, whatever its depth, produces <strong class="text-white">ONE 2-D feature map</strong> (the depth-wise products are summed).</li>
+    <li>Number of <strong class="text-white">output channels = number of filters</strong> in that layer — so channels grow as we stack layers (3 → 32 → 64 …).</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+  R channel  \
+  G channel   }--&gt; one 3x3x3 filter --&gt; one 2-D feature map
+  B channel  /        (27 weights)</pre>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example:</strong> a filter with high weights on the R slice and low on G/B acts as a "red detector" — it fires on red patches (useful for detecting stop signs).</p>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> saying a 3×3 filter on RGB has 9 weights — it has 3×3×<strong class="text-white">3</strong> = 27 (+1 bias).</p>
+  </div>
+</section>
+
+<!-- ============ 3. CONVOLUTION LAYER ============ -->
+<section id="convolution-layer" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">3. Convolution Layer <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 Core of May-23 / Dec-24 architecture questions — MUST DO</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> The convolution layer applies a set of small learnable filters (kernels) across the input; at each position it computes the <strong class="text-white">dot product between filter weights and the image patch</strong>, producing a feature map that shows WHERE that feature occurs.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">The convolution operation — worked example</h3>
+  <p class="mt-3 text-slate-300">Input 5×5 (binary image), Filter 3×3, Stride 1, No padding → Output 3×3:</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+ Input (5x5)        Filter (3x3)          Output (3x3)
+ 1 1 1 0 0
+ 0 1 1 1 0           1 0 1                 4 3 4
+ 0 0 1 1 1           0 1 0                 2 4 3
+ 0 0 1 1 0           1 0 1                 2 3 4
+ 0 1 1 0 0</pre>
+  <p class="mt-3 text-slate-300">Top-left output = overlap the filter on the top-left 3×3 patch and sum products:<br>
+  <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1×1)+(1×0)+(1×1)+(0×0)+(1×1)+(1×0)+(0×1)+(0×0)+(1×1) = 4</code><br>
+  Then slide the filter right by the stride and repeat.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key terms (write as headed bullets)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Filter / Kernel:</strong> small weight matrix (3×3, 5×5) that detects ONE pattern; weights are <strong class="text-white">learned</strong> by backpropagation, not hand-designed.</li>
+    <li><strong class="text-white">Feature map (activation map):</strong> the 2-D output grid — high values = "feature present here".</li>
+    <li><strong class="text-white">Receptive field:</strong> the region of input a single output neuron sees (equals filter size at layer 1, grows with depth).</li>
+    <li><strong class="text-white">Weight sharing:</strong> the SAME filter weights are used at every image position → drastic parameter reduction + translation invariance.</li>
+    <li><strong class="text-white">Local connectivity:</strong> each output neuron connects only to a small patch, not to the whole image.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Parameter-count example (MEMORIZE — asked inside architecture questions)</h3>
+  <p class="mt-3 text-slate-300"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Parameters per conv layer = (F × F × D_in + 1) × K</code> (the +1 is bias, K = number of filters)</p>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li>Layer: 6 filters of 5×5 on RGB input (depth 3): <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(5×5×3 + 1) × 6 = 76 × 6 = 456 parameters</code></li>
+    <li>Compare: a dense layer from the same <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">32×32×3 = 3072</code> inputs to just 100 neurons: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">3072 × 100 + 100 = 3,07,300 parameters</code> — <strong class="text-white">~674× more</strong> (3,07,300 / 456 ≈ 673.9). This is WHY CNNs work on images.</li>
+  </ul>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (Convolution layer / convolution operation):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Definition line (learnable filters slide over input, dot product → feature map).</li>
+      <li>Headings: (i) The operation — show the 5×5 ⊛ 3×3 worked example with the corner sum = 4, (ii) Filter/kernel + feature map, (iii) Weight sharing + local connectivity, (iv) Receptive field, (v) Parameter count <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(F·F·D_in + 1)·K</code> with the 456 example.</li>
+      <li>Draw the <strong class="text-white">5×5 ⊛ 3×3 worked example</strong> grid.</li>
+      <li>Close with the CNN-vs-ANN parameter comparison (456 vs 3,07,300 — ~674×).</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> forgetting the input-depth term and the bias in parameter counts — it is <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(F·F·D_in + 1)·K</code>, not <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">F·F·K</code>.</p>
+  </div>
+</section>
+
+<!-- ============ 4. STRIDE ============ -->
+<section id="stride" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">4. Stride <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked directly — DUE, likely next; also feeds every numerical</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> Stride <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">S</code> is the number of pixels the filter jumps each time it slides. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">S = 1</code> → move one pixel at a time (dense scanning); <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">S = 2</code> → skip alternate positions (output roughly halves).</p>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Effect on output size:</strong> larger stride → smaller feature map → fewer computations.</li>
+    <li><strong class="text-white">Stride as downsampling:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">S = 2</code> convolution is a modern alternative to pooling (used in ResNet).</li>
+    <li><strong class="text-white">Trade-off:</strong> big strides are fast but can skip over fine details.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+ Stride 1:  [##.....]  -&gt;  [.##....]  -&gt; [..##...]   (overlapping steps)
+ Stride 2:  [##.....]  -&gt;  [..##...]  -&gt; [....##.]   (jumps 2 → half the outputs)</pre>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example:</strong> 7×7 input, 3×3 filter, S=1 → 5×5 output; same input with S=2 → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(7−3)/2 + 1 = 3</code> → 3×3 output.</p>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> choosing W, F, S that make <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(W−F+2P)/S</code> non-integer — in the exam always pick numbers that divide cleanly (check before writing!).</p>
+  </div>
+</section>
+
+<!-- ============ 5. PADDING ============ -->
+<section id="padding" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">5. Padding <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-24, Jun-25 — MUST DO</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> Padding means adding extra border pixels (usually zeros) around the input image before convolution, so that the filter can also sit on the corners/edges and the output size can be controlled.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why padding is needed</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Prevents shrinking:</strong> without padding every conv layer shrinks the map (32→28→24 …) — deep nets would run out of pixels.</li>
+    <li><strong class="text-white">Preserves border information:</strong> corner pixels are covered by the filter only once without padding; with padding they get fair treatment.</li>
+    <li><strong class="text-white">Lets us build deep networks:</strong> "same" padding keeps size constant so we can stack 50+ layers.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Types of padding (the May-24 question)</h3>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Valid padding</th><th class="px-3 py-2">Same (zero) padding</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Meaning</td><td class="px-3 py-2">NO padding added (P = 0)</td><td class="px-3 py-2">Add zeros so output size = input size</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Output size</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(W − F)/S + 1</code> (shrinks)</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W</code> (unchanged, for S = 1)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">P value needed</td><td class="px-3 py-2">0</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P = (F − 1)/2</code> (odd F)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Border pixels</td><td class="px-3 py-2">Under-used, information lost</td><td class="px-3 py-2">Fully used</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">When used</td><td class="px-3 py-2">When shrinking is acceptable/desired</td><td class="px-3 py-2">Deep networks (VGG uses same everywhere)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Memory/compute</td><td class="px-3 py-2">Less</td><td class="px-3 py-2">Slightly more</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-2 text-slate-400 italic">(Some books also mention <strong class="text-slate-300">full padding</strong> — P = F−1, output GROWS; mention in one line for completeness.)</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">How it works — example</h3>
+  <p class="mt-3 text-slate-300">5×5 input, 3×3 filter, S=1:</p>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Valid:</strong> output = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(5−3)/1 + 1 = 3</code> → 3×3 (shrunk).</li>
+    <li><strong class="text-white">Same:</strong> pad with P = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(3−1)/2 = 1</code> ring of zeros → 7×7 padded input → output = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(5−3+2)/1 + 1 = 5</code> → 5×5 (size preserved).</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+ Same padding (P=1) on a 5x5 input:
+
+   0 0 0 0 0 0 0
+   0 x x x x x 0        zeros form a border ring;
+   0 x x x x x 0        filter can now be centred
+   0 x x x x x 0        on true corner pixels
+   0 x x x x x 0
+   0 x x x x x 0
+   0 0 0 0 0 0 0</pre>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Mnemonic:</strong> <strong class="text-white">VALID</strong> = "<strong class="text-white">V</strong>anishing size" (shrinks). <strong class="text-white">SAME</strong> = "<strong class="text-white">S</strong>ize <strong class="text-white">A</strong>lways <strong class="text-white">M</strong>aintained <strong class="text-white">E</strong>qual".</p>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (Define padding + types):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Opening definition line (border of zeros added before convolution).</li>
+      <li>Headings: (i) Why needed — shrinkage + border loss, (ii) Valid padding, (iii) Same padding, (iv) Formula <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P=(F−1)/2</code>, (v) Effect on output size.</li>
+      <li>Draw the <strong class="text-white">zero-ring diagram</strong> above.</li>
+      <li>Include the <strong class="text-white">valid vs same table</strong>.</li>
+      <li>Close with the 5×5/3×3 numerical example (3×3 vs 5×5 output).</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> writing "padding increases image information" — zeros add NO information; they only preserve size and border coverage.</p>
+  </div>
+</section>
+
+<!-- ============ 6. OUTPUT SIZE FORMULA ============ -->
+<section id="output-size-formula" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">6. Output Size Formula — THE formula of this unit <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 needed in May-23/24, Dec-24, Jun-25 answers</span></h2>
+
+  <p class="mt-3 text-lg text-slate-200"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">O = (W − F + 2P)/S + 1</code></p>
+  <p class="mt-3 text-slate-300">where <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W</code> = input width (or height), <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">F</code> = filter size, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P</code> = padding, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">S</code> = stride. Apply separately to width and height. Output depth = number of filters <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">K</code>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Worked examples (practice until automatic)</h3>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">#</th><th class="px-3 py-2">Input W</th><th class="px-3 py-2">Filter F</th><th class="px-3 py-2">Padding P</th><th class="px-3 py-2">Stride S</th><th class="px-3 py-2">Working</th><th class="px-3 py-2">Output</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">1</td><td class="px-3 py-2">32</td><td class="px-3 py-2">5</td><td class="px-3 py-2">0 (valid)</td><td class="px-3 py-2">1</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(32−5+0)/1 + 1</code></td><td class="px-3 py-2"><strong class="text-white">28×28</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">2</td><td class="px-3 py-2">32</td><td class="px-3 py-2">5</td><td class="px-3 py-2">2 (same)</td><td class="px-3 py-2">1</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(32−5+4)/1 + 1</code></td><td class="px-3 py-2"><strong class="text-white">32×32</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">3</td><td class="px-3 py-2">7</td><td class="px-3 py-2">3</td><td class="px-3 py-2">0</td><td class="px-3 py-2">2</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(7−3+0)/2 + 1</code></td><td class="px-3 py-2"><strong class="text-white">3×3</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">4 (pool)</td><td class="px-3 py-2">28</td><td class="px-3 py-2">2</td><td class="px-3 py-2">0</td><td class="px-3 py-2">2</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(28−2)/2 + 1</code></td><td class="px-3 py-2"><strong class="text-white">14×14</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">5 (AlexNet-1)</td><td class="px-3 py-2">227</td><td class="px-3 py-2">11</td><td class="px-3 py-2">0</td><td class="px-3 py-2">4</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(227−11)/4 + 1</code></td><td class="px-3 py-2"><strong class="text-white">55×55</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-4 text-slate-300">
+    <li>With 6 filters, example 1 gives a full output volume of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×6</code>.</li>
+    <li>Pooling uses the same formula with P = 0 (never pad a pooling layer).</li>
+  </ul>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> forgetting the <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">+1</code> at the end, or forgetting that P is added <strong class="text-white">twice</strong> (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2P</code> — once per side).</p>
+  </div>
+</section>
+
+<!-- ============ 7. POOLING ============ -->
+<section id="pooling" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">7. Pooling Layer (Subsampling) <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Dec-24 — MUST DO</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> The pooling layer performs <strong class="text-white">subsampling</strong> — it slides a small window (usually 2×2, stride 2) over each feature map independently and replaces the window with ONE summary value, reducing width and height while keeping depth unchanged.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">How pooling reduces spatial dimensions (Dec-24 question)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li>A <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2×2</code> window with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">S = 2</code> covers the map in non-overlapping blocks → output is <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W/2 × H/2</code> → <strong class="text-white">75% of values removed</strong> per map.</li>
+    <li>Formula: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">O = (W − F)/S + 1</code> → e.g. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(28−2)/2 + 1 = 14</code>.</li>
+    <li>Depth is untouched: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×6 → 14×14×6</code>.</li>
+    <li><strong class="text-white">No parameters are learned</strong> — pooling is a fixed operation (max or average).</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Max pooling vs Average pooling — worked 4×4 → 2×2 example (S=2)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+ Input feature map (4x4)      MAX pool 2x2        AVG pool 2x2
+   1  3 | 2  8
+   5  7 | 1  5                  7   8               4   4
+  ------+------
+   4  2 | 6  0                  4   6               2   3
+   0  2 | 4  2
+
+ (each 2x2 block -&gt; its max)  (each block -&gt; its average: (1+3+5+7)/4 = 4, ...)</pre>
+
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Max pooling</th><th class="px-3 py-2">Average pooling</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Value kept</td><td class="px-3 py-2">Largest in window</td><td class="px-3 py-2">Mean of window</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Keeps</td><td class="px-3 py-2">Strongest feature (sharp edges)</td><td class="px-3 py-2">Overall smooth response</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Noise</td><td class="px-3 py-2">Robust to small noise</td><td class="px-3 py-2">Averages noise in</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Usage</td><td class="px-3 py-2">Default in hidden layers (VGG, AlexNet)</td><td class="px-3 py-2">Global Average Pooling before output (GoogLeNet)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why pooling helps (headed bullets for the answer)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Computation ↓:</strong> quarter the values → all later layers 4× cheaper.</li>
+    <li><strong class="text-white">Translation invariance:</strong> if the feature shifts by 1 pixel, max of the window often stays the same.</li>
+    <li><strong class="text-white">Overfitting ↓:</strong> fewer values = less to memorize.</li>
+    <li><strong class="text-white">Bigger receptive field:</strong> later filters see more of the original image.</li>
+  </ul>
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example to close with:</strong> face detection — max pooling keeps the "eye detected!" signal even if the eye moves a few pixels between photos.</p>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (How pooling reduces spatial dimensions):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Definition of pooling/subsampling (window + summary value, no learned weights).</li>
+      <li>Headings: (i) Working with 2×2/S=2, (ii) Output formula + <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28→14</code> numerical, (iii) Max vs Average (table), (iv) Benefits (compute, invariance, overfitting), (v) Depth unchanged.</li>
+      <li>Draw the <strong class="text-white">4×4 → 2×2 worked example</strong> for BOTH max and average.</li>
+      <li>Close with the face-detection shift-invariance example.</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> saying pooling reduces the number of channels — it only reduces W×H; <strong class="text-white">depth stays the same</strong>.</p>
+  </div>
+</section>
+
+<!-- ============ 8. FLATTENING ============ -->
+<section id="flattening" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">8. Flattening <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> Flattening converts the final 3-D feature volume from the conv/pool stack into a <strong class="text-white">1-D column vector</strong> so it can be fed to fully connected (dense) layers.</p>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li>Pure <strong class="text-white">reshaping</strong> — no weights, no learning, no information loss (just reordering).</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">5×5×16</code> volume → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">5 × 5 × 16 = 400 × 1</code> vector.</li>
+    <li>It is the <strong class="text-white">bridge</strong> between the <em>feature-extraction</em> half (conv/pool) and the <em>classification</em> half (dense/softmax) of a CNN.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+  5x5x16 volume            Flatten             400x1 vector
+  [ ][ ][ ]...      --&gt;   row by row,    --&gt;     [x1]
+  [ ][ ][ ]...            map by map             [x2]
+  (3-D stack)                                    ...
+                                                 [x400]</pre>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Modern alternative:</strong> Global Average Pooling (average each map to a single number → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">16×1</code>) — fewer parameters, less overfitting; mention it for extra credit.</li>
+  </ul>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example:</strong> in the Keras code below, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Flatten()</code> sits exactly between <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">MaxPooling2D</code> and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Dense</code>.</p>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> calling flattening a "layer that learns" — it has <strong class="text-white">zero parameters</strong>.</p>
+  </div>
+</section>
+
+<!-- ============ 9. DENSE LAYER ============ -->
+<section id="dense-layer" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">9. Dense (Fully Connected) Layer <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> A dense layer connects <strong class="text-white">every</strong> input value to <strong class="text-white">every</strong> neuron (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y = f(Wx + b)</code>); in a CNN it sits after flattening and combines all extracted features to make the final decision.</p>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Role in CNN:</strong> conv layers answer "<em>what features are present and where</em>"; dense layers answer "<em>which class do these features add up to</em>".</li>
+    <li><strong class="text-white">Parameters:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(inputs × neurons) + neurons</code> → 400 → 120 dense layer = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">400×120 + 120 = 48,120</code> — dense layers hold <strong class="text-white">most of a classic CNN's parameters</strong>.</li>
+    <li><strong class="text-white">Typical ending:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Flatten → Dense(120, ReLU) → Dense(84, ReLU) → Dense(10, Softmax)</code>.</li>
+  </ul>
+
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Convolution layer</th><th class="px-3 py-2">Dense layer</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Connectivity</td><td class="px-3 py-2">Local (small patch)</td><td class="px-3 py-2">Global (all inputs)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Weight sharing</td><td class="px-3 py-2">Yes</td><td class="px-3 py-2">No</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Preserves spatial layout</td><td class="px-3 py-2">Yes</td><td class="px-3 py-2">No (needs flattened input)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Parameter count</td><td class="px-3 py-2">Small</td><td class="px-3 py-2">Large</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Job</td><td class="px-3 py-2">Feature extraction</td><td class="px-3 py-2">Classification/decision</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4 text-slate-300"><strong class="text-white">Example:</strong> the last <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Dense(10, softmax)</code> of a digit classifier outputs 10 probabilities — one per digit 0-9.</p>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> putting a Dense layer before Flatten in the code sketch — dense layers need 1-D input.</p>
+  </div>
+</section>
+
+<!-- ============ 10. LOSS LAYER ============ -->
+<section id="loss-layer" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">10. Loss Layer <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> The loss (cost) layer is the <strong class="text-white">final layer during training</strong>; it compares the network's prediction with the true label and outputs a single error number that backpropagation minimizes.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Common loss functions (know 3)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Softmax + Categorical Cross-Entropy</strong> — multi-class classification (the CNN default): <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Softmax: p_i = e^(z_i) / Σ e^(z_j)</code> then <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = −Σ y_i log(p_i)</code></li>
+    <li><strong class="text-white">Binary Cross-Entropy</strong> — 2-class problems (cat vs dog): <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = −[y log p + (1−y) log(1−p)]</code></li>
+    <li><strong class="text-white">Mean Squared Error (MSE)</strong> — regression outputs (predicting age from a face): <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = (1/n) Σ (y − ŷ)²</code></li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Its role in training</h3>
+  <ol class="list-decimal list-inside space-y-1.5 mt-3 text-slate-300">
+    <li>Forward pass → prediction <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p</code>.</li>
+    <li>Loss layer → error <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L(p, y)</code>.</li>
+    <li>Backward pass → gradients <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂w</code> flow back through dense → pool → conv layers.</li>
+    <li>Optimizer (SGD/Adam) updates every filter weight.</li>
+  </ol>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example:</strong> true class "cat" (y = 1) but network says p(cat) = 0.25 → loss = −log 0.25 ≈ 1.39 (high); a confident correct p = 0.9 gives −log 0.9 ≈ 0.10 (low).</p>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> using MSE for classification in an answer — cross-entropy is the correct pairing with softmax.</p>
+  </div>
+</section>
+
+<!-- ============ 11. 1x1 CONVOLUTION ============ -->
+<section id="one-by-one-conv" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">11. 1×1 Convolution (Network-in-Network) <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next; feeds the Inception answer</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> A 1×1 convolution uses a filter of size <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">1×1×D</code> — it looks at ONE pixel position across <strong class="text-white">all input channels</strong> and computes a weighted combination of them, acting like a tiny fully-connected layer applied at every pixel.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">What it is good for (headed bullets)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Channel/dimensionality reduction:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×192 --(32 filters of 1×1)--&gt; 28×28×32</code> — same W×H, depth squeezed 6×.</li>
+    <li><strong class="text-white">Computation reduction (bottleneck):</strong> shrink channels BEFORE an expensive 3×3/5×5 conv (numbers below).</li>
+    <li><strong class="text-white">Adds non-linearity:</strong> each 1×1 conv is followed by ReLU → deeper representation at almost no cost.</li>
+    <li><strong class="text-white">Cross-channel mixing:</strong> learns which channel combinations matter at each location.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">The famous computation-saving example (MEMORIZE for Inception)</h3>
+  <p class="mt-3 text-slate-300">Input <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×192</code>, want output <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×32</code> via 5×5 conv:</p>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Direct 5×5:</strong> multiplications ≈ <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×32 × 5×5×192</code> ≈ <strong class="text-white">120 million</strong></li>
+    <li><strong class="text-white">Bottleneck:</strong> first 1×1 to 16 channels: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×16 × 192</code> ≈ 2.4M, then 5×5: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">28×28×32 × 5×5×16</code> ≈ 10M → total ≈ <strong class="text-white">12.4 million</strong></li>
+    <li>→ <strong class="text-white">~10× cheaper</strong> with almost no accuracy loss. This trick makes the Inception network feasible.</li>
+  </ul>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example one-liner:</strong> "a 1×1 conv is a channel-blender — it never looks at neighbours, only mixes the colours of one pixel."</p>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> "1×1 conv does nothing since the filter sees one pixel" — it spans the FULL depth (1×1×192 = 192 weights), so it absolutely computes something.</p>
+  </div>
+</section>
+
+<!-- ============ 12. INCEPTION ============ -->
+<section id="inception" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">12. Inception Network (GoogLeNet) <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23, Dec-24 — MUST DO</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> The Inception network (GoogLeNet, winner ILSVRC-2014, 22 layers) is a CNN built from <strong class="text-white">Inception modules</strong> — blocks that apply <strong class="text-white">1×1, 3×3, 5×5 convolutions and 3×3 max-pooling in PARALLEL</strong> on the same input and concatenate all their outputs depth-wise, letting the network choose the right filter size automatically.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Motivation (why parallel filters?)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li>The "right" filter size depends on the object scale: a small dog in the corner suits 3×3; a large dog filling the frame suits 5×5.</li>
+    <li>Instead of choosing one size, Inception <strong class="text-white">computes all sizes and lets training decide</strong> the mix.</li>
+    <li>Naively this is too costly → <strong class="text-white">1×1 bottlenecks</strong> before 3×3/5×5 slash computation ~10× (example in the 1×1 section).</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Inception module diagram (DRAW THIS — both PYQs reward it)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+                        Input (28x28x192)
+          +-----------+--------+---------+------------+
+          |           |                  |            |
+       1x1 conv    1x1 conv           1x1 conv    3x3 MAXPOOL
+        (64)      (96) [reduce]     (16) [reduce]  (stride 1, same)
+          |           |                  |            |
+          |        3x3 conv           5x5 conv     1x1 conv
+          |         (128)               (32)         (32)
+          |           |                  |            |
+          +-----------+--------+---------+------------+
+                               |
+                 DEPTH CONCATENATION  -&gt;  28x28x(64+128+32+32) = 28x28x256</pre>
+  <p class="mt-3 text-slate-300">Key points to label: all four branches keep the SAME 28×28 spatial size (same padding, pool stride 1) so their outputs can be stacked along depth.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Architecture facts (headed bullets)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">4 parallel branches:</strong> 1×1 | 1×1→3×3 | 1×1→5×5 | pool→1×1. <strong class="text-white">Mnemonic: "1-3-5-Pool".</strong></li>
+    <li><strong class="text-white">1×1 bottlenecks:</strong> reduce channels before big filters → 22 layers deep with only <strong class="text-white">~5M parameters</strong> (AlexNet had 60M).</li>
+    <li><strong class="text-white">9 Inception modules</strong> stacked in GoogLeNet.</li>
+    <li><strong class="text-white">Global Average Pooling</strong> instead of giant dense layers at the end → huge parameter saving.</li>
+    <li><strong class="text-white">Auxiliary classifiers:</strong> two small side softmax branches inject gradient into middle layers during training (fight vanishing gradients); removed at test time.</li>
+    <li><strong class="text-white">Later versions:</strong> Inception-v2/v3 factorize 5×5 into two 3×3s; Inception-ResNet adds skip connections (one line is enough).</li>
+  </ul>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (Inception network):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Definition line (GoogLeNet, 2014, parallel multi-scale filters + concatenation).</li>
+      <li>Headings: (i) Motivation — which filter size?, (ii) The 4 branches, (iii) Role of 1×1 bottlenecks + the 120M→12.4M numbers, (iv) Auxiliary classifiers + Global Avg Pooling, (v) 22 layers/5M params vs AlexNet 60M.</li>
+      <li>Draw the <strong class="text-white">Inception module diagram</strong> with channel numbers.</li>
+      <li>Close with: "network learns WHICH scale matters instead of us hand-picking filter size."</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> drawing the four branches in SERIES — they are strictly PARALLEL, then concatenated along depth.</p>
+  </div>
+</section>
+
+<!-- ============ 13. TRANSFER LEARNING ============ -->
+<section id="transfer-learning" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">13. Transfer Learning <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23, May-24 — MUST DO</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> Transfer learning is the technique of taking a network <strong class="text-white">pre-trained on a large dataset</strong> (e.g. VGG16/ResNet on ImageNet, ~1.2M images, 1000 classes) and <strong class="text-white">reusing its learned features</strong> for a new, related task that has much less data.</p>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Why it works:</strong> early conv layers learn <strong class="text-white">generic</strong> features (edges, textures, colours) that are useful for ANY vision task; only the last layers are task-specific — so we keep the generic part and retrain the specific part.</p>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+   Pre-trained CNN (ImageNet)
+   +--------------------------------+     +--------------------+
+   |  Conv blocks 1..N              |     |  New dense head    |
+   |  generic features:             | --&gt; |  (your classes,    |
+   |  edges -&gt; textures -&gt; parts    |     |   e.g. 2 outputs)  |
+   +--------------------------------+     +--------------------+
+        FROZEN (or fine-tuned)              TRAINED on small
+                                            new dataset</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Types of transfer learning (the May-24 question)</h3>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Feature extraction</th><th class="px-3 py-2">Fine-tuning</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Conv base</td><td class="px-3 py-2"><strong class="text-white">Frozen</strong> — weights never change</td><td class="px-3 py-2"><strong class="text-white">Top few conv blocks unfrozen</strong> and retrained</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">What trains</td><td class="px-3 py-2">Only the new dense head</td><td class="px-3 py-2">New head + unfrozen conv layers</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Data needed</td><td class="px-3 py-2">Very little (hundreds of images)</td><td class="px-3 py-2">Moderate (thousands)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Compute</td><td class="px-3 py-2">Cheap and fast</td><td class="px-3 py-2">Slower</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Learning rate</td><td class="px-3 py-2">Normal</td><td class="px-3 py-2">Very LOW (protect pre-trained weights)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Risk</td><td class="px-3 py-2">May underfit if new task differs a lot</td><td class="px-3 py-2">Overfits if data too small</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Use when</td><td class="px-3 py-2">New task ≈ original task, tiny dataset</td><td class="px-3 py-2">New task differs somewhat, more data</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-2 text-slate-400 italic">(Also mention in one line: "pre-trained as initialization" — retrain everything, warm start, needs the most data.)</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Benefits of transfer learning (the May-23 question — write 5)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Less data needed:</strong> generic features come free; hundreds of images can suffice.</li>
+    <li><strong class="text-white">Much faster training:</strong> only a small head trains — minutes instead of days.</li>
+    <li><strong class="text-white">Better accuracy:</strong> ImageNet features beat features learned from a tiny dataset.</li>
+    <li><strong class="text-white">Lower cost:</strong> no need for GPU-weeks; big labs pay the pre-training bill once.</li>
+    <li><strong class="text-white">Better generalization / less overfitting:</strong> frozen generic features act as a regularizer.</li>
+  </ul>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example to close with:</strong> medical X-ray classifier with only 2,000 labelled images — take ResNet50 pre-trained on ImageNet, freeze the conv base, replace the 1000-class head with a 2-class head (pneumonia / normal), train for a few epochs → ~90%+ accuracy that would be impossible from scratch.</p>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (Transfer learning types / benefits):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Definition line (reuse pre-trained network's features for a new small-data task).</li>
+      <li>Headings: (i) Why it works — generic vs specific layers, (ii) Feature extraction, (iii) Fine-tuning, (iv) Comparison table, (v) Benefits (pick 5).</li>
+      <li>Draw the <strong class="text-white">frozen-base + new-head diagram</strong>.</li>
+      <li>Close with the X-ray/ResNet50 example.</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> fine-tuning with a large learning rate — it destroys the pre-trained weights ("catastrophic forgetting"); always say "small LR".</p>
+  </div>
+</section>
+
+<!-- ============ 14. ONE-SHOT LEARNING ============ -->
+<section id="one-shot" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">14. One-Shot Learning <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next (pairs naturally with transfer learning)</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> One-shot learning is the problem of recognizing a class from <strong class="text-white">just ONE (or very few) training example(s)</strong> — instead of learning "who is this person", the network learns a <strong class="text-white">similarity function</strong>: are these two images of the same class?</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why normal CNNs fail here</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li>A softmax classifier needs many examples per class AND retraining whenever a new class (new employee's face) is added.</li>
+    <li>One-shot systems need <strong class="text-white">no retraining</strong> for new classes — just store one reference image.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Siamese network (the standard solution — DRAW THIS)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+ Image A ---&gt; [ CNN ] ---&gt; embedding f(A) ----+
+               (shared                        |--&gt; distance d = || f(A) - f(B) ||
+                weights)                      |     d small -&gt; SAME person
+ Image B ---&gt; [ CNN ] ---&gt; embedding f(B) ----+     d large -&gt; DIFFERENT person</pre>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Two identical CNNs with SHARED weights</strong> map each image to an embedding vector (e.g. 128-D).</li>
+    <li>Trained with <strong class="text-white">contrastive loss</strong> or <strong class="text-white">triplet loss</strong>: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = max(0, d(A,P) − d(A,N) + margin)</code> — pull an Anchor towards a Positive (same class), push it from a Negative (different class).</li>
+    <li>At test time: compare the new image's embedding with the single stored reference; threshold the distance.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Applications</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Face recognition / verification:</strong> office attendance system — one photo per employee (FaceNet, DeepFace).</li>
+    <li><strong class="text-white">Signature verification:</strong> one genuine specimen per customer.</li>
+    <li><strong class="text-white">Passport/ID checking at airports:</strong> match live face to one chip photo.</li>
+  </ul>
+
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Transfer learning</th><th class="px-3 py-2">One-shot learning</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Data for new class</td><td class="px-3 py-2">Small dataset (100s)</td><td class="px-3 py-2">ONE example</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Output</td><td class="px-3 py-2">Class probabilities</td><td class="px-3 py-2">Similarity/distance</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">New class added</td><td class="px-3 py-2">Retrain the head</td><td class="px-3 py-2">Just store one embedding</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Core idea</td><td class="px-3 py-2">Reuse features</td><td class="px-3 py-2">Learn to compare</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> calling the two Siamese branches "two different networks" — it is ONE network applied twice (shared weights is the whole point).</p>
+  </div>
+</section>
+
+<!-- ============ 15. DIMENSION REDUCTION ============ -->
+<section id="dimension-reduction" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">15. Dimension Reduction <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22 (PCA), May-24 (curse), Jun-25 (in detail) — MUST DO, 3/5 years</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> Dimension reduction is the process of reducing the number of input features/variables while <strong class="text-white">retaining maximum useful information</strong>, either by selecting features (feature selection) or by transforming them to a smaller set of new features (feature extraction).</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why high-dimensional data is challenging — Curse of Dimensionality (May-24 question)</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Data sparsity:</strong> to keep the same sample density, data needed grows <strong class="text-white">exponentially</strong> with dimensions — 10 points cover a 1-D line, ~10² a square, ~10³ a cube.</li>
+    <li><strong class="text-white">Distance concentration:</strong> in high-D, nearest and farthest neighbours become almost equidistant → distance-based methods (KNN, K-means) break down.</li>
+    <li><strong class="text-white">Overfitting:</strong> more features than samples → the model memorizes noise.</li>
+    <li><strong class="text-white">Computation &amp; storage cost:</strong> time/memory grow with dimensions.</li>
+    <li><strong class="text-white">Visualization impossible</strong> beyond 3-D; <strong class="text-white">redundant/correlated</strong> features add noise, not information.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Two families of dimension reduction (Jun-25 "in detail" answer)</h3>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Family</th><th class="px-3 py-2">Idea</th><th class="px-3 py-2">Examples</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong class="text-white">Feature selection</strong></td><td class="px-3 py-2">KEEP a subset of original features, drop the rest</td><td class="px-3 py-2">Filter (correlation), Wrapper (forward/backward selection), Embedded (LASSO)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong class="text-white">Feature extraction</strong></td><td class="px-3 py-2">TRANSFORM to new, fewer features (combinations of old)</td><td class="px-3 py-2"><strong class="text-white">PCA</strong>, LDA, t-SNE, Autoencoders, Kernel PCA</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-4 text-slate-300">
+    <li><strong class="text-white">PCA</strong> — unsupervised; finds directions of maximum variance.</li>
+    <li><strong class="text-white">LDA</strong> — supervised; finds directions that best separate classes.</li>
+    <li><strong class="text-white">t-SNE</strong> — non-linear, for 2-D/3-D visualization only.</li>
+    <li><strong class="text-white">Autoencoder</strong> — neural network squeezed through a small bottleneck layer; the bottleneck IS the reduced representation.</li>
+    <li><strong class="text-white">In CNNs specifically:</strong> pooling, stride &gt; 1 and <strong class="text-white">1×1 convolutions</strong> all perform dimension reduction inside the network.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">PCA — Principal Component Analysis (May-22 question; MEMORIZE the 5 steps)</h3>
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> PCA is an unsupervised linear technique that transforms correlated features into a smaller set of uncorrelated <strong class="text-white">principal components (PCs)</strong>, ordered so that PC1 captures maximum variance, PC2 the next most (perpendicular to PC1), and so on.</p>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Steps — Mnemonic: "Smart Cats Eat Small Pigeons"</strong></p>
+  <ol class="list-decimal list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">S — Standardize</strong> the data: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z = (x − mean)/std</code> (so large-scale features don't dominate).</li>
+    <li><strong class="text-white">C — Covariance matrix</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C = (1/n) XᵀX</code> — how features vary together.</li>
+    <li><strong class="text-white">E — Eigen-decomposition:</strong> find eigenvalues and eigenvectors of C. Eigenvectors = directions (PCs); eigenvalues = variance captured by each.</li>
+    <li><strong class="text-white">S — Sort &amp; Select:</strong> order eigenvalues descending; keep top k eigenvectors (e.g. enough for 95% cumulative variance).</li>
+    <li><strong class="text-white">P — Project:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">X_reduced = X · W_k</code> (W_k = matrix of top-k eigenvectors) → n features become k features.</li>
+  </ol>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+   x2 |    .  ..                PC1 = direction of max spread
+      |  . . ..  .          .
+      | . .. . .        (data cloud tilts along PC1;
+      |. .  .              projecting onto PC1 alone
+      +------------- x1    keeps most information)</pre>
+
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Explained variance ratio:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">eigenvalue_i / Σ eigenvalues</code> — say "we keep PCs covering ~95%".</li>
+    <li><strong class="text-white">Properties:</strong> PCs are orthogonal (uncorrelated); PCA is unsupervised (ignores labels); sensitive to scaling (hence standardize first).</li>
+    <li><strong class="text-white">Limitations:</strong> only linear; components are hard to interpret; variance ≠ always importance.</li>
+  </ul>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example to close with:</strong> 13-feature wine dataset → PCA keeps 2 PCs covering ~55-60% variance → plot in 2-D and the three wine cultivars form visible clusters; or MNIST 784 pixels → 50 PCs with ~95% variance retained.</p>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (PCA / dimension reduction):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Definition line (reduce features, keep information).</li>
+      <li>Headings: (i) Curse of dimensionality — 4 bullets, (ii) Feature selection vs feature extraction, (iii) PCA 5 steps (Standardize→Covariance→Eigen→Select→Project), (iv) Explained variance, (v) Limitations.</li>
+      <li>Draw the <strong class="text-white">PC1 direction scatter diagram</strong>.</li>
+      <li>Close with the wine/MNIST example.</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> skipping standardization before PCA — without it, one large-scale feature (e.g. salary in ₹) hijacks PC1.</p>
+  </div>
+</section>
+
+<!-- ============ 16. TENSORFLOW & KERAS ============ -->
+<section id="tensorflow" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">16. CNN Implementation — TensorFlow &amp; Keras <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Dec-24, Jun-25 — MUST DO</span></h2>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Role of TensorFlow in implementing/training CNNs (Dec-24 question)</h3>
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> TensorFlow is Google's open-source, end-to-end deep-learning framework that represents computation as <strong class="text-white">dataflow graphs on tensors</strong> (n-dimensional arrays) and executes them efficiently on CPU/GPU/TPU.</p>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">What TensorFlow provides for CNNs (headed bullets — write 6):</strong></p>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Ready-made layers:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Conv2D</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">MaxPooling2D</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Flatten</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Dense</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Dropout</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">BatchNormalization</code> — no manual convolution code.</li>
+    <li><strong class="text-white">Automatic differentiation (autograd):</strong> computes all backpropagation gradients automatically — you never derive <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂w</code> by hand.</li>
+    <li><strong class="text-white">Optimizers built-in:</strong> SGD, Adam, RMSprop with one line.</li>
+    <li><strong class="text-white">Hardware acceleration:</strong> same code runs on GPU/TPU → trains CNNs 10-100× faster.</li>
+    <li><strong class="text-white">Keras high-level API:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">tf.keras</code> gives the simple Sequential/Functional model-building style.</li>
+    <li><strong class="text-white">Data pipeline + deployment:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">tf.data</code> for efficient batching/augmentation; TensorBoard for monitoring; TF-Lite / TF-Serving to deploy the trained CNN to mobile/servers.</li>
+    <li><strong class="text-white">Pre-trained models:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">tf.keras.applications</code> (VGG16, ResNet50, InceptionV3) for transfer learning.</li>
+  </ul>
+  <p class="mt-2 text-slate-400 italic">(Keras = high-level API; TensorFlow = the engine underneath. Since TF 2.x, Keras ships inside TensorFlow as <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">tf.keras</code>.)</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Process of implementing a CNN in TensorFlow/Keras (Jun-25 question — the 7 steps)</h3>
+  <ol class="list-decimal list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Import &amp; load data</strong> — e.g. MNIST from <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">tf.keras.datasets</code>.</li>
+    <li><strong class="text-white">Preprocess</strong> — normalize pixels to 0-1, reshape to <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(28,28,1)</code>, one-hot labels if needed.</li>
+    <li><strong class="text-white">Build the model</strong> — stack Conv2D → MaxPooling2D → … → Flatten → Dense → Softmax.</li>
+    <li><strong class="text-white">Compile</strong> — choose optimizer (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">adam</code>), loss (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">sparse_categorical_crossentropy</code>), metric (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">accuracy</code>).</li>
+    <li><strong class="text-white">Train</strong> — <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">model.fit(...)</code> with epochs, batch size, validation data.</li>
+    <li><strong class="text-white">Evaluate</strong> — <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">model.evaluate(...)</code> on the test set.</li>
+    <li><strong class="text-white">Predict / save</strong> — <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">model.predict(...)</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">model.save(...)</code>.</li>
+  </ol>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Mnemonic:</strong> <strong class="text-white">"I Pray Before Class Tests, Evaluations &amp; Practicals"</strong> → Import, Preprocess, Build, Compile, Train, Evaluate, Predict.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Keras code sketch (REPRODUCE THIS in the exam — examiners love it)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+# 1-2. Load and preprocess
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+x_train = x_train.reshape(-1, 28, 28, 1) / 255.0   # normalize to 0-1
+x_test  = x_test.reshape(-1, 28, 28, 1) / 255.0
+
+# 3. Build the CNN
+model = models.Sequential([
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Flatten(),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(10, activation='softmax')        # 10 digit classes
+])
+
+# 4. Compile
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+
+# 5. Train
+model.fit(x_train, y_train, epochs=5, batch_size=32,
+          validation_data=(x_test, y_test))
+
+# 6-7. Evaluate and predict
+test_loss, test_acc = model.evaluate(x_test, y_test)
+predictions = model.predict(x_test[:5])</pre>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (TensorFlow role / implementation process):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Definition line (open-source framework, tensors + dataflow graphs, CPU/GPU/TPU).</li>
+      <li>Headings: (i) Built-in layers, (ii) Automatic differentiation, (iii) Optimizers &amp; GPU speed, (iv) tf.keras API, (v) 7 implementation steps (I-P-B-C-T-E-P), (vi) Deployment/TensorBoard.</li>
+      <li>Instead of a diagram, write the <strong class="text-white">code sketch</strong> (even 10 lines of it earns the marks).</li>
+      <li>Close with: "5 epochs on MNIST reaches ~99% test accuracy".</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> forgetting <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">model.compile()</code> before <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">model.fit()</code> in the code — compile is where loss + optimizer are attached.</p>
+  </div>
+</section>
+
+<!-- ============ 17. OVERFITTING & UNDERFITTING ============ -->
+<section id="overfitting" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">17. Overfitting &amp; Underfitting in CNNs <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23 — MUST DO</span></h2>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Definition:</strong> Overfitting = model learns the training data <strong class="text-white">too well including noise</strong> — high train accuracy, poor test accuracy. Underfitting = model is <strong class="text-white">too simple to learn even the training data</strong> — poor accuracy on both.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">How to IDENTIFY (the May-23 "identify" half)</h3>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Symptom</th><th class="px-3 py-2">Overfitting</th><th class="px-3 py-2">Underfitting</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Training accuracy</td><td class="px-3 py-2">Very high (e.g. 99%)</td><td class="px-3 py-2">Low (e.g. 65%)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Validation/test accuracy</td><td class="px-3 py-2">Much lower (e.g. 78%)</td><td class="px-3 py-2">Also low (≈ train)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Gap train vs val</td><td class="px-3 py-2">LARGE</td><td class="px-3 py-2">Small (both bad)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Loss curves</td><td class="px-3 py-2">Val loss falls then RISES while train loss keeps falling</td><td class="px-3 py-2">Both losses plateau high</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">
+ Loss                                    Loss
+  |\                                      |
+  | \   train                             |------____   train (stays high)
+  |  \______                              |------____   val   (stays high)
+  |   \    val rises -&gt;  ___/             |
+  |    \      ______/                     |
+  +-----------------------&gt; epochs        +------------------&gt; epochs
+        OVERFITTING                            UNDERFITTING</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">How to FIX overfitting in a CNN — Mnemonic: "DR. ABE"</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">D — Dropout:</strong> randomly switch off neurons (rate 0.25-0.5) during training → prevents co-adaptation.</li>
+    <li><strong class="text-white">R — Regularization (L2/weight decay):</strong> penalize large weights in the loss.</li>
+    <li><strong class="text-white">A — Augmentation:</strong> rotate/flip/shift/zoom training images → artificially bigger dataset (the single most effective CNN fix).</li>
+    <li><strong class="text-white">B — Batch normalization:</strong> normalizes layer inputs; mild regularizing effect + stabler training.</li>
+    <li><strong class="text-white">E — Early stopping:</strong> stop at the epoch where validation loss is minimum.</li>
+    <li><em>(Bonus: get more data; use transfer learning; make the network smaller.)</em></li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">How to FIX underfitting</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Increase capacity:</strong> more filters, more layers.</li>
+    <li><strong class="text-white">Train longer</strong> (more epochs) with a suitable learning rate.</li>
+    <li><strong class="text-white">Reduce regularization/dropout</strong> (it's suffocating the model).</li>
+    <li><strong class="text-white">Better features/input size</strong>; check for bugs (unnormalized input is a classic cause).</li>
+  </ul>
+
+  <p class="mt-3 text-slate-300"><strong class="text-white">Example to close with:</strong> CNN with train acc 99%, val acc 72% → clearly overfitting → adding augmentation (flips/rotations) + Dropout(0.5) + early stopping raises val acc to ~90%.</p>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (identify + fix over/underfitting):</p>
+    <ol class="list-decimal list-inside space-y-1 mt-2 text-slate-300">
+      <li>Two-line definitions of both.</li>
+      <li>Headings: (i) Identification table (train vs val gap), (ii) Loss-curve diagram, (iii) Fix overfitting — DR. ABE (5 bullets), (iv) Fix underfitting (3 bullets).</li>
+      <li>Draw the <strong class="text-white">two loss-curve diagrams</strong>.</li>
+      <li>Close with the 99%/72% example.</li>
+    </ol>
+  </div>
+
+  <div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-slate-300"><strong class="text-amber-400">⚠️ Common mistake:</strong> offering "add more layers" as an overfitting fix — that makes it WORSE; more capacity fixes UNDERfitting.</p>
+  </div>
+</section>
+
+<!-- ============ QUICK REVISION BOX ============ -->
+<section id="quick-revision" class="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-6">
+  <h2 class="text-2xl font-bold text-white flex flex-wrap items-center gap-2">⚡ Quick Revision Box</h2>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">One-liner per topic</h3>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Topic</th><th class="px-3 py-2">One line to remember</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">CNN</td><td class="px-3 py-2">Local filters + weight sharing + subsampling learn a feature hierarchy: edges → shapes → parts → objects.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Hierarchical extraction</td><td class="px-3 py-2">Each conv layer builds bigger features from the previous layer's smaller ones.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Downscale-vs-filters</td><td class="px-3 py-2">Depth trades WHERE (resolution ↓) for WHAT (feature richness ↑).</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Input channels</td><td class="px-3 py-2">RGB = depth 3; filter depth always equals input depth; #filters = #output channels.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Convolution layer</td><td class="px-3 py-2">Sliding dot product of a learnable kernel → feature map.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Stride</td><td class="px-3 py-2">Jump size of the filter; S=2 ≈ built-in downsampling.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Padding</td><td class="px-3 py-2">Zero border; VALID = none (shrinks), SAME = size preserved with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P=(F−1)/2</code>.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Pooling</td><td class="px-3 py-2">2×2/S=2 window keeps max (or avg) → W,H halve, depth unchanged, 0 parameters.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Flattening</td><td class="px-3 py-2">Reshape 3-D volume → 1-D vector; zero parameters; bridge to dense layers.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dense layer</td><td class="px-3 py-2">Every-to-every connections; does the final classification; most parameters live here.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Loss layer</td><td class="px-3 py-2">Softmax + cross-entropy compares prediction vs truth; backprop minimizes it.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">1×1 convolution</td><td class="px-3 py-2">Per-pixel channel mixer; squeezes depth; ~10× compute saving as a bottleneck.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Inception</td><td class="px-3 py-2">1-3-5-Pool parallel branches, depth-concatenated; 22 layers, only ~5M params.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Transfer learning</td><td class="px-3 py-2">Reuse ImageNet features: freeze base (feature extraction) or unfreeze top (fine-tuning, low LR).</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">One-shot learning</td><td class="px-3 py-2">Siamese twins with shared weights learn a distance function; 1 photo per person.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Curse of dimensionality</td><td class="px-3 py-2">Data needs grow exponentially; distances lose meaning; overfitting rises.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">PCA</td><td class="px-3 py-2">Standardize → Covariance → Eigen → Select top-k → Project ("Smart Cats Eat Small Pigeons").</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">TensorFlow</td><td class="px-3 py-2">Tensors + autograd + GPU + tf.keras layers = CNN in ~20 lines.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Implementation steps</td><td class="px-3 py-2">Import → Preprocess → Build → Compile → Train → Evaluate → Predict.</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Overfitting</td><td class="px-3 py-2">Big train-val gap → fix with DR. ABE (Dropout, Regularization, Augmentation, BatchNorm, Early stop).</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Underfitting</td><td class="px-3 py-2">Both accuracies low → bigger model, longer training, less regularization.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Every formula in one place</h3>
+  <ul class="list-disc list-inside space-y-1.5 mt-3 text-slate-300">
+    <li>Output size: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">O = (W − F + 2P)/S + 1</code></li>
+    <li>Same padding: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P = (F − 1)/2</code></li>
+    <li>Conv parameters: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(F × F × D_in + 1) × K</code></li>
+    <li>Dense parameters: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(inputs × neurons) + neurons</code></li>
+    <li>Softmax: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p_i = e^(z_i) / Σ e^(z_j)</code></li>
+    <li>Cross-entropy: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = −Σ y_i log(p_i)</code></li>
+    <li>MSE: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = (1/n) Σ (y − ŷ)²</code></li>
+    <li>Triplet loss: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = max(0, d(A,P) − d(A,N) + margin)</code></li>
+    <li>PCA explained variance: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">λ_i / Σ λ_j</code></li>
+    <li>Key numericals: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(32−5)/1+1 = 28</code> · <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(32−5+4)/1+1 = 32</code> · <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(28−2)/2+1 = 14</code> · <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(227−11)/4+1 = 55</code></li>
+    <li>1×1 saving: 120M → 12.4M multiplications (28×28×192, 5×5, 32 filters, 16-ch bottleneck)</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Diagrams to practice (draw each 3 times on paper)</h3>
+  <ol class="list-decimal list-inside space-y-1.5 mt-3 text-slate-300">
+    <li><strong class="text-white">Full CNN pipeline</strong> with sizes (INPUT → CONV+ReLU → POOL → CONV+ReLU → POOL → FLATTEN → DENSE → SOFTMAX) — needed in 3 different PYQs.</li>
+    <li><strong class="text-white">5×5 ⊛ 3×3 convolution</strong> worked example (output 4 in the corner).</li>
+    <li><strong class="text-white">Zero-padding ring</strong> on a 5×5 input.</li>
+    <li><strong class="text-white">4×4 → 2×2 max AND average pooling</strong> worked example.</li>
+    <li><strong class="text-white">Inception module</strong> — 4 parallel branches + depth concat with channel numbers.</li>
+    <li><strong class="text-white">Transfer learning</strong> — frozen conv base + new dense head.</li>
+    <li><strong class="text-white">Siamese network</strong> — twin CNNs, shared weights, distance output.</li>
+    <li><strong class="text-white">PCA scatter</strong> with PC1 arrow.</li>
+    <li><strong class="text-white">Overfitting vs underfitting loss curves</strong> (two small graphs).</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">10-minute pre-exam drill</h3>
+  <ol class="list-decimal list-inside space-y-1.5 mt-3 text-slate-300">
+    <li>Say the pipeline out loud: Conv-Pool-Conv-Pool-Flatten-Dense-Softmax.</li>
+    <li>Recompute: 32×32, F=5 → valid 28, same 32; pool 28 → 14.</li>
+    <li>Recite padding table (valid vs same) and pooling table (max vs avg).</li>
+    <li>Recite "Smart Cats Eat Small Pigeons" (PCA) and "DR. ABE" (overfitting fixes).</li>
+    <li>Sketch the Inception module once and the Keras code's 7 layers once.</li>
+  </ol>
+</section>
+
+</main>
+
+<footer class="border-t border-slate-800 mt-8">
+  <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-2">
+    <span>CS-601 Machine Learning · RGPV · Target 9 SGPA</span>
+    <a href="index.html" class="text-indigo-400 hover:text-white">← Back to Dashboard</a>
+  </div>
+</footer>
+
+</body>
+</html>

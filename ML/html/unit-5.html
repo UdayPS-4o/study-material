@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5 — SVM, Bayesian Learning &amp; Applications | CS-601 ML</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+<nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+  <ul class="max-w-5xl mx-auto flex flex-wrap gap-x-4 gap-y-1 px-4 py-3 text-sm">
+    <li><a href="index.html" class="text-slate-400 hover:text-white">🎯 Dashboard</a></li>
+    <li><a href="unit-1.html" class="text-slate-400 hover:text-white">U1 Foundations</a></li>
+    <li><a href="unit-2.html" class="text-slate-400 hover:text-white">U2 Neural Nets</a></li>
+    <li><a href="unit-3.html" class="text-slate-400 hover:text-white">U3 CNN</a></li>
+    <li><a href="unit-4.html" class="text-slate-400 hover:text-white">U4 RNN &amp; RL</a></li>
+    <li><a href="unit-5.html" class="text-indigo-400 font-semibold">U5 SVM &amp; Apps</a></li>
+    <li><a href="numericals.html" class="text-slate-400 hover:text-white">🔢 Numericals</a></li>
+  </ul>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+
+<h1 class="text-3xl font-bold text-white mb-2">Unit 5 — Support Vector Machines, Bayesian Learning &amp; Applications of ML</h1>
+
+<div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4 text-sm">
+  <strong class="text-amber-300">Exam weight:</strong> ~15.6% of offered marks but Q7 comes from here in 4/5 papers. Bayesian learning asked 4/5 years. SVM <strong>ABSENT</strong> from the last 2 papers — statistically <strong>DUE</strong> next. ImageNet case study never asked despite being named in syllabus.
+</div>
+
+<!-- ===================== PYQ TABLE ===================== -->
+<section id="pyq" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-4">PYQ Questions from this Unit</h2>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Year</th><th class="px-3 py-2">Question (condensed)</th><th class="px-3 py-2">Marks</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">What is SVM — discuss in detail</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Bayesian theorem with example</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Bayesian learning + its impact in ML</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">NLP — short note</td><td class="px-3 py-2">3.5</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Bayesian belief network numerical — CPTs + P(Mileage=Lo, Engine=Bad, AC=Broken)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Computer Vision — short note with example</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Support vectors + their role in the decision boundary</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">ML in speech processing</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Bayesian learning principles — Bayes theorem + posterior probability</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">ML in computer vision applications</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">NLP — short note</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Applications of ML in Speech Processing</td><td class="px-3 py-2">9</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Short note on Tokenization</td><td class="px-3 py-2">5</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">NLP</td><td class="px-3 py-2">4</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4 text-sm text-slate-400">📌 The May-2023 BBN numerical is <strong class="text-slate-200">fully solved step-by-step in <a href="numericals.html" class="text-indigo-400 hover:underline">Numericals &amp; Short Notes</a></strong>. This page covers the BBN <em>concept</em> you must write before the calculation.</p>
+</section>
+
+<!-- ===================== SVM ===================== -->
+<section id="svm" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-white">Support Vector Machine (SVM)</h2>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-22, May-24</span>
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">ABSENT 2 papers — DUE next</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </div>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 14-mark answer skeleton (write both halves):</p>
+    <p class="font-semibold text-emerald-200 mt-2">Half A — What is SVM (7):</p>
+    <ol class="list-decimal pl-5 space-y-1 mt-1 text-sm">
+      <li>Opening definition: "SVM is a supervised learning algorithm that finds the optimal hyperplane which separates classes with the maximum margin."</li>
+      <li>Headings: <strong>Hyperplane → Margin → Support Vectors → Maximum-margin objective</strong></li>
+      <li>Draw the <strong>margin diagram</strong> (two classes, hyperplane, two margin lines, circle the support vectors).</li>
+      <li>Close with example: spam vs not-spam email classification.</li>
+    </ol>
+    <p class="font-semibold text-emerald-200 mt-3">Half B — Soft margin + Kernel trick (7):</p>
+    <ol class="list-decimal pl-5 space-y-1 mt-1 text-sm" start="5">
+      <li>Headings: <strong>Hard vs Soft margin (C parameter) → Non-linear data problem → Kernel trick → Kernel table (Linear/Poly/RBF)</strong></li>
+      <li>Draw the <strong>kernel mapping diagram</strong> (1-D non-separable → 2-D separable).</li>
+      <li>Close with <strong>pros/cons + applications</strong> (face detection, text classification, bioinformatics).</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Definition</h3>
+  <p class="mt-2"><strong>Support Vector Machine (SVM)</strong> is a <strong>supervised machine learning algorithm</strong> used for <strong>classification and regression</strong>. It works by finding the <strong>optimal separating hyperplane</strong> — the decision boundary that separates the two classes with the <strong>maximum possible margin</strong> (largest gap between the classes). The training points that lie closest to this boundary are called <strong>support vectors</strong>, and they alone define the boundary.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key Terms (write all four with one line each)</h3>
+  <ul class="list-disc pl-5 space-y-2 mt-2">
+    <li><strong>Hyperplane:</strong> the decision boundary. In 2-D it is a line, in 3-D a plane, in n-D an (n−1)-dimensional flat surface. Equation: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w·x + b = 0</code> where <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w</code> = weight (normal) vector, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">b</code> = bias.</li>
+    <li><strong>Margin:</strong> the distance between the hyperplane and the nearest data point of either class. Total margin width = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2 / ||w||</code>. SVM <strong>maximizes</strong> this margin ⇒ equivalently <strong>minimizes</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">||w||²/2</code>.</li>
+    <li><strong>Support Vectors:</strong> the data points lying <strong>exactly on the margin lines</strong> (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w·x + b = +1</code> and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w·x + b = −1</code>). They "support" (hold up) the hyperplane.</li>
+    <li><strong>Decision rule:</strong> for a new point x → predict class by <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">sign(w·x + b)</code> (positive side = class +1, negative side = class −1).</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">The Classic Margin Diagram (practice until 60-second reproducible)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl">        x2
+        |            +        +
+        |    margin      +        + (Class +1)
+        |   |&lt;-----&gt;|  +      +
+        |    .      /(+)   &lt;-- support vector (circled)
+        |     .    /  /
+        |      .  /  /   w·x + b = +1  (margin line)
+        |      (o)  /
+        |      /  '/'  &lt;-- OPTIMAL HYPERPLANE  w·x + b = 0
+        |     /  / .
+        |    /  /   .    w·x + b = -1  (margin line)
+        |  (o)     &lt;-- support vector (circled)
+        | o    o     .
+        |   o     o    (Class -1)
+        |________________________ x1
+
+   (o)/(+) circled points = SUPPORT VECTORS
+   Distance between the two dashed margin lines = 2/||w||  (MAXIMIZED)</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why maximum margin? (the scoring line checkers look for)</h3>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li>A wider margin ⇒ <strong>better generalization</strong> on unseen data and <strong>lower overfitting</strong>.</li>
+    <li>Out of infinitely many separating lines, SVM picks the <strong>one</strong> that is farthest from both classes — the safest boundary.</li>
+    <li>Only support vectors matter: <strong>deleting any non-support-vector point does not change the hyperplane</strong>. This is the exact answer to the May-2024 question "role of support vectors in the decision boundary".</li>
+  </ul>
+
+  <div class="flex flex-wrap items-center gap-2 mt-6">
+    <h3 class="text-lg font-semibold text-indigo-300">Role of Support Vectors in the Decision Boundary</h3>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-24</span>
+  </div>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li><strong>Boundary-defining points</strong> — the hyperplane is computed only from support vectors; all other points are ignored.</li>
+    <li><strong>They fix the margin</strong> — margin lines pass through them; moving a support vector moves/rotates the hyperplane.</li>
+    <li><strong>Sparse solution</strong> — the final classifier <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = sign(Σ αᵢ yᵢ (xᵢ·x) + b)</code> sums only over support vectors (αᵢ &gt; 0 only for them).</li>
+    <li><strong>Robustness</strong> — removing non-support-vector points changes nothing; hence SVM is memory-efficient at prediction time.</li>
+    <li><strong>Hardest examples</strong> — support vectors are the most "confusable" training points, so the model is built on the difficult cases.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Hard Margin vs Soft Margin (the C parameter)</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">Hard Margin</th><th class="px-3 py-2">Soft Margin</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Assumption</td><td class="px-3 py-2">Data perfectly linearly separable</td><td class="px-3 py-2">Real data — noise/overlap allowed</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Misclassification</td><td class="px-3 py-2">None allowed</td><td class="px-3 py-2">Some allowed via slack variables <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">ξᵢ ≥ 0</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Objective</td><td class="px-3 py-2">minimize <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">‖w‖²/2</code></td><td class="px-3 py-2">minimize <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">‖w‖²/2 + C·Σξᵢ</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Outliers</td><td class="px-3 py-2">One outlier can wreck the boundary</td><td class="px-3 py-2">Tolerates outliers</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Used in practice</td><td class="px-3 py-2">Rarely</td><td class="px-3 py-2">Almost always</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li><strong>C parameter (regularization / penalty):</strong> controls the trade-off between wide margin and few mistakes.
+      <ul class="list-disc pl-5 space-y-1 mt-1">
+        <li><strong>Large C</strong> → heavy penalty on errors → narrow margin, fits training data tightly → risk of <strong>overfitting</strong>.</li>
+        <li><strong>Small C</strong> → errors cheap → wide margin, smoother boundary → risk of <strong>underfitting</strong>.</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> writing "C is the margin". C is the <strong>penalty for misclassification</strong>; the margin is <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2/||w||</code>. Large C ⇒ <em>smaller</em> margin, not larger.</div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Kernel Trick (for non-linear data)</h3>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li><strong>Problem:</strong> many datasets cannot be separated by any straight line in the original space.</li>
+    <li><strong>Idea:</strong> map data to a <strong>higher-dimensional space</strong> where it <em>becomes</em> linearly separable — but do it <strong>implicitly</strong>. A kernel function <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">K(xᵢ, xⱼ) = φ(xᵢ)·φ(xⱼ)</code> computes the dot product in the high-dimensional space <strong>without ever computing φ(x)</strong> — this shortcut is the <strong>kernel trick</strong> (cheap computation, powerful boundaries).</li>
+  </ul>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-3"> 1-D: not separable            2-D after mapping z = x² : separable!
+                                z
+ --o--o--+--+--+--o--o--&gt;  x    |  o           o
+                                |   o         o
+ (class o at both ends,         |    +  +  +          &lt;-- a LINE now
+  class + in the middle)        |___________________ x    separates them</pre>
+
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Kernel</th><th class="px-3 py-2">Formula</th><th class="px-3 py-2">Best for</th><th class="px-3 py-2">Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Linear</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">K(x,y) = x·y</code></td><td class="px-3 py-2">Linearly separable, text data (high-dim sparse)</td><td class="px-3 py-2">Fastest; no mapping</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Polynomial</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">K(x,y) = (x·y + c)^d</code></td><td class="px-3 py-2">Curved boundaries, feature interactions</td><td class="px-3 py-2">Degree <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">d</code> controls flexibility</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>RBF / Gaussian</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">K(x,y) = exp(−γ‖x−y‖²)</code></td><td class="px-3 py-2">Unknown/complex boundaries — default choice</td><td class="px-3 py-2">Maps to infinite dimensions; γ controls locality</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Sigmoid</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">K(x,y) = tanh(a·x·y + c)</code></td><td class="px-3 py-2">Neural-net-like behaviour</td><td class="px-3 py-2">Rarely used</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-3"><strong>Mnemonic — "L-P-R-S": "Lazy People Rarely Succeed"</strong> (Linear, Polynomial, RBF, Sigmoid).</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Advantages &amp; Disadvantages</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">✅ Advantages</th><th class="px-3 py-2">❌ Disadvantages</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Very effective in <strong>high-dimensional</strong> spaces</td><td class="px-3 py-2"><strong>Slow training</strong> on very large datasets (~O(n²)–O(n³))</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Memory efficient</strong> — stores only support vectors</td><td class="px-3 py-2"><strong>No direct probability</strong> output (needs Platt scaling)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Maximum margin ⇒ good <strong>generalization</strong>, resists overfitting</td><td class="px-3 py-2"><strong>Kernel &amp; C, γ selection</strong> is tricky (needs cross-validation)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Kernels handle <strong>non-linear</strong> data elegantly</td><td class="px-3 py-2"><strong>Sensitive to feature scaling</strong> — must normalize inputs</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Works when features &gt; samples (e.g., genomics)</td><td class="px-3 py-2">Poor when classes <strong>overlap heavily</strong> (noisy data)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Applications of SVM</h3>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li><strong>Face detection</strong> — classify image regions as face / non-face.</li>
+    <li><strong>Text &amp; spam classification</strong> — high-dimensional sparse word vectors suit linear SVM.</li>
+    <li><strong>Handwriting / digit recognition</strong> (MNIST-style).</li>
+    <li><strong>Bioinformatics</strong> — cancer classification from gene expression (features ≫ samples).</li>
+    <li><strong>Image classification</strong> (pre-deep-learning standard, still strong on small data).</li>
+  </ol>
+  <p class="mt-3"><strong>One memorable example (close your answer with this):</strong> classifying emails as <em>spam (+1)</em> vs <em>not spam (−1)</em>: each email → vector of word frequencies; SVM finds the maximum-margin hyperplane; borderline emails ("Congratulations, you won…") become the support vectors that define the filter.</p>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> forgetting to <strong>circle the support vectors and label both margin lines</strong> in the diagram — that labelled diagram alone carries ~2 marks.</div>
+</section>
+
+<!-- ===================== KNN ===================== -->
+<section id="knn" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-white">K-Nearest Neighbours (KNN) — brief</h2>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">PYQ May-23 (numerical) — revise once</span>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Definition</h3>
+  <p class="mt-2"><strong>KNN</strong> is a <strong>supervised, instance-based (lazy) learning</strong> algorithm: to classify a new point, find its <strong>K closest training points</strong> (usually Euclidean distance) and assign the <strong>majority class</strong> among them. No training phase — the data itself is the model.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Algorithm (4 steps)</h3>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li>Choose K (odd, e.g., 3 or 5, to avoid ties).</li>
+    <li>Compute distance from the query point to all training points: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">d = √(Σ(xᵢ − yᵢ)²)</code>.</li>
+    <li>Pick the K nearest neighbours.</li>
+    <li>Classification → <strong>majority vote</strong>; Regression → <strong>average</strong> of neighbours' values.</li>
+  </ol>
+
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">KNN</th><th class="px-3 py-2">SVM</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Learning type</td><td class="px-3 py-2">Lazy (no training)</td><td class="px-3 py-2">Eager (learns boundary)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Prediction speed</td><td class="px-3 py-2">Slow (scans all data)</td><td class="px-3 py-2">Fast (few support vectors)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Boundary</td><td class="px-3 py-2">Local, irregular</td><td class="px-3 py-2">Global, maximum margin</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Scaling needed?</td><td class="px-3 py-2">Yes (distance-based)</td><td class="px-3 py-2">Yes</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li><strong>Small K</strong> → noisy, overfits. <strong>Large K</strong> → over-smooth, underfits.</li>
+    <li><strong>Example:</strong> classify a fruit (weight=150 g, texture=smooth) by looking at its 3 nearest labelled fruits → 2 apples, 1 orange → predict <strong>apple</strong>.</li>
+  </ul>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> calling KNN "K-means". KNN = supervised classification; K-means = unsupervised clustering. Different algorithms.</div>
+</section>
+
+<!-- ===================== BAYESIAN LEARNING ===================== -->
+<section id="bayesian-learning" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-white">Bayesian Learning</h2>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-22 ×2, May-23, Dec-24</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </div>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (Bayes theorem + Bayesian learning):</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>Opening: "Bayesian learning is a probabilistic approach where we update our belief in a hypothesis as evidence (data) arrives, using Bayes' theorem."</li>
+      <li>Headings: <strong>Bayes theorem formula (label all 4 terms) → Meaning of prior/likelihood/posterior → Worked disease-test example with numbers → MAP vs ML hypothesis → Impact/importance in ML</strong></li>
+      <li>Diagram: the prior → evidence → posterior update flow (tiny box diagram).</li>
+      <li>Close with: naive Bayes spam filter as the real-world example.</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Definition</h3>
+  <p class="mt-2"><strong>Bayesian learning</strong> is a probabilistic framework for machine learning in which each hypothesis is assigned a <strong>probability of being correct</strong>, and this probability is <strong>updated using Bayes' theorem</strong> whenever new training data is observed. Instead of committing to one hypothesis, it reasons with <strong>degrees of belief</strong>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Bayes' Theorem (write with ALL terms labelled — this is where marks live)</h3>
+  <p class="mt-3"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(h|D) = [ P(D|h) × P(h) ] / P(D)</code></p>
+  <div class="overflow-x-auto mt-3">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Term</th><th class="px-3 py-2">Name</th><th class="px-3 py-2">Meaning (one line each)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(h|D)</code></td><td class="px-3 py-2"><strong>Posterior</strong></td><td class="px-3 py-2">Probability of hypothesis h <strong>after</strong> seeing data D — what we want</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D|h)</code></td><td class="px-3 py-2"><strong>Likelihood</strong></td><td class="px-3 py-2">Probability of observing data D <strong>if</strong> h were true</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(h)</code></td><td class="px-3 py-2"><strong>Prior</strong></td><td class="px-3 py-2">Belief in h <strong>before</strong> seeing any data (domain knowledge)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D)</code></td><td class="px-3 py-2"><strong>Evidence</strong> (marginal)</td><td class="px-3 py-2">Overall probability of the data under all hypotheses — a normalizer</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-4">  PRIOR  P(h)  ----&gt;  [ observe data D ]  ----&gt;  POSTERIOR  P(h|D)
+ (old belief)          via LIKELIHOOD P(D|h)      (updated belief)
+                        ÷ EVIDENCE   P(D)</pre>
+  <p class="mt-3"><strong>Mnemonic:</strong> "<strong>P</strong>osterior = <strong>L</strong>ikelihood × <strong>P</strong>rior / <strong>E</strong>vidence" → "<strong>P</strong>lease <strong>L</strong>earn <strong>P</strong>robability <strong>E</strong>arly."</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Worked Example — Disease Test (memorize these exact numbers)</h3>
+  <p class="mt-2"><strong>Given:</strong> a disease affects <strong>1%</strong> of people: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D) = 0.01</code>. A test detects it <strong>99%</strong> of the time: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(+|D) = 0.99</code>. False-positive rate is <strong>5%</strong>: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(+|¬D) = 0.05</code>. A person tests positive. Probability they actually have the disease?</p>
+  <p class="mt-3"><strong>Step 1 — Evidence (total probability of testing positive):</strong><br>
+  <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(+) = P(+|D)·P(D) + P(+|¬D)·P(¬D) = 0.99×0.01 + 0.05×0.99 = 0.0099 + 0.0495 = 0.0594</code></p>
+  <p class="mt-3"><strong>Step 2 — Bayes:</strong><br>
+  <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D|+) = P(+|D)·P(D) / P(+) = 0.0099 / 0.0594 ≈ 0.1667 ≈ 16.7%</code></p>
+  <p class="mt-3"><strong>Insight line (write it — examiners love it):</strong> even with a 99%-accurate test, a positive result means only ~17% chance of disease, because the disease is <strong>rare</strong> (the prior dominates). This is why priors matter.</p>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> confusing <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(+|D)</code> (test accuracy, likelihood) with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D|+)</code> (what the patient wants to know, posterior). Bayes' theorem exists precisely to convert one into the other.</div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">MAP Hypothesis vs ML Hypothesis</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2"></th><th class="px-3 py-2"><strong>MAP (Maximum A Posteriori)</strong></th><th class="px-3 py-2"><strong>ML (Maximum Likelihood)</strong></th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Picks</td><td class="px-3 py-2">h maximizing the <strong>posterior</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D|h)·P(h)</code></td><td class="px-3 py-2">h maximizing the <strong>likelihood</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D|h)</code> only</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Formula</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_MAP = argmax_h P(D|h)·P(h)</code></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_ML = argmax_h P(D|h)</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Uses prior?</td><td class="px-3 py-2"><strong>Yes</strong> — prior knowledge included</td><td class="px-3 py-2"><strong>No</strong> — assumes all h equally likely</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Relationship</td><td class="px-3 py-2">MAP = ML <strong>when all priors are equal</strong></td><td class="px-3 py-2">Special case of MAP</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Example</td><td class="px-3 py-2">Diagnosis using disease rarity (prior 1%)</td><td class="px-3 py-2">Diagnosis trusting the test alone</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-3 text-sm text-slate-400">(<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D)</code> is dropped from argmax because it is the same for every hypothesis.)</p>
+
+  <div class="flex flex-wrap items-center gap-2 mt-6">
+    <h3 class="text-lg font-semibold text-indigo-300">Impact / Importance of Bayesian Learning in ML</h3>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-22</span>
+  </div>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li><strong>Handles uncertainty</strong> — outputs probabilities, not just hard labels (critical in medicine, finance).</li>
+    <li><strong>Incorporates prior knowledge</strong> — domain expertise enters through <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(h)</code>.</li>
+    <li><strong>Incremental (online) learning</strong> — each new example updates the posterior; today's posterior becomes tomorrow's prior.</li>
+    <li><strong>No hypothesis is discarded</strong> — predictions can combine all hypotheses weighted by probability (Bayes optimal classifier — the theoretical <strong>gold standard</strong> no other method can beat on average).</li>
+    <li><strong>Practical algorithms born from it</strong> — Naive Bayes classifier, Bayesian belief networks, Bayesian optimization for hyperparameter tuning, spam filters.</li>
+    <li><strong>Benchmark role</strong> — even when too expensive to compute exactly, it defines the standard against which other algorithms are measured.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Naive Bayes Classifier (definition + tiny worked example)</h3>
+  <p class="mt-2"><strong>Definition:</strong> a simple probabilistic classifier applying Bayes' theorem with the <strong>"naive" assumption that all features are conditionally independent given the class</strong>. Prediction rule:</p>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_pred = argmax_C  P(C) × Π P(xᵢ|C)</code> <span class="text-sm text-slate-400">(product over all features xᵢ)</span></p>
+  <p class="mt-3"><strong>Tiny worked example — Play Tennis (Outlook = Sunny, Wind = Strong)?</strong><br>
+  From the classic 14-row dataset: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(Yes) = 9/14</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(No) = 5/14</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(Sunny|Yes) = 2/9</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(Sunny|No) = 3/5</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(Strong|Yes) = 3/9</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(Strong|No) = 3/5</code>.</p>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li>Score(Yes) = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">9/14 × 2/9 × 3/9</code> = 0.643 × 0.222 × 0.333 ≈ <strong>0.0476</strong></li>
+    <li>Score(No) = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">5/14 × 3/5 × 3/5</code> = 0.357 × 0.600 × 0.600 ≈ <strong>0.1286</strong></li>
+  </ul>
+  <p class="mt-2">Since 0.1286 &gt; 0.0476 → <strong>Predict: No</strong> (don't play tennis).</p>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li><strong>Why "naive" still works:</strong> even when independence is false, the <em>ranking</em> of classes often stays correct.</li>
+    <li><strong>Laplace smoothing:</strong> add 1 to every count so an unseen feature value never makes the whole product zero: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(xᵢ|C) = (count+1)/(N+k)</code>.</li>
+    <li><strong>Applications:</strong> spam filtering, sentiment analysis, document classification, medical diagnosis.</li>
+  </ul>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> forgetting to multiply by the <strong>prior</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(C)</code> — students multiply only the likelihoods and lose the mark.</div>
+</section>
+
+<!-- ===================== BBN ===================== -->
+<section id="bbn" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-white">Bayesian Belief Network (BBN)</h2>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-23 (7-mark numerical)</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </div>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>Opening definition: "A Bayesian belief network is a directed acyclic graph (DAG) that represents probabilistic dependencies among variables, with a CPT at each node."</li>
+      <li>Headings: <strong>Structure (DAG + CPTs) → Conditional independence idea → Joint probability formula → Small example network (diagram) → One computed joint probability → Applications</strong></li>
+      <li>Diagram: the Burglary–Alarm network (or the car network from the PYQ).</li>
+      <li>Close with: joint probability chain-rule calculation (then, in the actual exam numerical, plug the given CPT values — full solution in the Numericals page).</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Definition</h3>
+  <p class="mt-2">A <strong>Bayesian Belief Network</strong> is a <strong>directed acyclic graph (DAG)</strong> in which:</p>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li>each <strong>node</strong> = a random variable,</li>
+    <li>each <strong>directed edge</strong> = a direct probabilistic dependence (parent → child),</li>
+    <li>each node stores a <strong>Conditional Probability Table (CPT)</strong>: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(node | its parents)</code>.</li>
+  </ul>
+  <p class="mt-2">It compactly represents the <strong>full joint distribution</strong> using conditional independence: each variable depends <strong>only on its parents</strong>, not on all other variables.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key Formula (the whole numerical hangs on this)</h3>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(X₁, X₂, …, Xₙ) = Π P(Xᵢ | Parents(Xᵢ))</code></p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Small Example Network (Burglary–Alarm — drawable in 30 seconds)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">   Burglary        Earthquake
+      \               /
+       v             v
+         --&gt; Alarm &lt;--
+            /     \
+           v       v
+     JohnCalls   MaryCalls</pre>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li>Alarm depends on Burglary and Earthquake → CPT <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(A|B,E)</code> has 4 rows.</li>
+    <li>John/Mary call depending only on the Alarm (conditionally independent of Burglary <strong>given</strong> Alarm).</li>
+    <li>Joint example: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(B, ¬E, A, J, M) = P(B)·P(¬E)·P(A|B,¬E)·P(J|A)·P(M|A)</code> — one number from each CPT, multiplied.</li>
+  </ul>
+  <p class="mt-3"><strong>PYQ connection (May-23):</strong> the car network (Engine, Mileage, AC…) works identically: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(Mileage=Lo, Engine=Bad, AC=Broken) = P(Engine=Bad) × P(Mileage=Lo|…) × P(AC=Broken|…)</code> reading each factor from the given CPTs. <strong>Full worked solution → <a href="numericals.html" class="text-indigo-400 hover:underline">Numericals &amp; Short Notes</a>.</strong></p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why BBNs matter (2–3 bullets to finish the answer)</h3>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li><strong>Middle path:</strong> less naive than Naive Bayes (allows <em>some</em> dependencies), cheaper than the full joint table (2ⁿ entries → only per-node CPTs).</li>
+    <li><strong>Inference in any direction:</strong> diagnostic (symptom → cause) and predictive (cause → symptom).</li>
+    <li><strong>Applications:</strong> medical diagnosis systems, fault/failure diagnosis, spam filtering, risk assessment.</li>
+  </ul>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> multiplying plain <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(Xᵢ)</code> for every node instead of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(Xᵢ|Parents)</code> — the chain must respect the arrows.</div>
+</section>
+
+<!-- ===================== COMPUTER VISION ===================== -->
+<section id="computer-vision" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-white">Applications of ML in Computer Vision</h2>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-23, Dec-24</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </div>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>Opening: "Computer vision is the field of ML that enables machines to extract meaning from images and videos."</li>
+      <li>Headings: <strong>Definition → Core tasks (classification / detection / segmentation) → CV pipeline diagram → Role of CNNs → 5 real applications</strong></li>
+      <li>Diagram: the CV pipeline (image → preprocess → feature extraction → model → output).</li>
+      <li>Close with example: face unlock on smartphones, or ImageNet classification.</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Definition</h3>
+  <p class="mt-2"><strong>Computer Vision (CV)</strong> is the branch of AI/ML that trains computers to <strong>interpret and understand visual data</strong> (images, video) — to identify <em>what</em> is present, <em>where</em> it is, and <em>what is happening</em> — tasks the human visual system does effortlessly.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Core CV Tasks (the 3-level ladder — always write this)</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Task</th><th class="px-3 py-2">Question answered</th><th class="px-3 py-2">Output</th><th class="px-3 py-2">Example</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Image Classification</strong></td><td class="px-3 py-2">"What is in the image?"</td><td class="px-3 py-2">One label per image</td><td class="px-3 py-2">Cat vs Dog</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Object Detection</strong></td><td class="px-3 py-2">"What &amp; <strong>where</strong>?"</td><td class="px-3 py-2">Bounding boxes + labels</td><td class="px-3 py-2">YOLO finding all cars + pedestrians</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Semantic Segmentation</strong></td><td class="px-3 py-2">"Which <strong>pixels</strong> belong to what?"</td><td class="px-3 py-2">Per-pixel class map</td><td class="px-3 py-2">Road vs footpath for self-driving</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">(Instance segmentation)</td><td class="px-3 py-2">"Which pixels of <strong>which object</strong>?"</td><td class="px-3 py-2">Per-pixel + per-object</td><td class="px-3 py-2">Mask R-CNN separating each person</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-4">             COMPUTER VISION PIPELINE
+ [Input image] -&gt; [Preprocessing]     -&gt; [Feature extraction] -&gt; [ML model]  -&gt; [Output]
+  (pixels/RGB)    (resize, normalize,    (CNN conv layers:       (classifier/   (label /
+                   augment, denoise)      edges-&gt;textures-&gt;       detector)      boxes /
+                                          parts-&gt;objects)                        masks)</pre>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li><strong>Why CNNs rule CV:</strong> convolution layers automatically learn a <strong>feature hierarchy</strong> (edges → textures → object parts → whole objects), replacing hand-crafted features (SIFT/HOG) used before 2012.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Major Applications (pick any 5, one line each)</h3>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li><strong>Face recognition</strong> — phone unlock, attendance systems, photo tagging.</li>
+    <li><strong>Medical imaging</strong> — tumour detection in X-ray/CT/MRI, diabetic retinopathy screening.</li>
+    <li><strong>Self-driving vehicles</strong> — lane detection, pedestrian/vehicle detection, traffic-sign recognition.</li>
+    <li><strong>OCR</strong> — reading printed/handwritten text, number plates (ANPR), cheque processing.</li>
+    <li><strong>Agriculture &amp; industry</strong> — crop-disease detection from leaf photos; defect inspection on assembly lines.</li>
+    <li><strong>Retail &amp; security</strong> — cashier-less stores (Amazon Go), CCTV anomaly detection.</li>
+  </ol>
+  <p class="mt-3"><strong>One memorable example (close with it):</strong> a self-driving car simultaneously runs <em>classification</em> (traffic-light colour), <em>detection</em> (boxes around pedestrians), and <em>segmentation</em> (exact road area) — all three CV tasks in one frame.</p>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> writing only applications and skipping the <strong>task types + pipeline</strong> — the 7 marks are split roughly definition(1) + tasks(2) + pipeline diagram(2) + applications(2).</div>
+</section>
+
+<!-- ===================== SPEECH PROCESSING ===================== -->
+<section id="speech-processing" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-white">Applications of ML in Speech Processing</h2>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-24, Jun-25 (9 marks)</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </div>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7/9-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>Opening: "Speech processing applies ML to understand, generate and analyse human speech."</li>
+      <li>Headings: <strong>Definition → ASR pipeline (diagram!) → MFCC feature idea → Acoustic vs Language model → TTS → Speaker identification → Applications list</strong></li>
+      <li>Diagram: the ASR pipeline (audio → preprocessing → MFCC → acoustic model → language model → text).</li>
+      <li>Close with example: "Hey Siri / Ok Google" voice assistants.</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Definition</h3>
+  <p class="mt-2"><strong>Speech processing</strong> is the application of ML to spoken audio, covering three directions: <strong>Speech → Text</strong> (Automatic Speech Recognition, ASR), <strong>Text → Speech</strong> (TTS synthesis), and <strong>Speech → Identity/Emotion</strong> (speaker recognition, emotion detection).</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">1. Automatic Speech Recognition (ASR) — the core pipeline</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">            ASR (SPEECH-TO-TEXT) PIPELINE
+ [Raw audio wave]
+       |
+       v
+ [Preprocessing]        - sampling (16 kHz), noise removal,
+       |                  framing into 20-25 ms windows
+       v
+ [Feature extraction]   - MFCC vectors per frame
+       |                  (Mel-Frequency Cepstral Coefficients)
+       v
+ [Acoustic model]       - maps MFCC frames -&gt; phonemes /k/ /ae/ /t/
+       |                  (old: HMM-GMM, new: deep RNN/LSTM/Transformer)
+       v
+ [Language model]       - picks the most probable word sequence
+       |                  ("recognise speech" vs "wreck a nice beach")
+       v
+ [Decoded text output]  - "cat"</pre>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li><strong>Preprocessing:</strong> digitize the wave, remove background noise, split into short overlapping <strong>frames</strong> (speech is only stable for ~25 ms).</li>
+    <li><strong>MFCC features:</strong> compress each frame into ~13 coefficients that mimic <strong>how the human ear perceives frequency</strong> (Mel scale) — the standard "fingerprint" of a sound.</li>
+    <li><strong>Acoustic model:</strong> ML model (historically HMM + GMM; now deep networks — RNN/LSTM/Transformers) mapping audio features to <strong>phonemes</strong> (basic sound units).</li>
+    <li><strong>Language model:</strong> adds grammar/context probability so the output is a sensible sentence — resolves homophones ("their/there").</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">2. Text-to-Speech (TTS)</h3>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li>Converts text into natural-sounding audio: text → linguistic features → <strong>neural vocoder</strong> (e.g., WaveNet-style models) → waveform.</li>
+    <li>Modern TTS is trained end-to-end and can clone voice styles; used in screen readers, announcements, voice assistants' replies.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">3. Speaker Identification / Verification</h3>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li><strong>Identification:</strong> <em>who</em> is speaking (1-of-N) — matches a voice against enrolled voiceprints (embeddings).</li>
+    <li><strong>Verification:</strong> <em>is it really this person?</em> (yes/no) — voice biometrics for phone banking security.</li>
+    <li>Also: <strong>emotion recognition</strong> from tone (call-centre analytics).</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Applications List (close the essay with 5–6 of these)</h3>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li><strong>Voice assistants</strong> — Siri, Alexa, Google Assistant (ASR + NLP + TTS end-to-end).</li>
+    <li><strong>Voice typing &amp; dictation</strong> — Google Docs voice input, courtroom/medical transcription.</li>
+    <li><strong>Automatic captions</strong> — YouTube subtitles, live captioning for accessibility (hearing-impaired).</li>
+    <li><strong>Call-centre automation</strong> — IVR systems, sentiment monitoring of customer calls.</li>
+    <li><strong>Language learning apps</strong> — pronunciation scoring (Duolingo).</li>
+    <li><strong>Voice biometrics</strong> — speaker verification for secure banking.</li>
+    <li><strong>Real-time speech translation</strong> — speech → text → translate → TTS in another language.</li>
+  </ol>
+  <p class="mt-3"><strong>One memorable example:</strong> saying "Hey Google, set an alarm for 6 AM" runs the <em>entire stack</em>: wake-word detection → ASR pipeline → NLP intent extraction → action → TTS confirmation, all in ~1 second.</p>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> skipping the <strong>pipeline diagram</strong> and writing only an applications list — the May-24/Jun-25 checkers award the diagram + MFCC/acoustic/language-model terms, not the app names alone.</div>
+</section>
+
+<!-- ===================== NLP ===================== -->
+<section id="nlp" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-white">Applications of ML in Natural Language Processing (NLP)</h2>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-22, Dec-24, Jun-25</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </div>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>Opening: "NLP is the branch of AI that enables computers to read, understand and generate human language."</li>
+      <li>Headings: <strong>Definition → NLP pipeline (diagram) → Core tasks table → Key applications → Challenges (ambiguity)</strong></li>
+      <li>Diagram: NLP pipeline (text → tokenization → preprocessing → vectorization → model → output).</li>
+      <li>Close with example: Google Translate or ChatGPT-style chatbots.</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Definition</h3>
+  <p class="mt-2"><strong>Natural Language Processing (NLP)</strong> is the field of AI/ML concerned with the <strong>interaction between computers and human language</strong> — enabling machines to read, understand (NLU), and generate (NLG) text or speech in languages like English or Hindi.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">NLP Pipeline (draw this)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">              NLP PIPELINE
+ [Raw text] -&gt; [Tokenization] -&gt; [Preprocessing]        -&gt; [Vectorization]     -&gt; [ML model]      -&gt; [Output]
+  "I loved      ["I","loved",     (lowercase, remove        (Bag-of-Words,        (Naive Bayes /     (sentiment:
+   this film"    "this","film"]    stopwords, stemming/      TF-IDF, word          RNN/LSTM /          POSITIVE)
+                                   lemmatization, POS tag)   embeddings)           Transformer)</pre>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li><strong>Text preprocessing terms (one line each):</strong> <em>stopword removal</em> (drop "the, is, a"), <em>stemming</em> (crude chop: "playing"→"play"), <em>lemmatization</em> (dictionary form: "better"→"good"), <em>POS tagging</em> (noun/verb labels), <em>NER</em> (find names/places/dates).</li>
+    <li><strong>Vectorization:</strong> text must become numbers — Bag-of-Words counts, <strong>TF-IDF</strong> weights rare-but-important words, <strong>word embeddings</strong> (Word2Vec/GloVe) map words to dense vectors where similar words are nearby.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Core NLP Tasks</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Task</th><th class="px-3 py-2">What it does</th><th class="px-3 py-2">Example</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Sentiment analysis</strong></td><td class="px-3 py-2">Positive/negative opinion</td><td class="px-3 py-2">Product-review mining</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Machine translation</strong></td><td class="px-3 py-2">Language → language</td><td class="px-3 py-2">Google Translate (En→Hi)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Text classification</strong></td><td class="px-3 py-2">Assign category</td><td class="px-3 py-2">Spam filtering, news topics</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Named Entity Recognition</strong></td><td class="px-3 py-2">Find names/places/dates</td><td class="px-3 py-2">"Modi visited <strong>Japan</strong>"</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Question answering / chatbots</strong></td><td class="px-3 py-2">Understand + respond</td><td class="px-3 py-2">ChatGPT, customer support bots</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Summarization</strong></td><td class="px-3 py-2">Long text → short</td><td class="px-3 py-2">News headline generation</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Speech interface glue</strong></td><td class="px-3 py-2">Text side of voice assistants</td><td class="px-3 py-2">Alexa intent parsing</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key Applications (essay closer)</h3>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li><strong>Machine translation</strong> (Google Translate — 100+ languages).</li>
+    <li><strong>Chatbots &amp; virtual assistants</strong> (customer service, Alexa/Siri understanding).</li>
+    <li><strong>Sentiment analysis</strong> (brand monitoring on Twitter/X, review analytics).</li>
+    <li><strong>Spam &amp; toxicity filtering</strong> (Gmail spam = Naive Bayes/deep models on text).</li>
+    <li><strong>Search engines &amp; autocomplete</strong> (query understanding, "did you mean…").</li>
+    <li><strong>Text summarization &amp; report generation</strong> (news digests, legal document review).</li>
+  </ol>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li><strong>Main challenge — ambiguity:</strong> same words, many meanings ("bank" = river bank / money bank; "I saw her duck"). Context models (LSTMs → Transformers/BERT) exist to resolve this.</li>
+  </ul>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> answering NLP with only chatbot examples. Always include the <strong>pipeline + at least 4 distinct tasks</strong> — the Dec-24 7-marker expects structure, not a story.</div>
+
+  <div class="flex flex-wrap items-center gap-2 mt-6">
+    <h3 class="text-lg font-semibold text-indigo-300">Tokenization (detailed)</h3>
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ Jun-25 (5 marks)</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </div>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-sm"><span class="font-semibold text-emerald-300">✍️ 5-mark short-note skeleton:</span> definition → why needed (3 bullets) → 3 types with the same example word → one challenge line.</p>
+  </div>
+
+  <p class="mt-2"><strong>Definition:</strong> <strong>Tokenization</strong> is the <strong>first step of the NLP pipeline</strong>: splitting raw text into smaller units called <strong>tokens</strong> — words, subwords, or characters — which become the basic units the model processes.</p>
+  <p class="mt-3"><strong>Why it is needed:</strong></p>
+  <ol class="list-decimal pl-5 space-y-1 mt-1">
+    <li>ML models cannot consume raw strings — they need <strong>discrete units</strong> to map to numbers (IDs → vectors).</li>
+    <li>Defines the <strong>vocabulary</strong> of the model and its size.</li>
+    <li>Handles <strong>unknown/rare words</strong> gracefully (subword methods).</li>
+    <li>Consistency: same text always splits the same way → reproducible features.</li>
+  </ol>
+  <p class="mt-3"><strong>Types (use one example across all three):</strong></p>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Type</th><th class="px-3 py-2">Splits into</th><th class="px-3 py-2">Example: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">"unhappiness"</code> / sentence</th><th class="px-3 py-2">Pros / Cons</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Word-level</strong></td><td class="px-3 py-2">Whole words by spaces/punctuation</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">"I am unhappy"</code> → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[I][am][unhappy]</code></td><td class="px-3 py-2">Simple; but huge vocabulary, fails on unseen words (OOV)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Subword-level</strong> (BPE/WordPiece — used by BERT/GPT)</td><td class="px-3 py-2">Frequent chunks</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">unhappiness</code> → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[un][happi][ness]</code></td><td class="px-3 py-2">Small vocab + no OOV — best of both; slightly less interpretable</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Character-level</strong></td><td class="px-3 py-2">Individual characters</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">cat</code> → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[c][a][t]</code></td><td class="px-3 py-2">Tiny vocab, never OOV; but very long sequences, weak meaning per token</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="list-disc pl-5 space-y-1 mt-3">
+    <li><strong>Challenges:</strong> contractions ("don't" → do + n't?), no-space languages (Chinese), hashtags/emojis, "New Delhi" = one entity but two word tokens.</li>
+    <li><strong>Example line to close:</strong> GPT-style models use ~50k subword tokens — "tokenization" itself becomes <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[token][ization]</code>.</li>
+  </ul>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> saying tokenization = "removing stopwords" — tokenization only <strong>splits</strong> text; cleaning comes after.</div>
+</section>
+
+<!-- ===================== IMAGENET ===================== -->
+<section id="imagenet" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <div class="flex flex-wrap items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-white">Case Study: ImageNet Competition (ILSVRC)</h2>
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ DUE — in syllabus, never asked — likely next</span>
+  </div>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (if it appears):</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>Opening: "ImageNet is a dataset of 14M+ labelled images; its annual competition ILSVRC (2010–2017) became the benchmark that launched the deep-learning era."</li>
+      <li>Headings: <strong>Dataset scale → ILSVRC task &amp; metric (top-5 error) → AlexNet 2012 breakthrough → Progression table (ZFNet→VGG→GoogLeNet→ResNet) → Why it transformed deep learning → Transfer-learning connection</strong></li>
+      <li>Diagram: the error-rate progression table (or a falling bar sketch 26→15→…→3.6 with human 5% line).</li>
+      <li>Close with: "ImageNet-pretrained CNNs are today's default starting point for every CV task (transfer learning)."</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">The Dataset</h3>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li>Created by <strong>Fei-Fei Li (Stanford), 2009</strong> — over <strong>14 million</strong> hand-labelled images across <strong>20,000+ categories</strong> (WordNet nouns), labelled via crowdsourcing (Amazon Mechanical Turk).</li>
+    <li>Competition subset: <strong>~1.2 million training images, 1000 classes</strong>, 50k validation + 100k test.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">The Competition — ILSVRC (2010–2017)</h3>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li><strong>ILSVRC</strong> = ImageNet Large Scale Visual Recognition Challenge, run annually.</li>
+    <li><strong>Main task:</strong> image classification into 1000 classes. <strong>Metric: top-5 error</strong> — the answer counts as correct if the true label is among the model's 5 best guesses (used because many classes are very similar — 120 dog breeds!). <em>(write: "true label within top-5 predictions")</em></li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">The 2012 AlexNet Breakthrough (the story to tell)</h3>
+  <ul class="list-disc pl-5 space-y-1 mt-2">
+    <li>Until 2011, winners used <strong>hand-crafted features</strong> (SIFT/HOG + SVM); best top-5 error ≈ <strong>26%</strong>, improving ~1–2% per year.</li>
+    <li><strong>2012: AlexNet</strong> (Krizhevsky, Sutskever, Hinton) — a deep <strong>CNN</strong> (8 layers, ReLU, dropout, trained on <strong>2 GPUs</strong>) scored <strong>~15–16%</strong> — a sudden <strong>~10 percentage-point jump</strong>, nearly halving the error overnight.</li>
+    <li>This single result convinced the field that <strong>deep learning + big data + GPUs</strong> beats feature engineering — the "Big Bang" of modern deep learning.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Winner Progression Table (memorize — this IS the answer)</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Year</th><th class="px-3 py-2">Model</th><th class="px-3 py-2">Layers</th><th class="px-3 py-2">Top-5 error</th><th class="px-3 py-2">Key idea</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">2011</td><td class="px-3 py-2">Traditional CV (pre-CNN)</td><td class="px-3 py-2">—</td><td class="px-3 py-2">~26%</td><td class="px-3 py-2">Hand-crafted features + SVM</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>2012</strong></td><td class="px-3 py-2"><strong>AlexNet</strong></td><td class="px-3 py-2">8</td><td class="px-3 py-2"><strong>~15.3%</strong></td><td class="px-3 py-2">First deep CNN win; ReLU, dropout, GPUs</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">2013</td><td class="px-3 py-2">ZFNet</td><td class="px-3 py-2">8</td><td class="px-3 py-2">~11.7%</td><td class="px-3 py-2">Tuned AlexNet; visualization of filters</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">2014</td><td class="px-3 py-2">VGG-16/19 (runner-up)</td><td class="px-3 py-2">16/19</td><td class="px-3 py-2">~7.3%</td><td class="px-3 py-2">Simplicity: stacked 3×3 convolutions</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">2014</td><td class="px-3 py-2">GoogLeNet (winner)</td><td class="px-3 py-2">22</td><td class="px-3 py-2">~6.7%</td><td class="px-3 py-2">Inception modules, 1×1 convolutions</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>2015</strong></td><td class="px-3 py-2"><strong>ResNet</strong></td><td class="px-3 py-2"><strong>152</strong></td><td class="px-3 py-2"><strong>~3.6%</strong></td><td class="px-3 py-2">Skip/residual connections beat <strong>human level (~5%)</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-3"><strong>Trend to state:</strong> deeper networks + architectural tricks → error fell <strong>26% → 3.6% in 4 years</strong>, crossing human performance (≈5%) in 2015; the challenge retired in 2017 as the task was "solved".</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why ImageNet Transformed Deep Learning (4 bullets)</h3>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li><strong>Proved scale works</strong> — big labelled data + deep CNNs + GPU compute = qualitative leap; triggered industry-wide adoption (Google, Facebook, Tesla).</li>
+    <li><strong>Standard benchmark</strong> — a common scoreboard let every new architecture (VGG, Inception, ResNet) prove itself objectively.</li>
+    <li><strong>Birthplace of key techniques</strong> — ReLU at scale, dropout, batch norm, residual connections all debuted/proved on ImageNet.</li>
+    <li><strong>Transfer learning connection (the modern payoff):</strong> CNNs <strong>pre-trained on ImageNet</strong> learn general visual features (edges → textures → parts); practitioners download these weights and <strong>fine-tune</strong> on small datasets (medical X-rays, crop disease) — getting state-of-the-art results with only hundreds of images. "Pre-train on ImageNet, fine-tune on your task" is the default CV recipe (links to Unit-3 transfer learning).</li>
+  </ol>
+  <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl my-4 text-sm">⚠️ <strong>Common mistake:</strong> writing ImageNet is "an algorithm/model". ImageNet is a <strong>dataset + competition</strong>; AlexNet/ResNet are models that competed on it.</div>
+</section>
+
+<!-- ===================== QUICK REVISION ===================== -->
+<section id="quick-revision" class="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-6">
+  <h2 class="text-2xl font-bold text-white mb-4">⚡ Quick Revision Box</h2>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">One-liners</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Topic</th><th class="px-3 py-2">One-line essence</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>SVM</strong></td><td class="px-3 py-2">Supervised classifier that finds the maximum-margin hyperplane; boundary defined only by support vectors</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Hyperplane</strong></td><td class="px-3 py-2">Decision surface <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w·x + b = 0</code>; line in 2-D, plane in 3-D</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Margin</strong></td><td class="px-3 py-2">Gap <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2/||w||</code> between classes — maximized for best generalization</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Support vectors</strong></td><td class="px-3 py-2">Closest points, lie on margin lines, alone define the boundary</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Soft margin / C</strong></td><td class="px-3 py-2">Allows slack errors; large C → narrow margin/overfit, small C → wide margin/underfit</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Kernel trick</strong></td><td class="px-3 py-2">Compute high-dim dot products via <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">K(x,y)</code> without mapping — enables non-linear boundaries</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>KNN</strong></td><td class="px-3 py-2">Lazy learner: majority vote of K nearest points (Euclidean distance)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Bayes theorem</strong></td><td class="px-3 py-2">Converts prior belief + evidence into updated posterior belief</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>MAP vs ML</strong></td><td class="px-3 py-2">MAP maximizes likelihood×prior; ML maximizes likelihood only (equal priors ⇒ same)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Naive Bayes</strong></td><td class="px-3 py-2">Bayes + feature-independence assumption; multiply prior × all likelihoods, pick max class</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>BBN</strong></td><td class="px-3 py-2">DAG + CPTs; joint = product of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(node|parents)</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Computer vision</strong></td><td class="px-3 py-2">Classification (what) → detection (where) → segmentation (which pixels); CNN pipeline</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Speech processing</strong></td><td class="px-3 py-2">ASR: audio → MFCC → acoustic model → language model → text; plus TTS and speaker ID</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>NLP</strong></td><td class="px-3 py-2">Text → tokenize → preprocess → vectorize → model; translation, sentiment, chatbots</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Tokenization</strong></td><td class="px-3 py-2">Splitting text into word/subword/character tokens — step 1 of every NLP pipeline</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>ImageNet</strong></td><td class="px-3 py-2">14M-image dataset + ILSVRC contest; AlexNet-2012 (26→15%) ignited deep learning; ResNet-2015 beat humans</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Every formula in this unit</h3>
+  <ul class="list-disc pl-5 space-y-2 mt-2">
+    <li>Hyperplane: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w·x + b = 0</code>; margin lines <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w·x + b = ±1</code>; margin width <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2/||w||</code></li>
+    <li>SVM objective (soft margin): <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">min ||w||²/2 + C·Σξᵢ</code></li>
+    <li>SVM decision: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = sign(w·x + b)</code></li>
+    <li>Kernels: Linear <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x·y</code> | Polynomial <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(x·y + c)^d</code> | RBF <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">exp(−γ||x−y||²)</code></li>
+    <li>Euclidean distance (KNN): <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">d = √(Σ(xᵢ−yᵢ)²)</code></li>
+    <li>Bayes: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(h|D) = P(D|h)·P(h) / P(D)</code></li>
+    <li>Total probability: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(D) = Σ P(D|hᵢ)·P(hᵢ)</code></li>
+    <li>MAP: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_MAP = argmax P(D|h)·P(h)</code> | ML: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_ML = argmax P(D|h)</code></li>
+    <li>Naive Bayes: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_pred = argmax P(C)·Π P(xᵢ|C)</code>; Laplace: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(count+1)/(N+k)</code></li>
+    <li>BBN joint: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(X₁…Xₙ) = Π P(Xᵢ|Parents(Xᵢ))</code></li>
+    <li>Disease-test result to remember: 1% prior + 99% sensitivity + 5% FPR ⇒ posterior ≈ <strong>16.7%</strong></li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Diagrams to practice (draw each until &lt; 90 seconds)</h3>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li><strong>SVM margin diagram</strong> — two classes, hyperplane, two margin lines, circled support vectors (THE money diagram if SVM returns).</li>
+    <li><strong>Kernel mapping sketch</strong> — 1-D non-separable → 2-D separable.</li>
+    <li><strong>Prior→Posterior update flow</strong> (3-box Bayes flow).</li>
+    <li><strong>Burglary–Alarm BBN</strong> (5-node DAG).</li>
+    <li><strong>CV pipeline</strong> — image → preprocess → features → model → output.</li>
+    <li><strong>ASR pipeline</strong> — audio → preprocess → MFCC → acoustic model → language model → text.</li>
+    <li><strong>NLP pipeline</strong> — text → tokenize → preprocess → vectorize → model → output.</li>
+    <li><strong>ImageNet error progression</strong> — table or falling-bars sketch with human 5% line.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Last-hour priority order</h3>
+  <ol class="list-decimal pl-5 space-y-1 mt-2">
+    <li>Bayes theorem + disease example + MAP/ML (asked 4/5 years — near guaranteed).</li>
+    <li>SVM full 14-marker (absent 2 papers — DUE).</li>
+    <li>One applications essay each: CV, speech, NLP (Q7/Q8 staple, essay-style easy marks).</li>
+    <li>Tokenization short note + Naive Bayes tiny example.</li>
+    <li>ImageNet table (never asked — cheap insurance for Q8 short notes).</li>
+  </ol>
+</section>
+
+</main>
+
+<footer class="border-t border-slate-800 mt-8">
+  <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-2">
+    <span>CS-601 Machine Learning · RGPV · Target 9 SGPA</span>
+    <a href="index.html" class="text-indigo-400 hover:underline">← Back to Dashboard</a>
+  </div>
+</footer>
+
+</body>
+</html>

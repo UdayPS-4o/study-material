@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 2 — Neural Networks &amp; Training | CS-601 ML</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+  <!-- Sticky top nav -->
+  <nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+    <div class="max-w-5xl mx-auto flex flex-wrap gap-x-4 gap-y-1 px-4 py-3 text-sm">
+      <a href="index.html" class="text-slate-400 hover:text-white">🎯 Dashboard</a>
+      <a href="unit-1.html" class="text-slate-400 hover:text-white">U1 Foundations</a>
+      <a href="unit-2.html" class="text-indigo-400 font-semibold">U2 Neural Nets</a>
+      <a href="unit-3.html" class="text-slate-400 hover:text-white">U3 CNN</a>
+      <a href="unit-4.html" class="text-slate-400 hover:text-white">U4 RNN &amp; RL</a>
+      <a href="unit-5.html" class="text-slate-400 hover:text-white">U5 SVM &amp; Apps</a>
+      <a href="numericals.html" class="text-slate-400 hover:text-white">🔢 Numericals</a>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto px-4 py-8">
+
+    <h1 class="text-3xl font-bold text-white mb-2">Unit 2 — Neural Networks &amp; Training</h1>
+
+    <div class="border-l-4 border-indigo-500 bg-indigo-500/5 p-4 rounded-r-xl my-4 text-slate-300">
+      <strong class="text-white">Exam weight: ~22.5% of offered marks.</strong> Q2/Q3 draw from this unit in every paper. Gradient descent asked 4/5 years; backprop 3/5; autoencoders and batch norm asked in <strong>BOTH</strong> of the last two papers.
+    </div>
+
+    <!-- ============ PYQ TABLE ============ -->
+    <section id="pyq" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4">PYQ Questions from this Unit</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Year</th>
+              <th class="px-3 py-2">Question (condensed)</th>
+              <th class="px-3 py-2">Marks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">What is Gradient Descent</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Backpropagation algorithm</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Multilayer network (short note)</td><td class="px-3 py-2">3.5</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Backprop numerical — update weights, sigmoid, lr = 0.3</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Differentiate various loss functions</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Types of Gradient Descent optimizers</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Hyperparameter tuning improves performance — justify</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">How to make a model non-linear + effect of pure linearity on GD</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Sigmoid vs ReLU — advantages/limitations, vanishing gradient, output range</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Define gradient descent as an optimization technique</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">L1 (Lasso) vs L2 (Ridge) — how they penalize differently</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Linearity vs Non-linearity (short note)</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Importance of chain rule in backpropagation</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Role of bottleneck layer in autoencoders</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Techniques and challenges of hyperparameter tuning</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Batch normalization (short note)</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">What are Auto Encoders + their types</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Types of Gradient Descent</td><td class="px-3 py-2">7</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Sigmoid activation in detail</td><td class="px-3 py-2">5</td></tr>
+            <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Batch normalization</td><td class="px-3 py-2">5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-sm text-slate-400">The May-2023 backprop numerical is fully solved in the <a href="numericals.html" class="text-indigo-400 hover:text-white underline">Numericals file</a>. Here we cover the algorithm and steps you must reproduce before the calculation.</p>
+    </section>
+
+    <!-- ============ LINEARITY VS NON-LINEARITY ============ -->
+    <section id="linearity" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Linearity vs Non-Linearity
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-23, May-24</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> A model is <strong>linear</strong> if its output is a weighted sum of inputs (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y = w1x1 + w2x2 + ... + b</code>) — it can only draw straight lines/planes as decision boundaries. A model is <strong>non-linear</strong> if output is NOT proportional to input, so it can draw curved boundaries and learn complex patterns (XOR, images, speech).</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: define linear model (weighted sum, straight-line boundary) and non-linear model (curved boundary).</li>
+          <li>Heading "Why pure linearity fails": stacking linear layers collapses to one linear layer — <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W2(W1x) = (W2W1)x</code>, so depth is wasted.</li>
+          <li>Heading "Effect on Gradient Descent": for a purely linear deep net the gradient of every layer is a constant matrix product — no matter how many layers, GD can only find a straight-line fit; XOR can never be separated.</li>
+          <li>Heading "How to make a model non-linear": (a) add non-linear activation functions (sigmoid, tanh, ReLU) after every layer, (b) feature transformations (polynomial features, kernels), (c) deeper networks with activations.</li>
+          <li>Draw the linearly-separable vs non-separable (XOR) diagram.</li>
+          <li>Close with example: XOR is solvable by a 2-layer net with sigmoid, impossible for a single-layer perceptron.</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key points (headed bullets)</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Linear model:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y = Wx + b</code>. Examples: linear regression, single-layer perceptron.</li>
+        <li><strong class="text-white">Composition trap:</strong> Linear ∘ Linear = Linear. A 100-layer network with no activation = 1-layer network.</li>
+        <li><strong class="text-white">Non-linearity source:</strong> activation functions applied element-wise after each layer's weighted sum.</li>
+        <li><strong class="text-white">Effect of pure linearity on GD:</strong> loss surface is a simple bowl (convex) — GD converges fast BUT only to the best <em>straight line</em>; it can never reduce error on non-linearly-separable data (XOR error stays stuck).</li>
+        <li><strong class="text-white">Ways to introduce non-linearity:</strong>
+          <ul class="mt-2 space-y-1 list-[circle] pl-5">
+            <li>Activation functions (sigmoid, tanh, ReLU) — most common.</li>
+            <li>Polynomial / basis-function features (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x, x², x³</code>).</li>
+            <li>Kernel trick (SVM).</li>
+            <li>Hidden layers + activations (deep networks).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ Linearly separable            NOT linearly separable (XOR)
+      x2                              x2
+  o o  |  x x                     x (0,1)      o (1,1)
+  o o  |  x x
+ ------+------&gt; x1                o (0,0)      x (1,0)
+   one straight line             NO single straight line works
+       works                     → need non-linear boundary</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> XOR gate — outputs 1 for (0,1) and (1,0), 0 for (0,0) and (1,1). No single line separates the 1s from the 0s; a 2-layer network with a non-linear activation solves it.</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Writing "more layers make the model non-linear." FALSE — layers <em>without activation functions</em> stay linear. It is the activation, not the depth, that gives non-linearity.
+      </div>
+    </section>
+
+    <!-- ============ ACTIVATION FUNCTIONS ============ -->
+    <section id="activation-functions" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Activation Functions
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-24, Jun-25</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> An activation function is a non-linear function applied to the weighted sum (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z = Wx + b</code>) of a neuron to decide its output/firing strength. It introduces non-linearity so the network can learn complex mappings.</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (Sigmoid vs ReLU, May-24 style):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: define activation function + why needed (non-linearity).</li>
+          <li>Heading "Sigmoid": formula <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ(x) = 1/(1+e^-x)</code>, range (0,1), S-shaped curve.</li>
+          <li>Heading "ReLU": formula <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = max(0, x)</code>, range [0, ∞).</li>
+          <li>Heading "Advantages/Limitations": sigmoid — smooth, probabilistic output BUT vanishing gradient (max slope 0.25), not zero-centred, slow (e^x); ReLU — fast, no saturation for x&gt;0, sparse activation BUT dying-ReLU, unbounded output.</li>
+          <li>Draw both curves side by side.</li>
+          <li>Close with usage example: sigmoid → output layer of binary classifier; ReLU → hidden layers of deep nets/CNNs.</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Master table of activation functions</h3>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Function</th>
+              <th class="px-3 py-2">Formula</th>
+              <th class="px-3 py-2">Range</th>
+              <th class="px-3 py-2">Pros</th>
+              <th class="px-3 py-2">Cons</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Sigmoid</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ(x) = 1/(1+e^-x)</code></td>
+              <td class="px-3 py-2">(0, 1)</td>
+              <td class="px-3 py-2">Smooth; output reads as probability; historically standard</td>
+              <td class="px-3 py-2">Vanishing gradient (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ' ≤ 0.25</code>); not zero-centred; <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">e^x</code> costly</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Tanh</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">tanh(x) = (e^x − e^-x)/(e^x + e^-x)</code></td>
+              <td class="px-3 py-2">(−1, 1)</td>
+              <td class="px-3 py-2">Zero-centred → faster convergence than sigmoid</td>
+              <td class="px-3 py-2">Still saturates → vanishing gradient</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">ReLU</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = max(0, x)</code></td>
+              <td class="px-3 py-2">[0, ∞)</td>
+              <td class="px-3 py-2">Very fast; no saturation for x&gt;0; sparse activation; eases vanishing gradient</td>
+              <td class="px-3 py-2">Dying ReLU (neuron stuck at 0 forever); not zero-centred; unbounded</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Leaky ReLU</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = x if x&gt;0, else 0.01x</code></td>
+              <td class="px-3 py-2">(−∞, ∞)</td>
+              <td class="px-3 py-2">Fixes dying ReLU (small gradient for x&lt;0)</td>
+              <td class="px-3 py-2">Slope 0.01 is arbitrary; results not always better</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Softmax</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(xi) = e^xi / Σj e^xj</code></td>
+              <td class="px-3 py-2">(0, 1), sums to 1</td>
+              <td class="px-3 py-2">Converts scores to class probabilities; multi-class output layer</td>
+              <td class="px-3 py-2">Only for output layer; expensive; sensitive to large inputs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Sigmoid in detail (Jun-2025, 5 marks)</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Formula:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ(x) = 1 / (1 + e^-x)</code>; <strong class="text-white">derivative:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ'(x) = σ(x) · (1 − σ(x))</code>.</li>
+        <li><strong class="text-white">Shape:</strong> S-shaped (sigmoid = "S-like"); output 0.5 at x = 0; saturates to 0 and 1 at extremes.</li>
+        <li><strong class="text-white">Use:</strong> output layer of <strong>binary classification</strong> (output = probability of class 1); gates in LSTM.</li>
+        <li><strong class="text-white">Why derivative matters:</strong> max value of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ'</code> is <strong>0.25</strong> at x = 0 → multiplying many such small derivatives through layers causes the <strong>vanishing gradient problem</strong>.</li>
+        <li><strong class="text-white">Drawbacks:</strong> vanishing gradient, not zero-centred (all outputs positive → zig-zag weight updates), computationally costly.</li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ Sigmoid                         ReLU
+ 1 -----------____----           |        /
+ |        _--                    |       /
+0.5      /                       |      /
+ |   __--                        |     /
+ 0 --------------&gt; x             0 ___/________&gt; x
+ saturates both sides            zero for x&lt;0, linear for x&gt;0</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> Spam classifier output neuron uses sigmoid: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ(2.0) ≈ 0.88</code> → "88% probability spam". Hidden layers of the same network use ReLU for fast training.</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> "<strong>S</strong>igmoid <strong>S</strong>quashes to (0,1), <strong>T</strong>anh <strong>T</strong>akes (−1,1), <strong>R</strong>eLU <strong>R</strong>ejects negatives, <strong>S</strong>oftmax <strong>S</strong>hares probability."</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Writing sigmoid range as [0,1] — it is <strong>open</strong> interval (0,1); sigmoid never actually reaches 0 or 1. Also, ReLU IS non-linear (it is piecewise linear, which is enough).
+      </div>
+    </section>
+
+    <!-- ============ WEIGHTS AND BIAS ============ -->
+    <section id="weights-bias" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Weights and Bias
+        <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> <strong>Weights</strong> are learnable parameters that scale the importance of each input to a neuron. <strong>Bias</strong> is a learnable constant added to the weighted sum that shifts the activation threshold, letting the neuron fire even when all inputs are zero.</p>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key points</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Neuron computation:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z = w1x1 + w2x2 + ... + wnxn + b</code>, then <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a = f(z)</code> (activation).</li>
+        <li><strong class="text-white">Role of weight:</strong> decides <em>how much</em> each input matters; large |w| = strong influence; sign decides excitatory (+) or inhibitory (−).</li>
+        <li><strong class="text-white">Role of bias:</strong> shifts the activation curve left/right — like the intercept <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c</code> in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y = mx + c</code>. Without bias, every decision boundary is forced through the origin.</li>
+        <li><strong class="text-white">Learning:</strong> both are updated by gradient descent: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w_new = w_old − η · ∂L/∂w</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">b_new = b_old − η · ∂L/∂b</code>.</li>
+        <li><strong class="text-white">Analogy:</strong> weights = volume knobs on each input; bias = the base threshold/mood of the neuron.</li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ x1 --- w1 ---\
+               \
+ x2 --- w2 ----(Σ  z = Σ wixi + b)--- f(z) ---&gt; output a
+               /
+ x3 --- w3 ---/         ^
+                        |
+              bias b ---+   (shifts the threshold)</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> Predicting exam result: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z = 0.7·(hours studied) + 0.2·(attendance) − 3</code>. Weight 0.7 says hours matter most; bias −3 means some minimum effort is needed before the neuron activates.</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Calling bias "an input". Bias is a <em>parameter</em> (learned), often modelled as weight on a constant input <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x0 = 1</code>, but it is not data.
+      </div>
+    </section>
+
+    <!-- ============ LOSS FUNCTIONS ============ -->
+    <section id="loss-functions" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Loss Functions
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-23</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> A loss function measures the difference between the network's predicted output <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">ŷ</code> and the true target <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y</code>. Training = minimizing average loss over the dataset. (Loss = one sample; Cost = average over all samples.)</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton ("Differentiate various loss functions"):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: definition of loss + role in training (the quantity GD minimizes).</li>
+          <li>Heading "Regression losses": MSE and MAE with formulas — contrast outlier sensitivity.</li>
+          <li>Heading "Classification losses": Cross-entropy (with sigmoid/softmax) and Hinge (SVM).</li>
+          <li>Reproduce the comparison table (columns: formula, task, outlier sensitivity, use-case).</li>
+          <li>One numeric mini-example (MSE vs MAE on an outlier).</li>
+          <li>Close: "choice of loss depends on task (regression/classification) and noise in data."</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Comparison table</h3>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Loss</th>
+              <th class="px-3 py-2">Formula</th>
+              <th class="px-3 py-2">Task</th>
+              <th class="px-3 py-2">Key property</th>
+              <th class="px-3 py-2">Used with</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">MSE (L2 loss)</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1/n) Σ (y − ŷ)²</code></td>
+              <td class="px-3 py-2">Regression</td>
+              <td class="px-3 py-2">Squares errors → punishes outliers heavily; smooth, differentiable everywhere</td>
+              <td class="px-3 py-2">Linear regression, NN regression</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">MAE (L1 loss)</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1/n) Σ |y − ŷ|</code></td>
+              <td class="px-3 py-2">Regression</td>
+              <td class="px-3 py-2">Robust to outliers; gradient constant (not smooth at 0)</td>
+              <td class="px-3 py-2">Noisy regression data</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Binary Cross-Entropy</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">−(1/n) Σ [y·log(ŷ) + (1−y)·log(1−ŷ)]</code></td>
+              <td class="px-3 py-2">Binary classification</td>
+              <td class="px-3 py-2">Heavily penalizes confident wrong predictions; pairs with sigmoid</td>
+              <td class="px-3 py-2">Logistic regression, binary NN</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Categorical Cross-Entropy</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">−Σ yi · log(ŷi)</code></td>
+              <td class="px-3 py-2">Multi-class</td>
+              <td class="px-3 py-2">Works on probability distribution from softmax</td>
+              <td class="px-3 py-2">Multi-class NN</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Hinge loss</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max(0, 1 − y·ŷ)</code>, y ∈ {−1, +1}</td>
+              <td class="px-3 py-2">Classification (margin)</td>
+              <td class="px-3 py-2">Zero loss once margin ≥ 1 → maximum-margin behaviour</td>
+              <td class="px-3 py-2">SVM</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-4"><strong class="text-white">Numeric example (MSE vs MAE):</strong> errors = [1, 1, 10].</p>
+      <ul class="mt-2 space-y-1 list-disc pl-5 text-slate-300">
+        <li>MSE = (1 + 1 + 100)/3 = <strong class="text-white">34</strong> → the single outlier dominates.</li>
+        <li>MAE = (1 + 1 + 10)/3 = <strong class="text-white">4</strong> → outlier has proportionate effect.</li>
+      </ul>
+      <p class="mt-2 text-slate-300">So use MAE when data has outliers, MSE when errors should be smoothly penalized.</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> "<strong>M</strong>SE <strong>M</strong>agnifies mistakes, <strong>M</strong>AE stays <strong>M</strong>oderate, <strong>C</strong>ross-entropy for <strong>C</strong>lasses, <strong>H</strong>inge for <strong>H</strong>yperplanes (SVM)."</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Using MSE with sigmoid output for classification — gradients become tiny and non-convex; cross-entropy is the correct pairing (its gradient with sigmoid simplifies to <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(ŷ − y)·x</code>, clean and large).
+      </div>
+    </section>
+
+    <!-- ============ GRADIENT DESCENT ============ -->
+    <section id="gradient-descent" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Gradient Descent
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-22, May-23, May-24, Jun-25</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> Gradient Descent is an iterative first-order optimization algorithm that minimizes a loss function <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L(w)</code> by repeatedly moving the parameters in the direction <strong>opposite</strong> to the gradient (slope), because the gradient points uphill and we want to go downhill.</p>
+
+      <p class="mt-3"><strong class="text-white">Update rule:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w_new = w_old − η · ∂L/∂w</code> where <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">η</code> (eta) = learning rate.</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton ("Define GD as optimization technique"):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: definition + update rule formula.</li>
+          <li>Heading "Intuition": blindfolded man descending a hill — feels slope, steps downhill.</li>
+          <li>Heading "Algorithm steps": (i) initialize w randomly, (ii) compute loss, (iii) compute gradient <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂w</code>, (iv) update <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − η·∂L/∂w</code>, (v) repeat till convergence.</li>
+          <li>Heading "Learning rate effect": too small → slow; too large → overshoots/diverges (draw the two-curve diagram).</li>
+          <li>Heading "Types": batch / stochastic / mini-batch (one line each).</li>
+          <li>Draw the loss-bowl diagram with steps going to the minimum; close with example: fitting <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y = wx + b</code> with MSE.</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Algorithm (write these 5 steps in exam)</h3>
+      <ol class="mt-3 space-y-2 list-decimal pl-5 text-slate-300">
+        <li><strong class="text-white">Initialize</strong> parameters <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w, b</code> (small random values).</li>
+        <li><strong class="text-white">Forward:</strong> compute predictions and loss <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L(w)</code> on training data.</li>
+        <li><strong class="text-white">Gradient:</strong> compute <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂w</code> (slope of loss w.r.t. each parameter).</li>
+        <li><strong class="text-white">Update:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − η · ∂L/∂w</code> (step opposite to slope).</li>
+        <li><strong class="text-white">Repeat</strong> for many epochs until loss stops decreasing (convergence).</li>
+      </ol>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ L(w)
+  |\                        /
+  | \        ●            /
+  |  \      ↙ steps     /
+  |   \   ●           /
+  |    \ ↙          /
+  |     ●___●____/      ← global minimum (gradient = 0)
+  +---------------------------→ w
+ Effect of learning rate η:
+  η too small: ●·●·●·●·●·●  (crawls, very slow)
+  η too large: ●     ●      (jumps across valley, diverges)
+            \  ↘   ↗  /</pre>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">Types of Gradient Descent
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ Jun-25, May-23</span>
+      </h3>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton ("Types of Gradient Descent"):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: recall plain GD update <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − η·∂L/∂w</code>; the types differ in <em>how much data</em> is used per update.</li>
+          <li>Heading "Batch GD": entire training set per update — exact gradient, smooth path, slow (1 update/epoch), memory-heavy.</li>
+          <li>Heading "Stochastic GD (SGD)": ONE random sample per update — very fast, noisy zig-zag path; noise can escape local minima; online learning.</li>
+          <li>Heading "Mini-batch GD": small batch (32/64/128) — balances speed and stability, GPU-vectorizable, the deep-learning default.</li>
+          <li>Reproduce the comparison table + the three convergence-path diagrams.</li>
+          <li>Close: "Mini-batch is the practical default; SGD for streaming data; Batch only for small/convex problems."</li>
+        </ol>
+      </div>
+
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Variant</th>
+              <th class="px-3 py-2">Data used per update</th>
+              <th class="px-3 py-2">Speed per update</th>
+              <th class="px-3 py-2">Gradient quality</th>
+              <th class="px-3 py-2">Memory</th>
+              <th class="px-3 py-2">Best for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Batch GD</td>
+              <td class="px-3 py-2">ENTIRE training set</td>
+              <td class="px-3 py-2">Slow (1 update per epoch)</td>
+              <td class="px-3 py-2">Exact, smooth convergence</td>
+              <td class="px-3 py-2">High</td>
+              <td class="px-3 py-2">Small datasets, convex problems</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Stochastic GD (SGD)</td>
+              <td class="px-3 py-2">ONE random sample</td>
+              <td class="px-3 py-2">Very fast updates</td>
+              <td class="px-3 py-2">Noisy, zig-zag path (noise can escape local minima)</td>
+              <td class="px-3 py-2">Very low</td>
+              <td class="px-3 py-2">Online/streaming learning</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Mini-batch GD</td>
+              <td class="px-3 py-2">Small batch (32/64/128)</td>
+              <td class="px-3 py-2">Fast</td>
+              <td class="px-3 py-2">Balanced noise, vectorizable on GPU</td>
+              <td class="px-3 py-2">Moderate</td>
+              <td class="px-3 py-2">Deep learning (default choice)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ Batch GD          SGD                Mini-batch
+ ●                 ●                  ●
+  \                 \↗↘               ↘
+   ●                 ↘↗●               ●↘
+    \                ↗↘                  ●
+     ●____min         ●~~min              ●__min
+ smooth path       noisy zig-zag       mildly noisy</pre>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">Gradient Descent Optimizers
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-23</span>
+      </h3>
+
+      <p class="mt-3"><strong class="text-white">Definition:</strong> Optimizers are improved versions of plain GD that adapt the step size or direction to converge faster and more reliably.</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton ("Types of GD optimizers"):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: define optimizer (improvement over plain GD that adapts the step) + plain GD update rule for contrast.</li>
+          <li>Heading "Momentum": <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">v = β·v + η·g; w = w − v</code> — velocity dampens zig-zag, accelerates flat regions.</li>
+          <li>Heading "AdaGrad": per-parameter learning rate <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">η/√(G+ε)</code> — great for sparse features, but accumulated G kills the learning rate.</li>
+          <li>Heading "RMSProp": exponential moving average of squared gradients — fixes AdaGrad's dying learning rate; good for RNNs.</li>
+          <li>Heading "Adam": Momentum + RMSProp with bias correction — fast, robust, the default choice.</li>
+          <li>Reproduce the table; close with "each optimizer fixes the previous one's weakness (MARS-A); Adam = Momentum + RMSProp."</li>
+        </ol>
+      </div>
+
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Optimizer</th>
+              <th class="px-3 py-2">Core idea</th>
+              <th class="px-3 py-2">Update sketch</th>
+              <th class="px-3 py-2">Advantage</th>
+              <th class="px-3 py-2">Limitation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Momentum</td>
+              <td class="px-3 py-2">Add fraction of previous update (velocity) — like a rolling ball</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">v = β·v + η·g; w = w − v</code></td>
+              <td class="px-3 py-2">Dampens zig-zag, speeds up flat regions, escapes small local minima</td>
+              <td class="px-3 py-2">Extra hyperparameter β (≈0.9)</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">AdaGrad</td>
+              <td class="px-3 py-2">Per-parameter learning rate divided by √(sum of squared past gradients)</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − (η/√(G+ε))·g</code></td>
+              <td class="px-3 py-2">Great for sparse features (rare features get big steps)</td>
+              <td class="px-3 py-2">Accumulated G keeps growing → learning rate shrinks to ~0</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">RMSProp</td>
+              <td class="px-3 py-2">Fix AdaGrad using exponential <em>moving average</em> of squared gradients</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">E = γE + (1−γ)g²; w = w − (η/√(E+ε))·g</code></td>
+              <td class="px-3 py-2">Learning rate does not die; good for non-stationary problems (RNNs)</td>
+              <td class="px-3 py-2">Needs tuning of decay γ</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Adam</td>
+              <td class="px-3 py-2">Momentum + RMSProp combined (1st and 2nd moment estimates, bias-corrected)</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">m = β1m + (1−β1)g; v = β2v + (1−β2)g²; w = w − η·m̂/(√v̂+ε)</code></td>
+              <td class="px-3 py-2">Fast, robust, default optimizer for deep learning</td>
+              <td class="px-3 py-2">Slightly more memory; can sometimes generalize worse than tuned SGD</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> "<strong>MARS-A</strong>": <strong>M</strong>omentum → <strong>A</strong>daGrad → <strong>R</strong>MSProp → <strong>A</strong>dam — each fixes the previous one's weakness, and <strong>Adam = Momentum + RMSProp</strong>.</p>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> Training a CNN on MNIST: plain SGD needs ~50 epochs; Adam with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">η = 0.001, β1 = 0.9, β2 = 0.999</code> reaches the same accuracy in ~10 epochs.</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Confusing "types of GD" (batch/SGD/mini-batch — <em>how much data per step</em>) with "optimizers" (momentum/Adam — <em>how the step is computed</em>). The paper may ask either; read carefully.
+      </div>
+    </section>
+
+    <!-- ============ MULTILAYER NETWORK ============ -->
+    <section id="mlp" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Multilayer Network (MLP)
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-22</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> A Multilayer Perceptron (MLP)/multilayer network is a feed-forward neural network with one input layer, <strong>one or more hidden layers</strong>, and one output layer, where every neuron of a layer connects to every neuron of the next (fully connected) and each neuron applies a non-linear activation.</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: definition (input + hidden + output, fully connected, non-linear activations).</li>
+          <li>Heading "Architecture": role of each layer (input = features, hidden = feature extraction, output = prediction).</li>
+          <li>Heading "Forward propagation": <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a(l) = f(W(l) a(l−1) + b(l))</code> layer by layer.</li>
+          <li>Heading "Why hidden layers": overcome the perceptron's linear limitation — can solve XOR; universal approximation theorem (one hidden layer with enough neurons can approximate any continuous function).</li>
+          <li>Heading "Training": trained by backpropagation + gradient descent.</li>
+          <li>Draw the 3-4-2 network diagram; close with example (XOR solved with 2 hidden neurons).</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key points</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Feed-forward:</strong> information flows one way, input → output; no cycles.</li>
+        <li><strong class="text-white">Fully connected:</strong> each neuron receives all outputs of the previous layer.</li>
+        <li><strong class="text-white">Forward pass formula:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z(l) = W(l)·a(l−1) + b(l)</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a(l) = f(z(l))</code>.</li>
+        <li><strong class="text-white">Depth vs width:</strong> more hidden layers = hierarchical features (deep learning); more neurons per layer = capacity.</li>
+        <li><strong class="text-white">Universal approximation:</strong> an MLP with one hidden layer and non-linear activation can approximate any continuous function to arbitrary accuracy (given enough neurons).</li>
+        <li><strong class="text-white">Solves what perceptron cannot:</strong> non-linearly-separable problems like XOR.</li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+  Input        Hidden         Output
+  layer        layer          layer
+   x1 ─────●━━━━━●
+             ╲  ╱   ╲
+   x2 ─────●━━╳━━━━●━━━━━━● ŷ1
+             ╱  ╲   ╱
+   x3 ─────●━━━━━●━━━━━━━━● ŷ2
+                 ●
+  (3 inputs) (4 hidden)   (2 outputs)
+  every arrow = one weight; each hidden/output node has a bias</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> Handwritten digit recognition: 784 input neurons (28×28 pixels) → hidden layer 128 (ReLU) → output 10 (softmax, one per digit).</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Counting the input layer as a "computational" layer — input neurons do no computation; a "2-layer network" means 1 hidden + 1 output layer of weights.
+      </div>
+    </section>
+
+    <!-- ============ BACKPROPAGATION ============ -->
+    <section id="backpropagation" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Backpropagation
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-22, May-23, Dec-24</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> Backpropagation (backward propagation of errors) is the algorithm that computes the gradient of the loss with respect to <strong>every</strong> weight in a multilayer network by applying the <strong>chain rule</strong> layer by layer from output back to input, so that gradient descent can update all weights.</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (algorithm question):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: definition + "backprop computes gradients, gradient descent uses them."</li>
+          <li>Heading "Step 1 — Forward pass": compute all activations and final loss.</li>
+          <li>Heading "Step 2 — Output error": <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ(out) = (ŷ − y) · f'(z_out)</code>.</li>
+          <li>Heading "Step 3 — Backward pass": propagate error to hidden layers with chain rule <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ(l) = (W(l+1)ᵀ δ(l+1)) · f'(z(l))</code>.</li>
+          <li>Heading "Step 4 — Weight update": <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − η · δ · a_prev</code>.</li>
+          <li>Draw forward/backward arrows diagram; close with the sigmoid derivative fact <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ' = σ(1−σ)</code> and mention the lr = 0.3 numerical pattern (see Numericals file).</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">The 4-step algorithm (reproduce exactly in exam)</h3>
+      <ol class="mt-3 space-y-2 list-decimal pl-5 text-slate-300">
+        <li><strong class="text-white">Forward pass:</strong> feed input <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x</code> through the network; compute and store each layer's <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z(l) = W(l)a(l−1) + b(l)</code> and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a(l) = f(z(l))</code>; compute loss <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L(ŷ, y)</code>.</li>
+        <li><strong class="text-white">Compute output-layer error:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ(L) = ∂L/∂ŷ · f'(z(L))</code>. For MSE + sigmoid: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ(L) = (ŷ − y) · ŷ(1 − ŷ)</code>.</li>
+        <li><strong class="text-white">Backpropagate error (chain rule):</strong> for each hidden layer moving backwards, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ(l) = (W(l+1)ᵀ · δ(l+1)) ⊙ f'(z(l))</code> — each layer's error = next layer's error, sent back through the weights, times the local activation slope.</li>
+        <li><strong class="text-white">Update all weights and biases:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂W(l) = δ(l) · a(l−1)ᵀ</code>, then <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W(l) = W(l) − η · ∂L/∂W(l)</code> and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">b(l) = b(l) − η · δ(l)</code>.</li>
+      </ol>
+      <p class="mt-3 text-slate-300">Repeat steps 1–4 for every batch, for many epochs.</p>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">Importance of the chain rule
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ Dec-24</span>
+      </h3>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton ("Importance of chain rule in backpropagation"):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: the chain rule differentiates <em>compositions of functions</em> — and a neural network IS a composition (layer of layer of layer).</li>
+          <li>Heading "The problem": <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂w1</code> has no direct formula — the loss depends on an inner weight only through every later layer.</li>
+          <li>Heading "Decomposition": write the full product <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂w = ∂L/∂ŷ · ∂ŷ/∂z_out · ∂z_out/∂a_h · ∂a_h/∂z_h · ∂z_h/∂w</code> — each factor is a simple local derivative.</li>
+          <li>Heading "Efficiency": each layer's δ is computed once and reused for the layer before it → gradients for ALL weights in one backward pass.</li>
+          <li>Heading "Consequence": the product form explains vanishing/exploding gradients (many terms &lt;1 or &gt;1 multiplied).</li>
+          <li>Draw the forward/backward diagram; close: "without the chain rule there is no backpropagation, and without backprop no deep learning."</li>
+        </ol>
+      </div>
+
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">The core problem:</strong> loss depends on an inner weight only <em>indirectly</em>, through every layer after it. Direct differentiation is impossible without decomposition.</li>
+        <li><strong class="text-white">Chain rule decomposes it:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂w = ∂L/∂ŷ · ∂ŷ/∂z_out · ∂z_out/∂a_hidden · ∂a_hidden/∂z_hidden · ∂z_hidden/∂w</code> — a product of simple local derivatives.</li>
+        <li><strong class="text-white">Reuse = efficiency:</strong> each layer's <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ</code> is computed once and reused for the layer before it → the whole gradient costs about the same as ONE forward pass (instead of recomputing per weight). This is what makes training deep networks feasible.</li>
+        <li><strong class="text-white">Explains unstable gradients:</strong> because gradients are <em>products</em> of many terms, they can shrink (vanishing) or blow up (exploding) — see Unstable Gradient section.</li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ FORWARD  ──────────────────────────────────→
+  x ──► [W1] ──► h = f(z1) ──► [W2] ──► ŷ ──► Loss L
+  ◄────────────────────────────────── BACKWARD
+        δ1 = W2ᵀδ2 · f'(z1)   δ2 = (ŷ−y)·f'(z2)
+ chain rule: ∂L/∂W1 = ∂L/∂ŷ · ∂ŷ/∂h · ∂h/∂W1</pre>
+
+      <p class="mt-4"><strong class="text-white">Example (exam numerical pattern, May-23):</strong> 2-2-1 network, sigmoid, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">η = 0.3</code>, target 0.9. Forward pass gives ŷ = 0.62 → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ_out = (0.62 − 0.9) · 0.62 · (1 − 0.62) = −0.28 × 0.2356 = −0.0660</code> → each output weight changes by <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">−η · δ_out · h</code>. Full solution in the <a href="numericals.html" class="text-indigo-400 hover:text-white underline">Numericals file</a>.</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> "<strong>F</strong>irst <strong>E</strong>rror <strong>B</strong>ack <strong>U</strong>pdate" — <strong>F</strong>orward pass, output <strong>E</strong>rror, <strong>B</strong>ackpropagate, <strong>U</strong>pdate weights (FEBU).</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Saying "backpropagation updates the weights." Strictly, backprop only <em>computes gradients</em>; the <em>update</em> is done by gradient descent. Write both sentences and the examiner is satisfied.
+      </div>
+    </section>
+
+    <!-- ============ WEIGHT INITIALIZATION ============ -->
+    <section id="weight-initialization" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Weight Initialization
+        <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> Weight initialization is the strategy for choosing the starting values of weights before training. A bad start causes symmetry problems, vanishing or exploding gradients; a good start keeps signal variance stable across layers.</p>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Methods (compare in exam)</h3>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Method</th>
+              <th class="px-3 py-2">How</th>
+              <th class="px-3 py-2">Problem/Benefit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Zero initialization</td>
+              <td class="px-3 py-2">All <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = 0</code></td>
+              <td class="px-3 py-2">FAILS: every neuron in a layer computes the same output and gets the same gradient → all learn identical features (<strong>symmetry problem</strong>). Never use for weights (ok for biases).</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Random (small) initialization</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w ~ N(0, 0.01)</code></td>
+              <td class="px-3 py-2">Breaks symmetry, but if too small → signals shrink layer by layer (vanishing); too large → saturation/exploding.</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Xavier / Glorot</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w ~ N(0, 1/n_in)</code> or uniform with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Var(w) = 2/(n_in + n_out)</code></td>
+              <td class="px-3 py-2">Keeps variance of activations same across layers. Designed for <strong>sigmoid/tanh</strong>.</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">He initialization</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w ~ N(0, 2/n_in)</code></td>
+              <td class="px-3 py-2">Doubles variance because ReLU kills half the inputs (negatives → 0). Designed for <strong>ReLU</strong> networks.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ul class="mt-4 space-y-2 list-disc pl-5 text-slate-300">
+        <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">n_in</code> = number of inputs to the neuron (fan-in), <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">n_out</code> = fan-out.</li>
+        <li><strong class="text-white">Rule of thumb:</strong> sigmoid/tanh → Xavier; ReLU/Leaky ReLU → He.</li>
+      </ul>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> A 10-layer ReLU network initialized with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">N(0, 0.01)</code> trains to 10% accuracy (signal dies); the same network with He initialization trains normally — only the starting values changed.</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> "<strong>Z</strong>ero is <strong>Z</strong>ero-use, <strong>R</strong>andom is <strong>R</strong>isky, <strong>X</strong>avier for <strong>S</strong>-shaped (sigmoid/tanh), <strong>He</strong> for <strong>Re</strong>LU."</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Writing "initialize all weights to zero for simplicity." This is the classic trap — mention the symmetry problem explicitly to earn the mark.
+      </div>
+    </section>
+
+    <!-- ============ TRAINING AND TESTING ============ -->
+    <section id="training-testing" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Training and Testing
+        <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> <strong>Training</strong> is the phase where the model sees labelled data and adjusts weights to minimize loss. <strong>Testing</strong> is the phase where the frozen model is evaluated on unseen data to estimate real-world (generalization) performance.</p>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Standard procedure (headed bullets)</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Split the data:</strong> typically 70% train / 15% validation / 15% test (or 80/20 with cross-validation).</li>
+        <li><strong class="text-white">Training loop (per epoch):</strong> shuffle data → for each mini-batch: forward pass → loss → backprop → weight update.</li>
+        <li><strong class="text-white">Validation set:</strong> used <em>during</em> training to tune hyperparameters and detect overfitting (early stopping when validation loss starts rising). Never used for weight updates.</li>
+        <li><strong class="text-white">Test set:</strong> used exactly ONCE at the end; weights frozen; report accuracy/precision/recall/MSE.</li>
+        <li><strong class="text-white">Epoch vs iteration:</strong> epoch = one full pass over the training data; iteration = one batch update. 1000 samples, batch 100 → 10 iterations per epoch.</li>
+        <li><strong class="text-white">Overfitting signal:</strong> training loss keeps falling while validation loss rises → memorizing, not learning.</li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ Loss
+  |\
+  | \  validation loss
+  |  \___        ____/   ← starts rising = OVERFITTING
+  |      \______/
+  |   \
+  |    \______ training loss (keeps falling)
+  +---------------------------→ epochs
+        ↑ stop here (early stopping)</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> Student analogy — training = solving the textbook exercises (answers visible), validation = weekly class tests (adjust study strategy), testing = the final RGPV exam (unseen questions, one attempt).</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Tuning hyperparameters on the <em>test</em> set. That leaks information and inflates reported accuracy — tuning belongs to the validation set only.
+      </div>
+    </section>
+
+    <!-- ============ UNSTABLE GRADIENT PROBLEM ============ -->
+    <section id="unstable-gradient" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Unstable Gradient Problem
+        <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Only touched inside May-24 sigmoid Q — DUE, likely next</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> In deep networks the gradient at early layers is a <strong>product of many per-layer terms</strong> (weights × activation derivatives). If these terms are mostly &lt; 1 the product shrinks exponentially (<strong>vanishing gradient</strong>); if mostly &gt; 1 it grows exponentially (<strong>exploding gradient</strong>). Both make training unstable — this is the unstable gradient problem.</p>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Vanishing gradient</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Cause:</strong> saturating activations — sigmoid derivative <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ' ≤ 0.25</code>, tanh derivative ≤ 1. Ten sigmoid layers → gradient scaled by at most <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">0.25^10 ≈ 10^-6</code>.</li>
+        <li><strong class="text-white">Symptom:</strong> early (near-input) layers learn extremely slowly or not at all; loss plateaus.</li>
+        <li><strong class="text-white">Fixes:</strong>
+          <ul class="mt-2 space-y-1 list-[circle] pl-5">
+            <li><strong class="text-white">ReLU-family activations</strong> (derivative = 1 for x &gt; 0).</li>
+            <li><strong class="text-white">Proper initialization</strong> (Xavier/He keeps variance stable).</li>
+            <li><strong class="text-white">Batch normalization</strong> (keeps inputs in the non-saturated zone).</li>
+            <li><strong class="text-white">Residual/skip connections</strong> (gradient highway, as in ResNet).</li>
+            <li><strong class="text-white">LSTM/GRU</strong> gating for recurrent networks.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Exploding gradient</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Cause:</strong> large weights / deep recurrence — products of terms &gt; 1 blow up.</li>
+        <li><strong class="text-white">Symptom:</strong> loss oscillates wildly or becomes NaN; huge weight updates.</li>
+        <li><strong class="text-white">Fixes:</strong>
+          <ul class="mt-2 space-y-1 list-[circle] pl-5">
+            <li><strong class="text-white">Gradient clipping</strong> (cap gradient norm, e.g. at 5).</li>
+            <li><strong class="text-white">Smaller learning rate.</strong></li>
+            <li><strong class="text-white">Careful initialization</strong> + batch norm.</li>
+            <li><strong class="text-white">L2 regularization</strong> (keeps weights small).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ gradient magnitude reaching layer 1 of a 10-layer net:
+ each layer multiplies by r = |w · f'(z)|
+ r = 0.5 :  0.5^10 ≈ 0.001   → VANISHING  (early layers frozen)
+ r = 1.0 :  1.0^10 = 1       → stable
+ r = 1.5 :  1.5^10 ≈ 57.7    → EXPLODING  (updates blow up / NaN)</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> A 20-layer all-sigmoid network on MNIST: layers near the output train fine, layers near the input barely change even after 100 epochs. Replacing sigmoid with ReLU + He init makes all layers train.</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> "Deep chain <strong>multiplies</strong>: below 1 it <strong>dies</strong>, above 1 it <strong>flies</strong>."</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Blaming only sigmoid. Weights matter too — even with ReLU, badly-scaled weights can vanish/explode the gradient; that is why initialization and batch norm are listed as fixes.
+      </div>
+    </section>
+
+    <!-- ============ AUTOENCODERS ============ -->
+    <section id="autoencoders" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Autoencoders
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ Dec-24, Jun-25</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> An autoencoder is an <strong>unsupervised</strong> neural network trained to reproduce its input at its output (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">target = input</code>). It has an <strong>encoder</strong> that compresses the input into a small latent code (bottleneck) and a <strong>decoder</strong> that reconstructs the input from that code, minimizing reconstruction loss <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = ||x − x̂||²</code>.</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (What are autoencoders + types):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: definition (unsupervised, output ≈ input, encoder–bottleneck–decoder).</li>
+          <li>Heading "Architecture": encoder <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h = f(We·x)</code>, decoder <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x̂ = g(Wd·h)</code>, loss <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">||x − x̂||²</code>; draw the hourglass diagram.</li>
+          <li>Heading "Bottleneck role": forces compression → network must keep only essential features (cannot simply copy).</li>
+          <li>Heading "Types": undercomplete, denoising, sparse, variational — one line + use each.</li>
+          <li>Heading "Applications": dimensionality reduction, denoising, anomaly detection, pretraining.</li>
+          <li>Close with example: 784-pixel MNIST digit compressed to 32 values and reconstructed.</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Architecture</h3>
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+        ENCODER              BOTTLENECK            DECODER
+ x ──► [784] ─► [128] ─► [32 latent code h] ─► [128] ─► [784] ──► x̂
+        compress            smallest layer         reconstruct
+                 Loss = || x − x̂ ||²   (reconstruction error)
+        (hourglass / butterfly shape — narrow in the middle)</pre>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">Role of the bottleneck layer
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ Dec-24</span>
+      </h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Information filter:</strong> it is the narrowest layer; input cannot pass through unchanged, so the network is <strong>forced to compress</strong>.</li>
+        <li><strong class="text-white">Feature learner:</strong> to reconstruct well from few numbers, the code must capture the most important structure/patterns of the data — this is learned dimensionality reduction (a non-linear cousin of PCA).</li>
+        <li><strong class="text-white">Prevents identity copying:</strong> without a bottleneck (or another constraint) the autoencoder would just learn <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x̂ = x</code> trivially and learn nothing useful.</li>
+        <li><strong class="text-white">Output of the bottleneck = latent representation/embedding</strong>, reusable for visualization, clustering, anomaly detection.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Types of autoencoders</h3>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Type</th>
+              <th class="px-3 py-2">Idea</th>
+              <th class="px-3 py-2">Constraint used</th>
+              <th class="px-3 py-2">Application</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Undercomplete</td>
+              <td class="px-3 py-2">Bottleneck smaller than input</td>
+              <td class="px-3 py-2">Small latent dimension</td>
+              <td class="px-3 py-2">Dimensionality reduction, feature extraction</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Denoising (DAE)</td>
+              <td class="px-3 py-2">Input is corrupted with noise, target is the CLEAN input</td>
+              <td class="px-3 py-2">Noise robustness</td>
+              <td class="px-3 py-2">Image/audio denoising, robust features</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Sparse</td>
+              <td class="px-3 py-2">Bottleneck can be large, but only few neurons may fire at once</td>
+              <td class="px-3 py-2">Sparsity penalty (L1 on activations / KL divergence)</td>
+              <td class="px-3 py-2">Interpretable feature learning</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Variational (VAE)</td>
+              <td class="px-3 py-2">Encoder outputs a distribution (mean μ, variance σ²); decoder samples from it</td>
+              <td class="px-3 py-2">KL divergence to N(0,1)</td>
+              <td class="px-3 py-2"><strong>Generative model</strong> — create new images/data</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-4"><strong class="text-white">Applications list (write 4):</strong> dimensionality reduction, image denoising, anomaly detection (high reconstruction error = anomaly), data compression, pretraining deep nets.</p>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> Credit-card fraud detection — train an autoencoder only on normal transactions; a fraudulent transaction reconstructs badly (large <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">||x − x̂||²</code>) and is flagged as an anomaly.</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> types = "<strong>U</strong>ncle <strong>D</strong>rives <strong>S</strong>mall <strong>V</strong>ans" — <strong>U</strong>ndercomplete, <strong>D</strong>enoising, <strong>S</strong>parse, <strong>V</strong>ariational.</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Calling autoencoders supervised "because they have targets." The target is the input itself — no human labels are needed, so they are <strong>unsupervised (self-supervised)</strong>.
+      </div>
+    </section>
+
+    <!-- ============ BATCH NORMALIZATION ============ -->
+    <section id="batch-normalization" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Batch Normalization
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ Dec-24, Jun-25</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> Batch Normalization (BatchNorm) is a technique that normalizes the inputs of each layer over the current mini-batch (mean 0, variance 1) and then rescales them with two learnable parameters (γ, β). It stabilizes and accelerates training by reducing <strong>internal covariate shift</strong> (the constant change in each layer's input distribution as earlier weights update).</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: definition + "applied per mini-batch, usually between the linear step and the activation."</li>
+          <li>Heading "Problem it solves": internal covariate shift, one line.</li>
+          <li>Heading "Steps": the 4 formulas below, in order.</li>
+          <li>Heading "Benefits": 4-5 bullets (faster training, higher lr, less vanishing gradient, regularization, less initialization-sensitive).</li>
+          <li>Heading "Test time": use running (population) mean/variance instead of batch statistics.</li>
+          <li>Small diagram of where BN sits in a layer; example: deep net trains in half the epochs with 10× learning rate.</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">The 4 steps (per feature, per mini-batch)</h3>
+      <ol class="mt-3 space-y-2 list-decimal pl-5 text-slate-300">
+        <li><strong class="text-white">Batch mean:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">μ = (1/m) Σ xi</code></li>
+        <li><strong class="text-white">Batch variance:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ² = (1/m) Σ (xi − μ)²</code></li>
+        <li><strong class="text-white">Normalize:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x̂i = (xi − μ) / sqrt(σ² + ε)</code> (ε avoids division by zero)</li>
+        <li><strong class="text-white">Scale and shift (learnable):</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">yi = γ · x̂i + β</code> — lets the network undo normalization if that is actually better.</li>
+      </ol>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ ... ─► [ z = Wx + b ] ─► [ BatchNorm: normalize → γ,β ] ─► [ ReLU ] ─► ...
+                              uses μ, σ² of the CURRENT mini-batch
+ (at test time: fixed running averages of μ and σ² are used)</pre>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Benefits (write 5)</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Faster convergence</strong> — loss surface becomes smoother; fewer epochs needed.</li>
+        <li><strong class="text-white">Allows higher learning rates</strong> without divergence.</li>
+        <li><strong class="text-white">Reduces vanishing/exploding gradients</strong> — keeps activations in a healthy range (non-saturated zone of sigmoid/tanh).</li>
+        <li><strong class="text-white">Less sensitive to weight initialization.</strong></li>
+        <li><strong class="text-white">Mild regularization</strong> — batch statistics add noise, slightly reducing overfitting (sometimes dropout becomes unnecessary).</li>
+        <li><strong class="text-white">Reduces internal covariate shift</strong> — each layer sees a stable input distribution.</li>
+      </ul>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> A 20-layer sigmoid network that would not train at all (vanishing gradients) trains successfully once BatchNorm is inserted after every layer, even with a 10× larger learning rate.</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> steps = "<strong>M</strong>ean, <strong>V</strong>ariance, <strong>N</strong>ormalize, <strong>S</strong>cale-shift" → "<strong>M</strong>y <strong>V</strong>ery <strong>N</strong>ice <strong>S</strong>tep."</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Forgetting γ and β. Normalization alone (steps 1–3) is NOT BatchNorm — the learnable scale-and-shift is what makes it flexible; and forgetting to say test-time uses running averages, not batch statistics.
+      </div>
+    </section>
+
+    <!-- ============ DROPOUT ============ -->
+    <section id="dropout" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Dropout
+        <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> Dropout is a regularization technique in which, during <strong>each training step</strong>, every neuron in a layer is temporarily "dropped" (output set to 0) with probability <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p</code> (e.g. 0.5). The network therefore trains a different random sub-network each step and cannot rely on any single neuron.</p>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key points</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Why it works:</strong> prevents <strong>co-adaptation</strong> — neurons cannot depend on specific partners, so each learns robust features; acts like training an ensemble of many thinned networks that share weights.</li>
+        <li><strong class="text-white">Training:</strong> each forward pass randomly zeros neurons with probability <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p</code>; typical <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p</code> = 0.5 hidden layers, 0.2 input layer.</li>
+        <li><strong class="text-white">Testing:</strong> NO dropout — all neurons active; outputs scaled by <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1 − p)</code> (or use "inverted dropout" which scales by <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">1/(1−p)</code> during training so test needs no change).</li>
+        <li><strong class="text-white">Effect:</strong> reduces overfitting; training loss slightly worse, validation/test accuracy better.</li>
+        <li><strong class="text-white">Where:</strong> usually applied on fully-connected hidden layers.</li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ Normal training step            With dropout (p = 0.5)
+   ●──●──●                          ●──✕──●
+   │╲╱│╲╱│                          │  ╱  │      ✕ = dropped
+   │╱╲│╱╲│                          │ ╱   │          (output = 0)
+   ●──●──●                          ✕──●──●
+ all paths active               random thinned sub-network each step</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> Like a cricket team practising with 5 random players rested each day — no player becomes indispensable, and the full team on match day (test time) is stronger and more robust.</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Applying dropout at test time. Dropout is TRAINING-only; at test time the full network runs (with output scaling). Writing this one line earns an easy mark.
+      </div>
+    </section>
+
+    <!-- ============ L1 AND L2 REGULARIZATION ============ -->
+    <section id="l1-l2" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">L1 and L2 Regularization
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-24</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> Regularization adds a penalty on weight sizes to the loss function to discourage complex models and reduce overfitting. <strong>L1 (Lasso)</strong> penalizes the <strong>absolute values</strong> of weights; <strong>L2 (Ridge)</strong> penalizes the <strong>squares</strong> of weights.</p>
+
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li>L1: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Loss_total = Loss_data + λ · Σ |wi|</code></li>
+        <li>L2: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Loss_total = Loss_data + λ · Σ wi²</code></li>
+        <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">λ</code> (lambda) controls penalty strength: λ = 0 → no regularization; large λ → underfitting.</li>
+      </ul>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (how they penalize differently):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: define regularization + both formulas.</li>
+          <li>Heading "Gradient behaviour": L1 subtracts a CONSTANT <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">λ·sign(w)</code> (pushes weights all the way to exact 0) vs L2 subtracts <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2λw</code>, proportional to w (shrinks but never reaches 0).</li>
+          <li>Heading "Effect on weights": L1 → sparse weights, automatic feature selection; L2 → small distributed weights.</li>
+          <li>Reproduce the comparison table.</li>
+          <li>Draw the diamond vs circle constraint diagram (corners of the diamond = sparsity).</li>
+          <li>Close with example: 1000 features, only 20 relevant → L1 zeroes ~980 weights; L2 keeps all small.</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Comparison table</h3>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Aspect</th>
+              <th class="px-3 py-2">L1 (Lasso)</th>
+              <th class="px-3 py-2">L2 (Ridge)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Penalty term</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">λ Σ |wi|</code></td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">λ Σ wi²</code></td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Gradient of penalty</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">λ · sign(w)</code> — constant pull</td>
+              <td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2λw</code> — proportional pull</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Effect on weights</td>
+              <td class="px-3 py-2">Drives many weights to <strong>exactly 0</strong> → <strong>sparse</strong></td>
+              <td class="px-3 py-2">Shrinks all weights near 0, <strong>never exactly 0</strong></td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Feature selection</td>
+              <td class="px-3 py-2">YES (built-in)</td>
+              <td class="px-3 py-2">NO</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Constraint region shape</td>
+              <td class="px-3 py-2">Diamond (corners on axes)</td>
+              <td class="px-3 py-2">Circle (smooth)</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Solution</td>
+              <td class="px-3 py-2">No closed form (not differentiable at 0)</td>
+              <td class="px-3 py-2">Closed form exists</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Robustness to outliers in weights</td>
+              <td class="px-3 py-2">Encourages few large-ish relevant weights</td>
+              <td class="px-3 py-2">Prefers many small weights</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Use when</td>
+              <td class="px-3 py-2">Many irrelevant features; want interpretability</td>
+              <td class="px-3 py-2">All features somewhat useful; want stability</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ L1 (diamond)                    L2 (circle)
+      w2                              w2
+      /\   ← loss contours            ___
+     /  \      ellipse hits          /   \    ellipse hits circle
+ ───◆────◆── w1                  ───|  ●  |── w1   at a generic point
+     \  /   corner ON the axis       \___/    → both w1,w2 small,
+      \/    → w2 = 0 (SPARSE!)                  non-zero</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> House-price model with 1000 features where only 20 matter. L1 with proper λ sets ~980 weights to exactly zero (automatic feature selection). L2 keeps all 1000 weights small but non-zero. <strong>Elastic Net</strong> = L1 + L2 combined (bonus line for the examiner).</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> "<strong>L1 = Lasso = Lean</strong> (cuts weights to zero); <strong>L2 = Ridge = Reduce</strong> (shrinks smoothly)." Also: L<strong>1</strong> → some weights survive, rest die; L<strong>2</strong> → <strong>2</strong> small <strong>2</strong> die (small but never zero).</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Writing "L1 and L2 both make weights zero." Only L1 produces exact zeros; L2 asymptotically shrinks them. The <em>difference in the gradient</em> (constant vs proportional) is the reason — state it explicitly for full marks.
+      </div>
+    </section>
+
+    <!-- ============ MOMENTUM ============ -->
+    <section id="momentum" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Momentum (and contrast with RMSProp/Adam)
+        <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Asked only inside optimizer Q — DUE, likely next</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> Momentum is a gradient-descent enhancement that accumulates an exponentially decaying moving average of past gradients (a "velocity") and moves the weights along this velocity, like a heavy ball rolling downhill that builds up speed in consistent directions and smooths out oscillations.</p>
+
+      <p class="mt-3"><strong class="text-white">Update rule:</strong></p>
+      <ul class="mt-2 space-y-1 list-disc pl-5 text-slate-300">
+        <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">v_t = β · v_(t−1) + η · ∇L(w)</code> (β ≈ 0.9 = friction/decay factor)</li>
+        <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − v_t</code></li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key points</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Accelerates</strong> along directions where gradients consistently agree (velocity adds up).</li>
+        <li><strong class="text-white">Dampens zig-zag</strong> across narrow ravines — opposite gradient components cancel in the average.</li>
+        <li><strong class="text-white">Escapes</strong> small local minima and plateaus using built-up speed.</li>
+        <li><strong class="text-white">β meaning:</strong> β = 0.9 means roughly the last <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">1/(1−β) = 10</code> gradients contribute to the velocity.</li>
+        <li><strong class="text-white">Nesterov momentum (NAG):</strong> looks ahead — computes gradient at <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w − βv</code> (the anticipated position) → slightly faster, corrects before overshooting.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Contrast with adaptive optimizers</h3>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2">Feature</th>
+              <th class="px-3 py-2">Momentum</th>
+              <th class="px-3 py-2">RMSProp</th>
+              <th class="px-3 py-2">Adam</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">What it adapts</td>
+              <td class="px-3 py-2">Direction (velocity from past gradients)</td>
+              <td class="px-3 py-2">Per-parameter step SIZE (÷ RMS of past gradients)</td>
+              <td class="px-3 py-2">Both direction AND step size</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Learning rate</td>
+              <td class="px-3 py-2">Single global η</td>
+              <td class="px-3 py-2">Adaptive per parameter</td>
+              <td class="px-3 py-2">Adaptive per parameter + momentum</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Memory kept</td>
+              <td class="px-3 py-2">1st moment (mean of gradients)</td>
+              <td class="px-3 py-2">2nd moment (mean of squared gradients)</td>
+              <td class="px-3 py-2">Both moments (bias-corrected)</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Best for</td>
+              <td class="px-3 py-2">Convex-ish, well-scaled problems; often best final generalization when tuned</td>
+              <td class="px-3 py-2">RNNs, non-stationary objectives</td>
+              <td class="px-3 py-2">Default all-rounder for deep learning</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ Plain SGD in a ravine:           With momentum:
+   ↗↘↗↘↗↘↗↘  → min                 ~~→→→→→  → min
+ (oscillates across walls,       (oscillations cancel,
+  slow along the valley)          speeds along the valley)</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> A ball rolled into a wavy valley: plain GD stops at the first small dip; a heavy ball with momentum rolls through small dips and settles in the deep valley (better minimum).</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Saying momentum "changes the learning rate." It does not — it changes the <em>direction/velocity</em> using gradient history; RMSProp/Adam are the ones adapting the effective learning rate per parameter.
+      </div>
+    </section>
+
+    <!-- ============ HYPERPARAMETER TUNING ============ -->
+    <section id="hyperparameter-tuning" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h2 class="text-2xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">Hyperparameter Tuning
+        <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 MUST DO — PYQ May-23, Dec-24</span>
+      </h2>
+
+      <p><strong class="text-white">Definition:</strong> Hyperparameters are configuration settings chosen <strong>before</strong> training (not learned from data) — learning rate, number of layers/neurons, batch size, epochs, dropout rate, λ, β, activation choice. Hyperparameter tuning is the systematic search for the combination that gives the best <strong>validation</strong> performance.</p>
+
+      <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+        <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (techniques + challenges / justify improvement):</p>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-300">
+          <li>Opening line: define hyperparameter (set before training) vs parameter (weights, learned) — 1-line table.</li>
+          <li>Heading "Why tuning improves performance": lr controls convergence (too high diverges, too low crawls); depth/width control under/overfitting; λ and dropout control the bias–variance trade-off — wrong values cap the achievable accuracy regardless of training time.</li>
+          <li>Heading "Techniques": Grid search, Random search, Bayesian optimization, (bonus: Hyperband/early-stopping, genetic algorithms) — one line each.</li>
+          <li>Heading "Challenges": expensive (one full training per trial), exponential search space, interactions between hyperparameters, no gradients available, risk of overfitting the validation set.</li>
+          <li>Small grid-vs-random diagram.</li>
+          <li>Close with example: tuning lr from 0.5 → 0.01 taking accuracy 60% → 92%.</li>
+        </ol>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Parameters vs Hyperparameters</h3>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-800/60 text-slate-300">
+            <tr>
+              <th class="px-3 py-2"></th>
+              <th class="px-3 py-2">Parameters</th>
+              <th class="px-3 py-2">Hyperparameters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Examples</td>
+              <td class="px-3 py-2">Weights, biases</td>
+              <td class="px-3 py-2">Learning rate, layers, batch size, epochs, dropout p, λ</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Set by</td>
+              <td class="px-3 py-2">Learned by GD during training</td>
+              <td class="px-3 py-2">Chosen by the practitioner before training</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="px-3 py-2 font-semibold text-white">Evaluated on</td>
+              <td class="px-3 py-2">Training loss</td>
+              <td class="px-3 py-2">Validation set performance</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Tuning techniques (one line each)</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Grid Search:</strong> try every combination on a predefined grid (e.g. lr ∈ {0.1, 0.01, 0.001} × batch ∈ {32, 64}). Exhaustive but exponential cost.</li>
+        <li><strong class="text-white">Random Search:</strong> sample random combinations from ranges — usually beats grid for the same budget because important hyperparameters get more distinct values tried.</li>
+        <li><strong class="text-white">Bayesian Optimization:</strong> build a probabilistic model (e.g. Gaussian Process) of score vs hyperparameters and pick the next most promising trial — sample-efficient, good when each training run is costly.</li>
+        <li><strong class="text-white">Hyperband / Successive Halving:</strong> start many configs, kill the bad ones early, give survivors more epochs.</li>
+        <li><strong class="text-white">Manual / coarse-to-fine:</strong> expert intuition first, then zoom into the promising region.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Challenges (write 5)</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Computational cost</strong> — every trial = one full training run (hours/days for deep nets).</li>
+        <li><strong class="text-white">Curse of dimensionality</strong> — combinations explode: 5 hyperparameters × 5 values each = 3125 runs.</li>
+        <li><strong class="text-white">Interdependence</strong> — best learning rate changes when batch size or optimizer changes; cannot tune each in isolation.</li>
+        <li><strong class="text-white">No gradient</strong> — validation score is not differentiable w.r.t. hyperparameters; only black-box search works.</li>
+        <li><strong class="text-white">Validation overfitting</strong> — too many trials can overfit the validation set; final check must be on the untouched test set.</li>
+        <li><strong class="text-white">Non-reproducibility/noise</strong> — random seeds change results, so comparisons need repeated runs.</li>
+      </ul>
+
+      <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">
+ Grid search (3x3 = 9 trials)     Random search (9 trials)
+  lr ●───●───●                     lr  ●    ●
+     │   │   │                          ●       ●
+     ●───●───●                        ●    ●
+     │   │   │                             ●   ●  ●
+     ●───●───●                     tries 9 DIFFERENT lr values
+   batch size →                    (grid tried only 3) → better coverage</pre>
+
+      <p class="mt-4"><strong class="text-white">Example:</strong> Same MNIST network: lr = 0.5 → diverges (11% accuracy); lr = 0.00001 → 65% after 50 epochs (too slow); lr = 0.01 with batch 64 → 97%. Nothing changed but hyperparameters — direct justification that tuning improves performance.</p>
+
+      <p class="mt-4 text-violet-300"><strong>Mnemonic:</strong> techniques = "<strong>G</strong>ood <strong>R</strong>esearchers <strong>B</strong>uild <strong>H</strong>ypotheses" — <strong>G</strong>rid, <strong>R</strong>andom, <strong>B</strong>ayesian, <strong>H</strong>yperband.</p>
+
+      <div class="border-l-4 border-rose-500 bg-rose-500/5 p-3 rounded-r-xl mt-4 text-slate-300">
+        <strong class="text-rose-300">⚠️ Common mistake:</strong> Mixing up parameters and hyperparameters. If gradient descent learns it, it is a parameter; if YOU set it before training, it is a hyperparameter. Open your answer with this distinction.
+      </div>
+    </section>
+
+    <!-- ============ QUICK REVISION BOX ============ -->
+    <section id="quick-revision" class="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-6">
+      <h2 class="text-2xl font-bold text-white mb-4">⚡ Quick Revision Box</h2>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">One-liner per topic</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Linearity vs Non-linearity:</strong> stacked linear layers collapse to one (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W2W1x</code>); activations give curves; pure linearity → GD can only fit straight lines (XOR impossible).</li>
+        <li><strong class="text-white">Activation functions:</strong> decide neuron output; sigmoid (0,1) saturates, tanh (−1,1) zero-centred, ReLU fast but can die, Leaky ReLU fixes dying, softmax for multi-class output.</li>
+        <li><strong class="text-white">Weights &amp; bias:</strong> weight = input importance knob; bias = threshold shifter (intercept); both learned by GD.</li>
+        <li><strong class="text-white">Loss functions:</strong> MSE magnifies outliers, MAE robust, cross-entropy for classification (pairs with sigmoid/softmax), hinge for SVM margins.</li>
+        <li><strong class="text-white">Gradient descent:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − η·∂L/∂w</code>; walk downhill opposite the slope; η too big diverges, too small crawls.</li>
+        <li><strong class="text-white">GD types:</strong> Batch = all data/smooth/slow; SGD = 1 sample/noisy/fast; Mini-batch = best of both (default).</li>
+        <li><strong class="text-white">Optimizers:</strong> Momentum adds velocity; AdaGrad per-parameter lr that dies; RMSProp fixes it with moving average; Adam = Momentum + RMSProp (default).</li>
+        <li><strong class="text-white">Multilayer network:</strong> input + hidden + output, fully connected, non-linear activations; universal approximator; solves XOR.</li>
+        <li><strong class="text-white">Backpropagation:</strong> Forward → output Error → Backpropagate via chain rule → Update (FEBU); computes gradients, GD updates.</li>
+        <li><strong class="text-white">Chain rule:</strong> decomposes <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂w</code> into product of local derivatives; reuse of δ makes it efficient; product form explains vanishing/exploding.</li>
+        <li><strong class="text-white">Weight initialization:</strong> zero = symmetry disaster; random = risky scale; Xavier for sigmoid/tanh (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">1/n_in</code>); He for ReLU (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2/n_in</code>).</li>
+        <li><strong class="text-white">Training vs testing:</strong> train = learn weights, validation = tune hyperparameters/early stop, test = one final unseen evaluation.</li>
+        <li><strong class="text-white">Unstable gradients:</strong> product of layer terms — below 1 it dies (vanishing: sigmoid, deep nets), above 1 it flies (exploding: big weights); fix with ReLU, He init, BatchNorm, clipping, ResNets.</li>
+        <li><strong class="text-white">Autoencoders:</strong> unsupervised, encoder→bottleneck→decoder, minimize <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">||x − x̂||²</code>; bottleneck forces compression; types = Undercomplete, Denoising, Sparse, Variational (Uncle Drives Small Vans).</li>
+        <li><strong class="text-white">Batch norm:</strong> per-mini-batch normalize then γ,β rescale; faster training, higher lr, fights vanishing gradient, mild regularization; test time uses running averages.</li>
+        <li><strong class="text-white">Dropout:</strong> randomly zero neurons with prob p during TRAINING only; prevents co-adaptation; acts like an ensemble.</li>
+        <li><strong class="text-white">L1 vs L2:</strong> L1 <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">λΣ|w|</code> constant pull → exact zeros → feature selection (diamond); L2 <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">λΣw²</code> proportional pull → small non-zero weights (circle).</li>
+        <li><strong class="text-white">Momentum:</strong> velocity <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">v = βv + ηg</code>; smooths zig-zag, speeds valleys, escapes small dips; adapts direction, NOT learning rate.</li>
+        <li><strong class="text-white">Hyperparameter tuning:</strong> search lr/layers/batch/λ on VALIDATION set via Grid/Random/Bayesian/Hyperband; challenges = cost, huge space, interactions, no gradients.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Formula sheet</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li>Neuron: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z = Σ wixi + b</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a = f(z)</code></li>
+        <li>Sigmoid: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ(x) = 1/(1+e^-x)</code>; <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ'(x) = σ(x)(1−σ(x))</code>; max slope 0.25</li>
+        <li>Tanh: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(e^x − e^-x)/(e^x + e^-x)</code>, range (−1,1)</li>
+        <li>ReLU: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max(0, x)</code>; Leaky ReLU: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x if x&gt;0 else 0.01x</code></li>
+        <li>Softmax: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">e^xi / Σ e^xj</code></li>
+        <li>MSE: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1/n)Σ(y−ŷ)²</code>; MAE: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1/n)Σ|y−ŷ|</code></li>
+        <li>Binary cross-entropy: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">−(1/n)Σ[y log ŷ + (1−y) log(1−ŷ)]</code></li>
+        <li>Hinge: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max(0, 1 − y·ŷ)</code></li>
+        <li>GD update: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − η·∂L/∂w</code></li>
+        <li>Output error (MSE+sigmoid): <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ_out = (ŷ − y)·ŷ(1−ŷ)</code></li>
+        <li>Hidden error: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ(l) = (W(l+1)ᵀ δ(l+1)) · f'(z(l))</code></li>
+        <li>Weight gradient: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∂L/∂W(l) = δ(l) · a(l−1)ᵀ</code></li>
+        <li>Momentum: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">v = βv + ηg; w = w − v</code> (β ≈ 0.9)</li>
+        <li>RMSProp: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">E = γE + (1−γ)g²; w = w − (η/√(E+ε))·g</code></li>
+        <li>Adam: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">m = β1m + (1−β1)g; v = β2v + (1−β2)g²; w = w − η·m̂/(√v̂ + ε)</code></li>
+        <li>Xavier: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Var(w) = 1/n_in</code> (sigmoid/tanh); He: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Var(w) = 2/n_in</code> (ReLU)</li>
+        <li>BatchNorm: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">μ = mean; σ² = var; x̂ = (x−μ)/√(σ²+ε); y = γx̂ + β</code></li>
+        <li>L1: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L + λΣ|wi|</code>; L2: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L + λΣwi²</code></li>
+        <li>Autoencoder loss: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">||x − x̂||²</code></li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Diagrams to practice (draw each once on paper)</h3>
+      <ol class="mt-3 space-y-1 list-decimal pl-5 text-slate-300">
+        <li>XOR / linearly-separable vs non-separable scatter.</li>
+        <li>Sigmoid and ReLU curves side by side.</li>
+        <li>Single neuron (inputs, weights, Σ, bias, activation).</li>
+        <li>Loss bowl with GD steps + small-η vs large-η paths.</li>
+        <li>Batch vs SGD vs mini-batch convergence paths.</li>
+        <li>3-4-2 multilayer network (label weights and biases).</li>
+        <li>Forward/backward arrows backprop diagram with δ formulas.</li>
+        <li>Overfitting curve (training vs validation loss, early-stopping point).</li>
+        <li>Autoencoder hourglass (encoder–bottleneck–decoder).</li>
+        <li>BatchNorm position in a layer (linear → BN → activation).</li>
+        <li>Dropout thinned network (crossed-out neurons).</li>
+        <li>L1 diamond vs L2 circle constraint regions.</li>
+        <li>Grid vs random search dots.</li>
+      </ol>
+
+      <h3 class="text-lg font-semibold text-indigo-300 mt-6">Mnemonics recap</h3>
+      <ul class="mt-3 space-y-2 list-disc pl-5 text-slate-300">
+        <li><strong class="text-white">Activations:</strong> "Sigmoid Squashes, Tanh Takes (−1,1), ReLU Rejects negatives, Softmax Shares."</li>
+        <li><strong class="text-white">Optimizers:</strong> "MARS-A" (Momentum → AdaGrad → RMSProp → Adam; Adam = Momentum + RMSProp).</li>
+        <li><strong class="text-white">Backprop:</strong> "FEBU" — Forward, Error, Backpropagate, Update.</li>
+        <li><strong class="text-white">Autoencoder types:</strong> "Uncle Drives Small Vans."</li>
+        <li><strong class="text-white">BatchNorm steps:</strong> "My Very Nice Step" (Mean, Variance, Normalize, Scale-shift).</li>
+        <li><strong class="text-white">Regularization:</strong> "L1 = Lasso = Lean (zeros); L2 = Ridge = Reduce (shrink)."</li>
+        <li><strong class="text-white">Unstable gradients:</strong> "Below 1 it dies, above 1 it flies."</li>
+        <li><strong class="text-white">Tuning techniques:</strong> "Good Researchers Build Hypotheses" (Grid, Random, Bayesian, Hyperband).</li>
+      </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 mt-8 pt-6 pb-4 text-sm text-slate-400 flex flex-wrap items-center justify-between gap-2">
+      <span>CS-601 Machine Learning · RGPV · Target 9 SGPA</span>
+      <a href="index.html" class="text-indigo-400 hover:text-white">← Back to Dashboard</a>
+    </footer>
+
+  </main>
+
+</body>
+</html>

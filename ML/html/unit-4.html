@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4 — RNN, LSTM &amp; Reinforcement Learning | CS-601 ML</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+<nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+  <ul class="max-w-5xl mx-auto flex flex-wrap gap-x-4 gap-y-1 px-4 py-3 text-sm">
+    <li><a href="index.html" class="text-slate-400 hover:text-white">🎯 Dashboard</a></li>
+    <li><a href="unit-1.html" class="text-slate-400 hover:text-white">U1 Foundations</a></li>
+    <li><a href="unit-2.html" class="text-slate-400 hover:text-white">U2 Neural Nets</a></li>
+    <li><a href="unit-3.html" class="text-slate-400 hover:text-white">U3 CNN</a></li>
+    <li><a href="unit-4.html" class="text-indigo-400 font-semibold">U4 RNN &amp; RL</a></li>
+    <li><a href="unit-5.html" class="text-slate-400 hover:text-white">U5 SVM &amp; Apps</a></li>
+    <li><a href="numericals.html" class="text-slate-400 hover:text-white">🔢 Numericals</a></li>
+  </ul>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+
+<h1 class="text-3xl font-bold text-white mb-2">Unit 4 — RNN, LSTM &amp; Reinforcement Learning (CS-601)</h1>
+
+<div class="border-l-4 border-indigo-500 bg-indigo-500/5 p-4 rounded-r-xl my-4">
+  <p><strong class="text-white">Exam weight: ~19.6% of offered marks.</strong> Most RECYCLED unit: LSTM on a 3-paper streak; MDP, Q-learning, RL-framework each asked 3/5 years. SARSA + beam search never asked = top DUE candidates.</p>
+</div>
+
+<!-- ============ PYQ TABLE ============ -->
+<section id="pyq" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-4">PYQ Questions from this Unit</h2>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Year</th><th class="px-3 py-2">Question (condensed)</th><th class="px-3 py-2">Marks</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">What is Reinforcement Learning + detailed concepts</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Concept of MDP</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Q-learning algorithm with deterministic rewards/actions</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Attention model (short note)</td><td class="px-3 py-2">3.5</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Feed-forward vs recurrent network — structural/operational differences</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">LSTM vs GRU vs vanilla RNN</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Reinforcement learning short note with example</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Define RNN + types and architecture</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">n-gram precision and brevity penalty in BLEU score</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Actor and critic network roles + interaction</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Q-learning (short note)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">MDP (short note)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">LSTM unit architecture — gates controlling information flow</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Define RL + elements in detail</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Value Iteration vs Policy Iteration</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Structure of LSTM</td><td class="px-3 py-2">6</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Model-based vs model-free learning, Q-Learning</td><td class="px-3 py-2">8</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Working principle of MDP in detail</td><td class="px-3 py-2">7</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4"><strong class="text-white">Read of the pattern:</strong> This unit is two halves — (A) sequence models (RNN → LSTM → GRU → translation → BLEU → attention) and (B) reinforcement learning (framework → MDP → Bellman → VI/PI → Q-learning → SARSA → actor-critic). Every paper picks one from each half. Master LSTM + MDP + Q-learning first, then the DUE topics (SARSA, beam search, Bellman) — they are overdue.</p>
+</section>
+
+<!-- ============ 1. RNN ============ -->
+<section id="rnn" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">1. Recurrent Neural Network (RNN) <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23, May-24 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: define RNN as a neural network with feedback loops for sequential data.</li>
+      <li>Headings: <strong>Why RNN (limitation of feed-forward)</strong> → <strong>Architecture &amp; equations</strong> → <strong>Unrolling in time</strong> → <strong>Training (BPTT)</strong> → <strong>Types of RNN</strong> → <strong>Limitations</strong>.</li>
+      <li>Draw: the unrolled RNN diagram (x → h → y at each time step, with h passed forward).</li>
+      <li>Close with example: predicting the next word in "I grew up in France… I speak fluent ___".</li>
+    </ol>
+  </div>
+
+  <p><strong class="text-white">Definition:</strong> A Recurrent Neural Network is a neural network designed for <strong>sequential data</strong>, in which the output at time <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">t</code> depends not only on the current input <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x_t</code> but also on a <strong>hidden state</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_(t-1)</code> carried over from previous time steps. The same weights are <strong>shared across all time steps</strong>, giving the network a form of memory.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">1.1 Why not a feed-forward network?</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li>Feed-forward networks need <strong>fixed-size input/output</strong>; sequences (sentences, speech, stock prices) have variable length.</li>
+    <li>They have <strong>no memory</strong> — each input is processed independently, so order of data is lost.</li>
+    <li>No <strong>parameter sharing</strong> across positions: the word "France" at position 3 and position 7 would be learned separately.</li>
+    <li>RNN fixes all three: variable length, memory via hidden state, shared weights <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W</code> at every step.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">1.2 Architecture and equations</h3>
+  <p class="mt-2">Core recurrence (memorise both lines):</p>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li>Hidden state: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_t = tanh(W_hh * h_(t-1) + W_xh * x_t + b_h)</code></li>
+    <li>Output: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y_t = softmax(W_hy * h_t + b_y)</code></li>
+  </ul>
+  <p class="mt-2">Term by term: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W_xh</code> maps input → hidden, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W_hh</code> maps previous hidden → current hidden (the "recurrent" part), <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W_hy</code> maps hidden → output. The <strong>same three weight matrices are reused at every time step</strong>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">1.3 Unrolled RNN diagram (draw this)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+        y_1         y_2         y_3
+         ^           ^           ^
+         |W_hy       |W_hy       |W_hy
+ h_0 --&gt; [h_1] ----&gt; [h_2] ----&gt; [h_3] ----&gt; ...
+         ^    W_hh   ^    W_hh   ^
+         |W_xh       |W_xh       |W_xh
+        x_1         x_2         x_3
+
+ (Same weights W_xh, W_hh, W_hy at every step — "unrolled in time")</pre>
+  <p class="mt-2">Folded view (also acceptable): a single block <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[h]</code> with a loop arrow from <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h</code> back to itself labelled <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W_hh</code>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">1.4 Training — Backpropagation Through Time (BPTT)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li>Unroll the network for <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">T</code> time steps → it becomes a deep feed-forward network with shared weights.</li>
+    <li>Total loss = sum of losses at each time step: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">L = Σ_t L_t</code>.</li>
+    <li>Apply ordinary backpropagation on the unrolled graph; gradients for shared weights are <strong>summed over all time steps</strong>.</li>
+    <li><strong>Truncated BPTT:</strong> in practice backpropagate only <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">k</code> steps back to save computation.</li>
+    <li>Problem: repeated multiplication by <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W_hh</code> makes gradients <strong>vanish</strong> (shrink to 0) or <strong>explode</strong> (blow up) over long sequences → RNN cannot learn <strong>long-term dependencies</strong>. (This motivates LSTM/GRU — say this line in the exam, it links your answer.)</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">1.5 Types of RNN (with applications) — asked May-24</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+one-to-one      one-to-many        many-to-one        many-to-many       many-to-many
+                                                      (equal length)     (encoder-decoder)
+   y             y1 y2 y3              y               y1 y2 y3               y1 y2
+   |              |  |  |              |                |  |  |                |  |
+  [h]           [h]-[h]-[h]        [h]-[h]-[h]      [h]-[h]-[h]        [h]-[h]-[h]-[h]
+   |              |                 |   |  |          |  |  |            |  |
+   x              x                x1  x2 x3         x1 x2 x3           x1 x2</pre>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Type</th><th class="px-3 py-2">Input → Output</th><th class="px-3 py-2">Application (write one each)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">One-to-one</td><td class="px-3 py-2">1 → 1</td><td class="px-3 py-2">Plain classification (image → label)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">One-to-many</td><td class="px-3 py-2">1 → sequence</td><td class="px-3 py-2">Image captioning, music generation</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Many-to-one</td><td class="px-3 py-2">sequence → 1</td><td class="px-3 py-2">Sentiment analysis, spam detection</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Many-to-many (synced)</td><td class="px-3 py-2">seq → seq (same length)</td><td class="px-3 py-2">POS tagging, video frame labelling</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Many-to-many (encoder-decoder)</td><td class="px-3 py-2">seq → seq (different length)</td><td class="px-3 py-2">Machine translation, chatbots</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">1.6 Feed-forward vs Recurrent network — asked May-23</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">Feed-forward NN</th><th class="px-3 py-2">Recurrent NN</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Signal flow</td><td class="px-3 py-2">One direction only, input → output</td><td class="px-3 py-2">Has feedback loops (cycles)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Memory</td><td class="px-3 py-2">None — each input independent</td><td class="px-3 py-2">Hidden state stores past information</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Input size</td><td class="px-3 py-2">Fixed</td><td class="px-3 py-2">Variable-length sequences</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Weight sharing over time</td><td class="px-3 py-2">No</td><td class="px-3 py-2">Yes — same <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W</code> at every time step</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Training</td><td class="px-3 py-2">Standard backpropagation</td><td class="px-3 py-2">Backpropagation Through Time (BPTT)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Typical data</td><td class="px-3 py-2">Tabular, images</td><td class="px-3 py-2">Text, speech, time series</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Problem faced</td><td class="px-3 py-2">Overfitting etc.</td><td class="px-3 py-2">Vanishing/exploding gradients</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4"><strong class="text-white">Example:</strong> Next-word prediction — "I grew up in France… I speak fluent ___". The answer "French" depends on a word seen many steps earlier; only a network with memory can use it.</p>
+  <p class="mt-2"><strong class="text-white">Mnemonic (types):</strong> <strong>"1-1, 1-M, M-1, M-M"</strong> — <em>"One image, Many captions; Many words, One sentiment; Many-to-Many translates."</em></p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Drawing different weights at each unrolled step — the whole point of an RNN is that <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">W_xh, W_hh, W_hy</code> are the <strong>same</strong> at every time step; label them identically in the diagram.</p>
+  </div>
+</section>
+
+<!-- ============ 2. LSTM ============ -->
+<section id="lstm" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">2. Long Short-Term Memory (LSTM) <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23, Dec-24, Jun-25 — MUST DO · 3-paper streak</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: LSTM is an improved RNN that solves the vanishing-gradient problem using a cell state and three gates.</li>
+      <li>Headings: <strong>Need for LSTM</strong> → <strong>Cell state (conveyor belt)</strong> → <strong>Forget gate</strong> → <strong>Input gate</strong> → <strong>Output gate</strong> → <strong>All 6 equations</strong>.</li>
+      <li>Draw: the LSTM cell diagram with C_(t-1)→C_t line on top and the three σ gates below.</li>
+      <li>Close with example: remembering the subject "France" across a long sentence to predict "French"; one line — "gates are sigmoid layers outputting 0–1, acting like taps on information flow."</li>
+    </ol>
+  </div>
+
+  <p><strong class="text-white">Definition:</strong> Long Short-Term Memory is a special RNN architecture (Hochreiter &amp; Schmidhuber, 1997) that can learn <strong>long-term dependencies</strong>. It maintains a separate <strong>cell state</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_t</code> (long-term memory) and controls what is stored, erased and read from it using three <strong>gates</strong> — forget, input and output — each a sigmoid layer producing values between 0 and 1.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">2.1 Why LSTM? (write 2 lines)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li>Vanilla RNN gradients vanish/explode over long sequences → forgets far-away context.</li>
+    <li>LSTM's cell state gives an <strong>almost unobstructed gradient highway</strong> (only element-wise operations on it), so information can survive hundreds of time steps.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">2.2 LSTM cell diagram (draw this — asked Dec-24, Jun-25)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+ C_(t-1) ----------(x)---------------(+)----------------------&gt; C_t
+                    ^                 ^                    |
+                    |                 |                    |
+                  [f_t]        [i_t](x)[C~_t]            (tanh)
+                 forget         input   candidate          |
+                  gate           gate    values     [o_t]-(x)
+                    ^             ^        ^     output    |
+                    |             |        |      gate     v
+ h_(t-1) ---+----[σ]-----------[σ]-----[tanh]----[σ]      h_t ----&gt; h_t
+            |       ^             ^        ^       ^       (also goes
+ x_t -------+-------+-------------+--------+-------+        to output y_t)
+
+ (x) = element-wise multiply    (+) = element-wise add    σ = sigmoid (0 to 1)</pre>
+  <p class="mt-2">Top line = cell state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C</code> ("conveyor belt of memory"); the three σ boxes are the gates that tap into it.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">2.3 The three gates (name → job → equation)</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Gate</th><th class="px-3 py-2">Question it answers</th><th class="px-3 py-2">Equation</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Forget gate</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f_t</code></td><td class="px-3 py-2">What to ERASE from old memory?</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f_t = σ(W_f · [h_(t-1), x_t] + b_f)</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Input gate</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">i_t</code></td><td class="px-3 py-2">What NEW info to STORE?</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">i_t = σ(W_i · [h_(t-1), x_t] + b_i)</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Output gate</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">o_t</code></td><td class="px-3 py-2">What to REVEAL as output?</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">o_t = σ(W_o · [h_(t-1), x_t] + b_o)</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4">Supporting equations (memorise all six as a block):</p>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f_t = σ(W_f · [h_(t-1), x_t] + b_f)</code> — forget gate</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">i_t = σ(W_i · [h_(t-1), x_t] + b_i)</code> — input gate</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C~_t = tanh(W_C · [h_(t-1), x_t] + b_C)</code> — candidate new memory</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_t = f_t * C_(t-1) + i_t * C~_t</code> — <strong>cell-state update (the heart of LSTM)</strong></li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">o_t = σ(W_o · [h_(t-1), x_t] + b_o)</code> — output gate</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_t = o_t * tanh(C_t)</code> — hidden state / output</li>
+  </ol>
+  <p class="mt-2">Explain equation 4 in words for full marks: <em>"keep <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f_t</code> fraction of old memory, add <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">i_t</code> fraction of the newly proposed memory."</em> If <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f_t = 1, i_t = 0</code> the cell remembers perfectly; if <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f_t = 0</code> it wipes the slate.</p>
+
+  <p class="mt-4"><strong class="text-white">Example:</strong> Language model reading <em>"France is beautiful. … He speaks fluent ___"</em> — the forget gate keeps "France" in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_t</code> across many words, and the output gate reveals it exactly when the blank must be predicted as "French". New subject appears ("Priya went to Japan") → forget gate erases France, input gate writes Japan.</p>
+  <p class="mt-2"><strong class="text-white">Mnemonic:</strong> <strong>F-I-O</strong> — <strong>F</strong>orget the old, <strong>I</strong>nput the new, <strong>O</strong>utput what's due.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Writing <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_t = f_t * C_(t-1) * i_t * C~_t</code> (multiplying everything). It is <strong><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f_t*C_(t-1) + i_t*C~_t</code></strong> — a weighted SUM of old and new memory; the <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">+</code> is what stops gradients from vanishing.</p>
+  </div>
+</section>
+
+<!-- ============ 3. GRU ============ -->
+<section id="gru" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">3. Gated Recurrent Unit (GRU) <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Standalone never asked — DUE, likely next</span></h2>
+
+  <p><strong class="text-white">Definition:</strong> GRU (Cho et al., 2014) is a <strong>simplified LSTM</strong> that merges the cell state and hidden state into one, and uses only <strong>two gates</strong> — <strong>update gate</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z_t</code> and <strong>reset gate</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r_t</code> — achieving similar accuracy with fewer parameters and faster training.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">3.1 The two gates</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Update gate <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z_t</code></strong> — decides how much of the past to carry forward vs replace with new content (does the job of LSTM's forget + input gates combined).</li>
+    <li><strong>Reset gate <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r_t</code></strong> — decides how much past information to ignore while computing the new candidate (setting <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r_t ≈ 0</code> makes the unit "start fresh" like reading a new sentence).</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">3.2 GRU equations (memorise all four)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z_t = σ(W_z · [h_(t-1), x_t])</code> — update gate</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r_t = σ(W_r · [h_(t-1), x_t])</code> — reset gate</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h~_t = tanh(W · [r_t * h_(t-1), x_t])</code> — candidate hidden state (past is <em>reset-scaled</em>)</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_t = (1 - z_t) * h_(t-1) + z_t * h~_t</code> — final blend of old and new</li>
+  </ol>
+  <p class="mt-2">Equation 4 in words: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z_t</code> is a <strong>mixing knob</strong> — <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z_t = 0</code> copies the old state unchanged (long memory), <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z_t = 1</code> fully replaces it with the new candidate.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">3.3 GRU cell diagram (draw this)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+ h_(t-1) ---+---------------(x)(1-z_t)--------(+)------&gt; h_t
+            |                                  ^
+            |            r_t                   |(x) z_t
+            +---[σ]--+   |                     |
+            |  reset (x)-+--[tanh]----------&gt; h~_t
+            |            ^  candidate
+ x_t -------+------------+
+            |
+            +---[σ]---&gt; z_t (update gate)</pre>
+
+  <p class="mt-4"><strong class="text-white">Example:</strong> Sentiment analysis of a long review — GRU trains ~25–30% faster than LSTM on the same data with nearly the same accuracy, so it is preferred on small datasets / mobile deployment.</p>
+  <p class="mt-2"><strong class="text-white">Mnemonic:</strong> GRU = <strong>"Gates Reduced to Update-and-reset"</strong> — 2 gates, 1 state, 0 separate cell line.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Saying GRU has an output gate — it does <strong>not</strong>; the full hidden state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_t</code> is exposed directly (no <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">o_t</code>, no separate <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_t</code>).</p>
+  </div>
+</section>
+
+<!-- ============ 4. LSTM vs GRU vs RNN ============ -->
+<section id="lstm-vs-gru-vs-rnn" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">4. LSTM vs GRU vs Vanilla RNN <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: all three are recurrent architectures differing in how they preserve memory.</li>
+      <li>Write 2–3 defining lines on each (RNN: no gates; LSTM: 3 gates + cell state; GRU: 2 gates, merged state).</li>
+      <li>Then the comparison table below (the table alone fetches most marks).</li>
+      <li>Draw: tiny sketches of the three cells side by side (RNN = plain tanh box; LSTM = 3 σ; GRU = 2 σ).</li>
+      <li>Close with: "choose RNN for short sequences, GRU for speed/small data, LSTM for long complex dependencies."</li>
+    </ol>
+  </div>
+
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Feature</th><th class="px-3 py-2">Vanilla RNN</th><th class="px-3 py-2">LSTM</th><th class="px-3 py-2">GRU</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Gates</td><td class="px-3 py-2">None</td><td class="px-3 py-2">3 (forget, input, output)</td><td class="px-3 py-2">2 (update, reset)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Separate cell state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_t</code></td><td class="px-3 py-2">No</td><td class="px-3 py-2">Yes</td><td class="px-3 py-2">No (merged with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_t</code>)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Parameters</td><td class="px-3 py-2">Fewest</td><td class="px-3 py-2">Most</td><td class="px-3 py-2">~25% fewer than LSTM</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Long-term dependency handling</td><td class="px-3 py-2">Poor (vanishing gradient)</td><td class="px-3 py-2">Excellent</td><td class="px-3 py-2">Very good</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Training speed</td><td class="px-3 py-2">Fastest per step but hard to train</td><td class="px-3 py-2">Slowest</td><td class="px-3 py-2">Faster than LSTM</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Memory control</td><td class="px-3 py-2">Overwrites <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_t</code> every step</td><td class="px-3 py-2">Fine-grained (separate erase/write/read)</td><td class="px-3 py-2">Coupled erase-write via <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">z_t</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">When to use</td><td class="px-3 py-2">Short sequences, toy tasks</td><td class="px-3 py-2">Long sequences, large data (translation, speech)</td><td class="px-3 py-2">Limited data/compute, real-time apps</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Year introduced</td><td class="px-3 py-2">1980s</td><td class="px-3 py-2">1997</td><td class="px-3 py-2">2014</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Claiming "GRU is always better because it's newer" — LSTM still wins on very long sequences and large datasets; write the <em>trade-off</em>, not a winner.</p>
+  </div>
+</section>
+
+<!-- ============ 5. Seq2Seq ============ -->
+<section id="seq2seq" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">5. Translation — Sequence-to-Sequence (Encoder–Decoder) <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span></h2>
+
+  <p><strong class="text-white">Definition:</strong> Machine translation is modelled as a <strong>sequence-to-sequence (seq2seq)</strong> problem using an <strong>encoder–decoder</strong> architecture: an encoder RNN/LSTM reads the source sentence and compresses it into a fixed-length <strong>context vector</strong>; a decoder RNN/LSTM generates the target sentence word-by-word conditioned on that vector.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">5.1 Working (write as numbered steps)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Encoder</strong> consumes source words <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x_1 … x_Tx</code> one per time step; its final hidden state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c = h_Tx</code> summarises the whole sentence (the <em>context vector</em> / "thought vector").</li>
+    <li><strong>Decoder</strong> is initialised with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c</code> and a start token <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">&lt;SOS&gt;</code>.</li>
+    <li>At each step the decoder outputs a probability distribution over the target vocabulary: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(y_t | y_1…y_(t-1), c)</code> and feeds its own previous output as next input.</li>
+    <li>Generation stops when <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">&lt;EOS&gt;</code> (end of sentence) is produced.</li>
+    <li>Goal: output the sentence maximising joint probability <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(y_1,…,y_Ty | x) = Π_t P(y_t | y_1…y_(t-1), c)</code> — found approximately by <strong>beam search</strong> (next topic).</li>
+    <li><strong>Training trick — teacher forcing:</strong> during training the decoder is fed the <em>true</em> previous word, not its own prediction, for faster convergence.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">5.2 Encoder–decoder diagram (draw this)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+        ENCODER                          DECODER
+  "Main ghar jaata hoon"          "I    go    home  &lt;EOS&gt;"
+    x1    x2    x3   x4            y1    y2    y3    y4
+    |     |     |    |             ^     ^     ^     ^
+  [h1]-&gt;[h2]-&gt;[h3]-&gt;[h4] == c ==&gt; [s1]-&gt;[s2]-&gt;[s3]-&gt;[s4]
+                    context        ^     ^     ^
+                    vector       &lt;SOS&gt;  y1    y2   (previous output fed back)</pre>
+
+  <p class="mt-4"><strong class="text-white">Limitation (leads to attention):</strong> one fixed-length vector <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c</code> becomes a <strong>bottleneck</strong> for long sentences — the encoder must cram a 40-word sentence into the same small vector as a 4-word one, so translation quality drops with length.</p>
+  <p class="mt-2"><strong class="text-white">Example:</strong> Google Translate's 2016 NMT system (GNMT) — stacked LSTM encoder-decoder with attention, replaced phrase-based statistical translation.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Saying the decoder sees the source words directly — in the basic model it sees <strong>only</strong> the context vector; the source enters solely through <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c</code>.</p>
+  </div>
+</section>
+
+<!-- ============ 6. Beam Search ============ -->
+<section id="beam-search" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">6. Beam Search and Beam Width <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span></h2>
+
+  <p><strong class="text-white">Definition:</strong> Beam search is an approximate search algorithm used by the decoder to find the most probable output sentence. Instead of keeping only the single best word at each step (greedy) or all possibilities (exhaustive), it keeps the <strong>top B partial sequences</strong> at every step, where <strong>B = beam width</strong>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">6.1 Greedy search vs Beam search</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">Greedy search</th><th class="px-3 py-2">Beam search</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Kept per step</td><td class="px-3 py-2">1 best word</td><td class="px-3 py-2">Top <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">B</code> partial sentences</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Objective</td><td class="px-3 py-2">Locally best word</td><td class="px-3 py-2">Approx. globally best sentence <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">argmax P(y|x)</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Risk</td><td class="px-3 py-2">Early wrong word can never be undone</td><td class="px-3 py-2">Wrong word survives only if its continuations stay in top B</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Cost</td><td class="px-3 py-2">Cheapest</td><td class="px-3 py-2">~<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">B ×</code> greedy cost</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Special cases</td><td class="px-3 py-2">Beam search with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">B = 1</code> <strong>is</strong> greedy</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">B = |V|^T</code> would be exhaustive (impossible)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">6.2 Worked example (write this in exam)</h3>
+  <p class="mt-2">Translate with vocabulary and <strong>B = 2</strong>. Step-1 word probabilities: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">the = 0.5</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a = 0.3</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">an = 0.2</code>.</p>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Greedy:</strong> picks <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">the</code> only, forever committed.</li>
+    <li><strong>Beam (B=2):</strong> keeps both <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">the (0.5)</code> and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a (0.3)</code>.</li>
+  </ul>
+  <p class="mt-2">Step 2 — expand both, multiply joint probabilities:</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+"the" (0.5) --- cat 0.4  --&gt; "the cat" = 0.5 x 0.4 = 0.20   KEEP
+            \-- dog 0.3  --&gt; "the dog" = 0.5 x 0.3 = 0.15   drop
+"a"   (0.3) --- cat 0.7  --&gt; "a cat"   = 0.3 x 0.7 = 0.21   KEEP  &lt;- beats "the cat"!
+            \-- man 0.2  --&gt; "a man"   = 0.3 x 0.2 = 0.06   drop</pre>
+  <p class="mt-2">Keep the global top-2 (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a cat = 0.21</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">the cat = 0.20</code>) and repeat until <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">&lt;EOS&gt;</code>. Note greedy would never have found "a cat" because it discarded <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code> at step 1 — that one line shows the whole point.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">6.3 Effect of beam width B</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Large B:</strong> better sentences (closer to true argmax), more memory + computation, diminishing returns after B ≈ 10 (production systems: B = 4–10; research: up to 100).</li>
+    <li><strong>Small B:</strong> faster, worse results; B = 1 = greedy.</li>
+    <li><strong>Length normalisation:</strong> raw products of probabilities unfairly favour short sentences; divide log-probability by <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">T_y^α</code> (α ≈ 0.7): maximise <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1/T_y^α) Σ_t log P(y_t | x, y_1…y_(t-1))</code>.</li>
+  </ul>
+
+  <p class="mt-4"><strong class="text-white">Mnemonic:</strong> <em>"Beam = torch beam — wider beam, more paths lit, more battery used."</em></p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Calling beam search a training algorithm — it is used only at <strong>inference/decoding time</strong>; training uses cross-entropy loss with teacher forcing.</p>
+  </div>
+</section>
+
+<!-- ============ 7. BLEU ============ -->
+<section id="bleu" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">7. BLEU Score <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-24 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: BLEU (Bilingual Evaluation Understudy) is an automatic metric that scores machine translation by n-gram overlap with human references (0 to 1).</li>
+      <li>Headings: <strong>Modified (clipped) n-gram precision</strong> → <strong>Why clipping</strong> → <strong>Brevity penalty</strong> → <strong>Combined formula</strong> → <strong>Worked example</strong> → <strong>Limitations</strong>.</li>
+      <li>No diagram needed — the worked example table is your "diagram".</li>
+      <li>Close with: limitation line — "high BLEU ≠ fluent/meaningful; ignores synonyms and word order beyond n-grams."</li>
+    </ol>
+  </div>
+
+  <p><strong class="text-white">Definition:</strong> BLEU compares a machine-translated <strong>candidate</strong> sentence to one or more human <strong>reference</strong> translations by measuring overlapping n-grams. Score ranges 0–1 (often quoted ×100); closer to 1 = closer to human translation.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">7.1 Modified (clipped) n-gram precision <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p_n</code></h3>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p_n = (Σ clipped count of matching n-grams) / (total n-grams in candidate)</code></p>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Clipping rule:</strong> a candidate n-gram is counted only up to the <strong>maximum number of times it appears in any reference</strong>. Stops cheating: candidate <em>"the the the the"</em> would otherwise score unigram precision 1.0.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">7.2 Brevity Penalty (BP)</h3>
+  <p class="mt-2">Precision alone rewards ultra-short outputs (translate 20 words as just "the" → precision 1!). BP punishes short candidates:</p>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">BP = 1</code> if <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c &gt; r</code> (candidate longer than reference)</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">BP = exp(1 - r/c)</code> if <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c ≤ r</code></li>
+  </ul>
+  <p class="mt-2">where <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c</code> = candidate length, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r</code> = reference length. No penalty for long candidates (clipped precision already handles them).</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">7.3 Full BLEU formula</h3>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">BLEU = BP × exp( Σ_(n=1)^N w_n × log p_n )</code></p>
+  <p class="mt-2">— geometric mean of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p_1 … p_N</code> (usually <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">N = 4</code>, weights <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w_n = 1/4</code> each), multiplied by BP.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">7.4 Worked example (memorise this one)</h3>
+  <p class="mt-2">Candidate: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">the cat is on the mat</code> (6 words) · Reference: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">the cat sat on the mat</code> (6 words)</p>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">n-gram</th><th class="px-3 py-2">Candidate items</th><th class="px-3 py-2">Clipped matches</th><th class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p_n</code></th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Unigram</td><td class="px-3 py-2">the, cat, is, on, the, mat</td><td class="px-3 py-2">the(2)+cat(1)+on(1)+mat(1)=5 ("is" fails)</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p_1 = 5/6</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Bigram</td><td class="px-3 py-2">the-cat, cat-is, is-on, on-the, the-mat</td><td class="px-3 py-2">the-cat, on-the, the-mat = 3</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p_2 = 3/5</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c = r = 6</code> → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">BP = 1</code>.</p>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">BLEU(N=2) = 1 × exp(0.5·ln(5/6) + 0.5·ln(3/5)) = exp(0.5(-0.1823) + 0.5(-0.5108)) = exp(-0.3466) ≈ 0.7071</code></p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">7.5 Limitations (2 lines for full marks)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li>Ignores synonyms and grammar — "couch"/"sofa" counted as a miss; a fluent paraphrase can score low.</li>
+    <li>Works only at corpus level reliably; single-sentence BLEU is noisy.</li>
+  </ul>
+
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Forgetting the <strong>clipping</strong> in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p_n</code> or writing BP as a penalty for <em>long</em> candidates — BP punishes <strong>short</strong> candidates only.</p>
+  </div>
+</section>
+
+<!-- ============ 8. Attention ============ -->
+<section id="attention" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">8. Attention Model <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22 — MUST DO (short note favourite)</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (scale down for 3.5 marks):</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: attention lets the decoder look back at ALL encoder hidden states and focus on the most relevant source words at each output step, removing the fixed-vector bottleneck.</li>
+      <li>Headings: <strong>Problem with plain seq2seq</strong> → <strong>Idea (dynamic context vector)</strong> → <strong>Steps: scores → softmax weights → weighted sum</strong> → <strong>Benefits</strong>.</li>
+      <li>Draw: decoder step with weighted arrows back to encoder states (diagram below).</li>
+      <li>Close with example: translating a 40-word sentence, or the word alignment "ghar ↔ home".</li>
+    </ol>
+  </div>
+
+  <p><strong class="text-white">Definition:</strong> The attention mechanism (Bahdanau et al., 2014) computes, at <strong>every decoder time step <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">t</code></strong>, a <strong>different context vector</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c_t</code> as a weighted sum of <em>all</em> encoder hidden states — the weights (attention weights) say <em>how much each source word matters for producing the current output word</em>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">8.1 Steps (write as 4 numbered points)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Score:</strong> for decoder state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s_(t-1)</code> and each encoder state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h_j</code>, compute alignment score <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">e_tj = score(s_(t-1), h_j)</code> (a small neural net or dot product) — "how relevant is source word j right now?"</li>
+    <li><strong>Normalise:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">α_tj = softmax(e_tj)</code> so weights are positive and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ_j α_tj = 1</code>.</li>
+    <li><strong>Context vector:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c_t = Σ_j α_tj × h_j</code> — a fresh, focused summary for this step.</li>
+    <li><strong>Generate:</strong> decoder uses <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[s_(t-1), c_t]</code> to produce output word <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y_t</code>. Repeat for every step.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">8.2 Diagram (draw this)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+ Encoder states:   h1      h2      h3      h4        ("Main ghar jaata hoon")
+                    \       |       |      /
+                 α=0.05  α=0.7   α=0.15  α=0.1        &lt;- attention weights (softmax)
+                      \    |      |    /
+                       [ c_t = Σ α_j h_j ]            &lt;- context vector for THIS step
+                              |
+                        [ decoder s_t ] --&gt; y_t = "home"</pre>
+  <p class="mt-2">(Weights concentrate on <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h2</code> = "ghar" exactly when the decoder emits "home".)</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">8.3 Benefits (any 3)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li>Removes the fixed-length <strong>bottleneck</strong> → long-sentence translation quality no longer degrades.</li>
+    <li>Attention weights are <strong>interpretable</strong> — plotting <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">α_tj</code> gives a word-alignment heat map.</li>
+    <li>Basis of the <strong>Transformer</strong> ("Attention is All You Need", 2017) → BERT/GPT.</li>
+    <li>Gradient shortcut to distant inputs → easier training.</li>
+  </ul>
+
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Saying attention gives ONE context vector for the sentence — it computes a <strong>new <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">c_t</code> at every decoder step</strong>; that is the entire difference from plain seq2seq.</p>
+  </div>
+</section>
+
+<!-- ============ 9. RL Framework ============ -->
+<section id="rl-framework" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">9. Reinforcement Learning &amp; RL Framework <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22, May-23, Dec-24 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: RL is learning by trial-and-error interaction — an agent acts on an environment and learns from scalar reward signals, without labelled data.</li>
+      <li>Headings: <strong>Agent–environment loop</strong> → <strong>Elements: policy, reward, value function, model</strong> → <strong>Exploration vs exploitation</strong> → <strong>Comparison with supervised/unsupervised</strong> → <strong>Applications</strong>.</li>
+      <li>Draw: the agent–environment loop diagram.</li>
+      <li>Close with example: robot maze / chess (AlphaGo) — reward only at the end, agent learns which moves led to it.</li>
+    </ol>
+  </div>
+
+  <p><strong class="text-white">Definition:</strong> Reinforcement Learning is a branch of ML in which an <strong>agent</strong> learns an optimal behaviour (<strong>policy</strong>) by interacting with an <strong>environment</strong>: at each step it observes a <strong>state</strong>, takes an <strong>action</strong>, and receives a scalar <strong>reward</strong>; the goal is to maximise the <strong>expected cumulative reward</strong> (return), not to match labelled answers.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">9.1 The RL framework diagram (draw this — it is expected in every RL answer)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+                 action  a_t
+        +---------------------------&gt;+
+        |                            |
+   [ AGENT ]                  [ ENVIRONMENT ]
+        ^                            |
+        |    state s_(t+1)           |
+        +&lt;---------------------------+
+        |    reward r_(t+1)          |
+        +&lt;---------------------------+
+
+  Loop: observe s_t -&gt; choose a_t (policy) -&gt; env returns r_(t+1), s_(t+1) -&gt; repeat</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">9.2 Elements of RL (Dec-24: "elements in detail" — give each a heading)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Agent</strong> — the learner/decision maker (robot, game player).</li>
+    <li><strong>Environment</strong> — everything outside the agent that it interacts with.</li>
+    <li><strong>State <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s</code></strong> — current situation observed by the agent.</li>
+    <li><strong>Action <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code></strong> — a choice available in the state.</li>
+    <li><strong>Policy <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π(a|s)</code></strong> — the agent's strategy: mapping from states to actions. <em>This is what RL learns.</em></li>
+    <li><strong>Reward <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r</code></strong> — immediate scalar feedback; defines the goal.</li>
+    <li><strong>Value function <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(s)</code></strong> — expected long-term (discounted) reward from state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s</code>; "reward is immediate pleasure, value is long-term wisdom."</li>
+    <li><strong>Model (optional)</strong> — the agent's internal simulation of environment dynamics <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(s'|s,a)</code>; present in model-based RL only.</li>
+    <li><strong>Return</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">G_t = r_(t+1) + γ r_(t+2) + γ² r_(t+3) + …</code> with <strong>discount factor</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">γ ∈ [0,1]</code>.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">9.3 Exploration vs Exploitation (always write this — easy 1 mark)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Exploitation:</strong> choose the best-known action to earn reward now.</li>
+    <li><strong>Exploration:</strong> try new actions to find possibly better rewards.</li>
+    <li>Balance via <strong>ε-greedy</strong>: with probability <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">ε</code> act randomly (explore), else act greedily (exploit); decay <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">ε</code> over time.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">9.4 RL vs Supervised vs Unsupervised</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">Supervised</th><th class="px-3 py-2">Unsupervised</th><th class="px-3 py-2">Reinforcement</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Data</td><td class="px-3 py-2">Labelled pairs (x, y)</td><td class="px-3 py-2">Unlabelled x</td><td class="px-3 py-2">No dataset — experience from interaction</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Feedback</td><td class="px-3 py-2">Correct answer given</td><td class="px-3 py-2">None</td><td class="px-3 py-2">Delayed scalar reward</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Goal</td><td class="px-3 py-2">Predict labels</td><td class="px-3 py-2">Find structure</td><td class="px-3 py-2">Maximise cumulative reward</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Example</td><td class="px-3 py-2">Spam filter</td><td class="px-3 py-2">Clustering customers</td><td class="px-3 py-2">Chess agent, robot walking</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4"><strong class="text-white">Example (May-23 asks for one):</strong> A robot in a maze — +100 reward for reaching cheese, −10 for touching walls, 0 otherwise. Early episodes: random wandering (exploration). Over time it learns the shortest wall-free path (exploitation of learned policy). Real systems: AlphaGo, self-driving lane control, recommendation engines, robotics.</p>
+  <p class="mt-2"><strong class="text-white">Mnemonic (elements):</strong> <strong>"SAP RVM"</strong> — <strong>S</strong>tate, <strong>A</strong>ction, <strong>P</strong>olicy, <strong>R</strong>eward, <strong>V</strong>alue, <strong>M</strong>odel.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Calling reward "the label" — RL feedback is <em>evaluative</em> (how good was that action), not <em>instructive</em> (what the right action was), and it may be <strong>delayed</strong> many steps.</p>
+  </div>
+</section>
+
+<!-- ============ 10. Model-Based vs Model-Free ============ -->
+<section id="model-based-vs-model-free" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">10. Model-Based vs Model-Free Learning <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Jun-25 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: the split depends on whether the agent learns/uses the environment's transition model <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(s'|s,a)</code> and reward function.</li>
+      <li>Define each with one algorithm name (model-based: Value/Policy Iteration, Dyna-Q; model-free: Q-learning, SARSA).</li>
+      <li>Then the comparison table below.</li>
+      <li>Close with analogy: map-user vs habit-walker.</li>
+    </ol>
+  </div>
+
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Model-based:</strong> the agent <strong>knows or learns a model</strong> of the environment (transition probabilities + rewards) and <strong>plans</strong> by simulating outcomes before acting. E.g. Value Iteration, Policy Iteration (model given), Dyna-Q (model learnt).</li>
+    <li><strong>Model-free:</strong> the agent learns value functions or policies <strong>directly from experienced transitions</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(s, a, r, s')</code>, never estimating <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(s'|s,a)</code>. E.g. Q-learning, SARSA, actor-critic.</li>
+  </ul>
+
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">Model-based</th><th class="px-3 py-2">Model-free</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Needs <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(s'|s,a)</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">R</code></td><td class="px-3 py-2">Yes (given or learnt)</td><td class="px-3 py-2">No</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">How it decides</td><td class="px-3 py-2">Planning / simulating ahead</td><td class="px-3 py-2">Trial-and-error value estimates</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Sample efficiency</td><td class="px-3 py-2">High (reuses model to imagine data)</td><td class="px-3 py-2">Low (needs many real interactions)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Computation per step</td><td class="px-3 py-2">Heavy (planning)</td><td class="px-3 py-2">Light (one update)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Risk</td><td class="px-3 py-2">Wrong model → wrong plans (model bias)</td><td class="px-3 py-2">Slow, high-variance learning</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Examples</td><td class="px-3 py-2">Value Iteration, Policy Iteration, Dyna-Q, AlphaZero (with MCTS)</td><td class="px-3 py-2">Q-learning, SARSA, DQN, Actor-Critic</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4"><strong class="text-white">Analogy (write it):</strong> Model-based = tourist with a <strong>city map</strong>, plans the route mentally before walking. Model-free = local resident with <strong>habits</strong> — knows "this turn works" from years of walking, holds no map.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Saying model-free agents "have no policy" — they absolutely learn a policy; what they lack is a <strong>transition model</strong> of the environment.</p>
+  </div>
+</section>
+
+<!-- ============ 11. MDP ============ -->
+<section id="mdp" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">11. Markov Decision Process (MDP) <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22, May-24, Jun-25 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: MDP is the mathematical framework for RL — sequential decision making where outcomes are partly random, partly controlled, and the Markov property holds.</li>
+      <li>Headings: <strong>Markov property</strong> → <strong>5-tuple (S, A, P, R, γ) each defined</strong> → <strong>Working principle (loop)</strong> → <strong>Goal: optimal policy π*</strong> → <strong>Gridworld example with diagram</strong>.</li>
+      <li>Draw: the 3×4 gridworld.</li>
+      <li>Close with: "solved by Value Iteration / Policy Iteration / Q-learning."</li>
+    </ol>
+  </div>
+
+  <p><strong class="text-white">Definition:</strong> A Markov Decision Process is a mathematical framework for modelling <strong>sequential decision-making</strong> under uncertainty, defined by the 5-tuple <strong><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(S, A, P, R, γ)</code></strong>, in which the <strong>Markov property</strong> holds: <em>the future depends only on the present state and action, not on the past history</em>: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(s_(t+1) | s_t, a_t, s_(t-1), …) = P(s_(t+1) | s_t, a_t)</code>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">11.1 The 5-tuple (define each — this IS the answer's core)</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Symbol</th><th class="px-3 py-2">Name</th><th class="px-3 py-2">Meaning</th><th class="px-3 py-2">Gridworld example</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">S</code></td><td class="px-3 py-2">State space</td><td class="px-3 py-2">All possible situations</td><td class="px-3 py-2">The 11 cells of the grid</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">A</code></td><td class="px-3 py-2">Action space</td><td class="px-3 py-2">Choices per state</td><td class="px-3 py-2">{Up, Down, Left, Right}</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(s'|s,a)</code></td><td class="px-3 py-2">Transition probability</td><td class="px-3 py-2">Chance of landing in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s'</code> after action <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code> in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s</code></td><td class="px-3 py-2">0.8 intended, 0.1 each side-slip</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">R(s,a,s')</code></td><td class="px-3 py-2">Reward function</td><td class="px-3 py-2">Immediate scalar payoff</td><td class="px-3 py-2">+1 goal, −1 pit, −0.04 per step</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">γ</code></td><td class="px-3 py-2">Discount factor <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[0,1]</code></td><td class="px-3 py-2">Present value of future reward</td><td class="px-3 py-2">γ = 0.9</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4">Why <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">γ &lt; 1</code>? — (i) keeps infinite-horizon return finite, (ii) models preference for sooner reward, (iii) γ→0 myopic agent, γ→1 far-sighted agent.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">11.2 Working principle (Jun-25 "working principle in detail" — numbered loop)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li>Agent observes current state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s_t ∈ S</code>.</li>
+    <li>Chooses action <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a_t</code> using policy <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π(a|s)</code>.</li>
+    <li>Environment samples next state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s_(t+1) ~ P(·|s_t, a_t)</code> (stochastic transition).</li>
+    <li>Environment emits reward <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r_(t+1) = R(s_t, a_t, s_(t+1))</code>.</li>
+    <li>Repeat; the return is <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">G_t = Σ_k γ^k r_(t+k+1)</code>.</li>
+    <li><strong>Objective:</strong> find optimal policy <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π*</code> maximising expected return from every state: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π* = argmax_π V^π(s) ∀s</code>. Solved via Bellman equations → Value/Policy Iteration (model known) or Q-learning/SARSA (model unknown).</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">11.3 Gridworld example (draw this — standard 3×4 world)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+ +-----+-----+-----+-----+
+ |     |     |     | +1  |   &lt;- goal (terminal)
+ +-----+-----+-----+-----+
+ |     | ### |     | -1  |   &lt;- pit  (terminal)
+ +-----+-----+-----+-----+
+ |  S  |     |     |     |   &lt;- start;  ### = wall
+ +-----+-----+-----+-----+
+ Actions: U/D/L/R.  Moves: 0.8 as intended, 0.1 slips to each perpendicular side.
+ Living reward -0.04 per step  -&gt;  encourages the shortest safe path to +1.</pre>
+  <p class="mt-2">Because moves are stochastic, the optimal policy near the pit prefers the <strong>longer safe route</strong> — a one-line insight worth a mark.</p>
+
+  <p class="mt-4"><strong class="text-white">Mnemonic:</strong> <strong>"SAPRG"</strong> → <em>"Students Always Pass RGPV Gracefully"</em> = S, A, P, R, γ.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Omitting <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">γ</code> and writing MDP as a 4-tuple, or stating the Markov property as "future is independent of present" — it is independent of the <strong>past given the present</strong>.</p>
+  </div>
+</section>
+
+<!-- ============ 12. Bellman ============ -->
+<section id="bellman" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">12. Bellman Equations <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked directly — DUE, likely next</span></h2>
+
+  <p><strong class="text-white">Definition:</strong> Bellman equations express the value of a state <strong>recursively</strong>: the value of a state = immediate reward + discounted value of the successor states. Every RL algorithm (VI, PI, Q-learning, SARSA, actor-critic) is a scheme for solving or approximating these equations.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">12.1 State-value function — Bellman expectation equation</h3>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V^π(s) = Σ_a π(a|s) Σ_s' P(s'|s,a) [ R(s,a,s') + γ V^π(s') ]</code></p>
+  <p class="mt-2">Term by term (write these bullets):</p>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V^π(s)</code> — expected return starting at <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s</code>, following policy π.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ_a π(a|s)</code> — average over the actions the policy might pick.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ_s' P(s'|s,a)</code> — average over where the environment might send us.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">R(s,a,s')</code> — reward collected on that one step.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">γ V^π(s')</code> — everything earned afterwards, discounted once because it is one step in the future.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">12.2 Action-value function</h3>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q^π(s,a) = Σ_s' P(s'|s,a) [ R(s,a,s') + γ Σ_a' π(a'|s') Q^π(s',a') ]</code></p>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q^π(s,a)</code> = expected return if we take action <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code> in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s</code> <strong>first</strong>, then follow π. Relation: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V^π(s) = Σ_a π(a|s) Q^π(s,a)</code>.</p>
+  <p class="mt-2">Term by term (write these bullets):</p>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li>No outer <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ_a π(a|s)</code> — the first action <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code> is <strong>fixed</strong> (we are asking about it), so the policy-average only starts from the <em>next</em> step.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ_s' P(s'|s,a)</code> — average over the next states the environment may produce.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">R(s,a,s')</code> — reward collected on this one step.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">γ Σ_a' π(a'|s') Q^π(s',a')</code> — from <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s'</code> onwards we follow π again: average its next action <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a'</code>, value it by <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q^π(s',a')</code>, discount once by γ.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">12.3 Bellman OPTIMALITY equations (the ones algorithms solve)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V*(s) = max_a Σ_s' P(s'|s,a) [ R(s,a,s') + γ V*(s') ]</code></li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q*(s,a) = Σ_s' P(s'|s,a) [ R(s,a,s') + γ max_(a') Q*(s',a') ]</code></li>
+  </ul>
+  <p class="mt-2">Difference from expectation form: the policy-average <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ_a π(a|s)</code> is replaced by <strong><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max_a</code></strong> — the optimal agent always takes the best action. Optimal policy falls out directly: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π*(s) = argmax_a Q*(s,a)</code>.</p>
+
+  <p class="mt-4"><strong class="text-white">Example (1-line numeric):</strong> deterministic chain <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s → s' → goal</code>, reward 100 on entering goal, γ = 0.9: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V*(s') = 100</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V*(s) = 0 + 0.9 × 100 = 90</code>. (Same numbers reappear in Q-learning below — learn once, use twice.)</p>
+  <p class="mt-2"><strong class="text-white">Mnemonic:</strong> <em>"Value today = Reward now + γ × Value tomorrow."</em></p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Mixing the two forms — expectation equation has <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ_a π(a|s)</code> (evaluates a given policy); optimality equation has <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max_a</code> (defines the best policy). State which one you are writing.</p>
+  </div>
+</section>
+
+<!-- ============ 13. VI and PI ============ -->
+<section id="vi-pi" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">13. Value Iteration and Policy Iteration <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Dec-24 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: both are dynamic-programming methods that solve a known MDP using Bellman equations to find π*.</li>
+      <li>Give Value Iteration algorithm (3 steps) → Policy Iteration algorithm (3 steps).</li>
+      <li>Then the comparison table (the marks magnet).</li>
+      <li>Close with: "PI converges in fewer iterations but each is costlier; VI does cheaper sweeps but more of them."</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">13.1 Value Iteration (VI)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li>Initialise <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(s) = 0</code> for all states.</li>
+    <li>Repeat until values stop changing (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Δ &lt; θ</code>): for every state apply the <strong>Bellman optimality backup</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(s) ← max_a Σ_s' P(s'|s,a) [ R(s,a,s') + γ V(s') ]</code></li>
+    <li>Extract the policy once at the end: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π*(s) = argmax_a Σ_s' P(s'|s,a) [ R + γ V(s') ]</code>.</li>
+  </ol>
+  <p class="mt-2">Key idea: work only with values; no explicit policy until convergence.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">13.2 Policy Iteration (PI)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li>Start with any random policy <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π_0</code>.</li>
+    <li><strong>Policy evaluation:</strong> solve <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V^π(s) = Σ_s' P(s'|s,π(s)) [ R + γ V^π(s') ]</code> for the current fixed policy (iteratively or as linear equations).</li>
+    <li><strong>Policy improvement:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π_new(s) = argmax_a Σ_s' P(s'|s,a) [ R + γ V^π(s') ]</code> — act greedily w.r.t. the just-computed values.</li>
+    <li>If <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π_new = π_old</code> stop (optimal); else go to step 2.</li>
+  </ol>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+  π_0 --evaluate--&gt; V^π0 --improve--&gt; π_1 --evaluate--&gt; V^π1 --improve--&gt; ... --&gt; π*
+  (E-I-E-I loop: "Old MacDonald finds the optimal policy")</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">13.3 Comparison table (Dec-24 asked exactly this)</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">Value Iteration</th><th class="px-3 py-2">Policy Iteration</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">What it iterates on</td><td class="px-3 py-2">Value function only</td><td class="px-3 py-2">Explicit policy + its values</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Update used</td><td class="px-3 py-2">Bellman <strong>optimality</strong> backup (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max_a</code> inside loop)</td><td class="px-3 py-2">Bellman <strong>expectation</strong> (evaluate), then greedy improve</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Policy maintained during run?</td><td class="px-3 py-2">No — extracted once at the end</td><td class="px-3 py-2">Yes — improved every cycle</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Cost per iteration</td><td class="px-3 py-2">Cheap (one sweep with max)</td><td class="px-3 py-2">Expensive (full policy evaluation)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Number of iterations</td><td class="px-3 py-2">Many</td><td class="px-3 py-2">Few (policies are finite → fast convergence)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Convergence</td><td class="px-3 py-2">To V*, asymptotically</td><td class="px-3 py-2">Exactly, in finite iterations</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Prefer when</td><td class="px-3 py-2">Large action space, quick approximate sweep</td><td class="px-3 py-2">Small state space, want exact π* fast</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Both need</td><td class="px-3 py-2">Full model <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P, R</code> known → <strong>model-based / DP methods</strong></td><td class="px-3 py-2">same</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4"><strong class="text-white">Example:</strong> In the 3×4 gridworld, VI needs ~15–20 sweeps for γ=0.9; PI typically converges in 3–4 evaluate-improve cycles.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Writing that VI "doesn't use a policy at all" — it <em>implicitly</em> improves the policy every sweep via <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max_a</code>; it just never stores one until the end.</p>
+  </div>
+</section>
+
+<!-- ============ 14. Q-Learning ============ -->
+<section id="q-learning" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">14. Q-Learning <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22, May-24, Jun-25 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: Q-learning is a model-free, <strong>off-policy</strong> TD algorithm that learns the optimal action-value function Q*(s,a) directly from experience.</li>
+      <li>Headings: <strong>Q-table idea</strong> → <strong>Update rule + every term explained</strong> → <strong>Algorithm steps</strong> → <strong>Deterministic worked example (grid, γ=0.9)</strong> → <strong>Properties (off-policy, convergence)</strong>.</li>
+      <li>Draw: the 2×3 grid with Q-values 81/90/100.</li>
+      <li>Close with: "behaviour policy is ε-greedy but the update bootstraps on max → learns π* even while exploring."</li>
+    </ol>
+  </div>
+
+  <p><strong class="text-white">Definition:</strong> Q-learning (Watkins, 1989) is a <strong>model-free, off-policy</strong> reinforcement-learning algorithm that learns the optimal action-value function <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q*(s,a)</code> by repeatedly updating a <strong>Q-table</strong> from experienced transitions <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(s, a, r, s')</code> — no knowledge of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P</code> or <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">R</code> needed.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">14.1 The update rule (write it big, then explain every symbol)</h3>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a) ← Q(s,a) + α [ r + γ · max_(a') Q(s',a') − Q(s,a) ]</code></p>
+  <div class="overflow-x-auto mt-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Term</th><th class="px-3 py-2">Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a)</code></td><td class="px-3 py-2">Current estimate of value of doing <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code> in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">α</code></td><td class="px-3 py-2">Learning rate (0–1): how much of the new information overwrites the old</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r</code></td><td class="px-3 py-2">Immediate reward actually received</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">γ</code></td><td class="px-3 py-2">Discount factor for future rewards</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max_(a') Q(s',a')</code></td><td class="px-3 py-2">Value of the <strong>best</strong> action from the next state — assumes optimal behaviour afterwards (this <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max</code> is what makes it <strong>off-policy</strong>)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r + γ max Q(s',a')</code></td><td class="px-3 py-2"><strong>TD target</strong> — improved estimate</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[target − Q(s,a)]</code></td><td class="px-3 py-2"><strong>TD error</strong> — surprise; positive → raise Q, negative → lower Q</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4"><strong class="text-white">Deterministic special case (May-22 asked exactly this):</strong> with deterministic rewards/transitions set <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">α = 1</code>:</p>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a) ← r + γ · max_(a') Q(s',a')</code></p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">14.2 Algorithm (numbered steps)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li>Initialise <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a) = 0</code> for all pairs; choose <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">α, γ, ε</code>.</li>
+    <li>For each episode: start at some state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s</code>.</li>
+    <li>Choose <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code> by <strong>ε-greedy</strong> on Q (explore with prob ε, else <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">argmax_a Q(s,a)</code>).</li>
+    <li>Execute <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code>; observe reward <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r</code> and next state <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s'</code>.</li>
+    <li>Update <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a)</code> with the rule above.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s ← s'</code>; repeat 3–5 until terminal state; repeat episodes until Q converges.</li>
+    <li>Final policy: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π*(s) = argmax_a Q(s,a)</code>.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">14.3 Deterministic worked example (γ = 0.9, reward 100 on entering goal G, else 0)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+ +------+------+------+
+ |  s1  |  s2  |  G   |        Q(s2, right) = 100 + 0.9 x 0     = 100
+ +------+------+------+        Q(s1, right) = 0  + 0.9 x 100    = 90
+ |  s4  |  s5  |  s6  |        Q(s4, up)    = 0  + 0.9 x 90     = 81
+ +------+------+------+
+
+ Values ripple back from the goal:  100 -&gt; 90 -&gt; 81 -&gt; 72.9 ...
+ V*(s) = max_a Q(s,a):  V*(s2)=100, V*(s1)=90, V*(s4)=81</pre>
+  <p class="mt-2">Each number = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">γ ×</code> (best neighbour's value); after enough episodes the whole table converges and the greedy path follows increasing Q-values to G.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">14.4 Properties (2 marks worth)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Off-policy:</strong> learns about the greedy (optimal) policy while <em>behaving</em> ε-greedily.</li>
+    <li><strong>Converges</strong> to Q* if every (s,a) is visited infinitely often and α decays suitably.</li>
+    <li>Tabular version limited to small discrete spaces → <strong>DQN</strong> replaces the table with a deep network (Atari, 2015).</li>
+  </ul>
+
+  <p class="mt-4"><strong class="text-white">Mnemonic:</strong> update = <strong>"QARGMAX"</strong> — <strong>Q</strong> + <strong>α</strong>(<strong>R</strong> + <strong>G</strong>amma·<strong>MAX</strong> − Q).</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Using <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s',a')</code> of the action actually taken next instead of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max_(a') Q(s',a')</code> — that would be SARSA, not Q-learning; the <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max</code> is the identity of Q-learning.</p>
+  </div>
+</section>
+
+<!-- ============ 15. SARSA ============ -->
+<section id="sarsa" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">15. SARSA <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — TOP DUE, likely next</span></h2>
+
+  <p><strong class="text-white">Definition:</strong> SARSA (State–Action–Reward–State–Action) is a <strong>model-free, on-policy</strong> TD control algorithm. It updates <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a)</code> using the action <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a'</code> <strong>actually chosen</strong> by the current (ε-greedy) policy in the next state — so it learns the value of <em>the policy it is really following</em>, exploration included.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">15.1 Update rule</h3>
+  <p class="mt-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a) ← Q(s,a) + α [ r + γ · Q(s',a') − Q(s,a) ]</code></p>
+  <p class="mt-2">Only difference from Q-learning: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s',a')</code> (the action it will really take) replaces <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max_(a') Q(s',a')</code>. The name is the quintuple used per update: <strong>(s, a, r, s', a')</strong>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">15.2 Algorithm</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li>Initialise Q-table; choose <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">α, γ, ε</code>.</li>
+    <li>Start episode at <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s</code>; choose <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code> ε-greedily from Q. ← action chosen <strong>before</strong> the loop</li>
+    <li>Take <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a</code>; observe <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r, s'</code>.</li>
+    <li>Choose next action <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a'</code> ε-greedily from <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s', ·)</code>. ← chosen <strong>before</strong> updating</li>
+    <li>Update: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a) ← Q(s,a) + α[ r + γ Q(s',a') − Q(s,a) ]</code>.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">s ← s'</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a ← a'</code>; repeat 3–5 until terminal.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">15.3 SARSA vs Q-learning (the predicted question — learn this table cold)</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">SARSA</th><th class="px-3 py-2">Q-learning</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Policy type</td><td class="px-3 py-2"><strong>On-policy</strong> — evaluates the policy it follows</td><td class="px-3 py-2"><strong>Off-policy</strong> — evaluates greedy policy while following ε-greedy</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Next-state term in target</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s',a')</code> — action actually taken</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max_(a') Q(s',a')</code> — best possible action</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Update tuple</td><td class="px-3 py-2">(s, a, r, s', a')</td><td class="px-3 py-2">(s, a, r, s')</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Accounts for exploration risk</td><td class="px-3 py-2">Yes → learns <strong>safer</strong> paths</td><td class="px-3 py-2">No → learns <strong>optimal</strong> but riskier paths</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Cliff-walking result</td><td class="px-3 py-2">Takes longer path away from cliff</td><td class="px-3 py-2">Hugs the cliff edge (optimal but falls during ε-exploration)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Convergence target</td><td class="px-3 py-2">Q of the ε-greedy policy (→ Q* if ε decays to 0)</td><td class="px-3 py-2">Q* directly</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Online performance while learning</td><td class="px-3 py-2">Better (fewer disasters)</td><td class="px-3 py-2">Worse (more exploratory falls)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Use when</td><td class="px-3 py-2">Real robots/safety-critical (mistakes costly)</td><td class="px-3 py-2">Simulators (mistakes free), want true optimum</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4"><strong class="text-white">Example — Cliff Walking (write this, it's the classic):</strong> Grid path from Start to Goal along a cliff edge; falling = −100. <strong>Q-learning</strong> learns the shortest path <em>along</em> the cliff (optimal if you never slip, but ε-greedy exploration keeps making it fall). <strong>SARSA</strong> knows its own ε-greedy self might slip, so it learns a path one row <em>away</em> from the cliff — slightly longer, far safer, higher actual reward during training.</p>
+  <p class="mt-2"><strong class="text-white">Mnemonic:</strong> the name spells the update: <strong>S-A-R-S-A</strong> = the exact five quantities you plug in. <em>"SARSA is Sincere (follows its own policy); Q is Qunning/cunning (follows one, learns another)."</em></p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Writing a <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max</code> inside the SARSA target — the moment you write <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max</code>, it becomes Q-learning. SARSA commits to <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a'</code> first, then updates.</p>
+  </div>
+</section>
+
+<!-- ============ 16. Actor-Critic ============ -->
+<section id="actor-critic" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">16. Actor-Critic Model <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-24 — MUST DO</span></h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal list-outside pl-5 space-y-1">
+      <li>Opening line: actor-critic combines policy-based and value-based RL — an actor network selects actions, a critic network evaluates them via TD error.</li>
+      <li>Headings: <strong>Actor: role</strong> → <strong>Critic: role</strong> → <strong>Interaction loop (TD error as the messenger)</strong> → <strong>Update equations</strong> → <strong>Advantages</strong>.</li>
+      <li>Draw: the actor-critic block diagram with TD-error arrows to both networks.</li>
+      <li>Close with: analogy — actor = student performing, critic = teacher scoring; both improve together. Mention A2C/A3C as modern versions.</li>
+    </ol>
+  </div>
+
+  <p><strong class="text-white">Definition:</strong> The actor-critic architecture uses two learners: the <strong>actor</strong> — a parameterised policy <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π_θ(a|s)</code> that decides actions — and the <strong>critic</strong> — a value-function approximator <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V_w(s)</code> that judges those actions. The critic's <strong>TD error</strong> is the single signal that trains both.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">16.1 Roles (May-24 asked "roles + interaction" — make each a heading)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Actor (policy network, parameters θ):</strong> outputs action probabilities <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">π_θ(a|s)</code>; responsible for <em>acting</em>. Updated in the direction the critic approves.</li>
+    <li><strong>Critic (value network, parameters w):</strong> estimates <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V_w(s)</code>; responsible for <em>evaluating</em> — "was that action better or worse than expected from this state?"</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">16.2 Interaction — TD error updates BOTH (the core of the answer)</h3>
+  <p class="mt-2">TD error after each step: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ = r + γ V_w(s') − V_w(s)</code></p>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ &gt; 0</code> → outcome better than expected → <strong>actor</strong>: raise probability of that action; <strong>critic</strong>: raise <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(s)</code>.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ &lt; 0</code> → worse than expected → lower both.</li>
+  </ul>
+  <p class="mt-2">Update equations (plain notation):</p>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li><strong>Critic:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w ← w + α_c · δ · ∇_w V_w(s)</code> (reduce prediction error)</li>
+    <li><strong>Actor:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">θ ← θ + α_a · δ · ∇_θ log π_θ(a|s)</code> (policy gradient scaled by the critic's verdict)</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">16.3 Architecture diagram (draw this)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+                        state s
+              +------------+------------+
+              |                         |
+              v                         v
+         [ ACTOR π_θ ]            [ CRITIC V_w ]
+              |                         |
+       action a to env            value V(s)
+              |                         |
+   env gives r, s'  ---------&gt;  δ = r + γV(s') - V(s)   (TD error)
+              ^                         |
+              |            +------------+------------+
+              |            |                         |
+              |     update actor θ            update critic w
+              +-----(δ scales policy grad)   (δ reduces value error)</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">16.4 Why combine the two? (advantages — any 3)</h3>
+  <ul class="list-disc list-outside pl-5 space-y-1 mt-2">
+    <li>Pure policy-gradient (REINFORCE) waits till episode end and has <strong>high variance</strong> → critic's step-by-step TD feedback lowers variance and enables <strong>online</strong> updates.</li>
+    <li>Pure value methods (Q-learning) struggle with <strong>continuous action spaces</strong> → actor outputs actions directly.</li>
+    <li>Faster, more stable convergence; basis of modern algorithms <strong>A2C, A3C, DDPG, PPO</strong>.</li>
+  </ul>
+
+  <p class="mt-4"><strong class="text-white">Example / analogy:</strong> A dance student (<strong>actor</strong>) performs a move; the coach (<strong>critic</strong>) scores it against expectation. A pleasant surprise (δ &gt; 0) → student repeats the move more often, coach also recalibrates expectations. Both networks improve simultaneously.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4">
+    <p>⚠️ <strong class="text-white">Common mistake:</strong> Saying the critic tells the actor <em>which action to take</em> — it never does; it only says <strong>how much better/worse than expected</strong> the outcome was (scalar δ), and the actor adjusts its own probabilities.</p>
+  </div>
+</section>
+
+<!-- ============ Quick Revision Box ============ -->
+<section id="quick-revision" class="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-6">
+  <h2 class="text-2xl font-bold text-white mb-4">⚡ Quick Revision Box</h2>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">One-liners</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Topic</th><th class="px-3 py-2">One line to remember</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">RNN</td><td class="px-3 py-2">Hidden state carries memory; same weights every step; trained by BPTT; dies of vanishing gradient</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">RNN types</td><td class="px-3 py-2">1-1, 1-M (captioning), M-1 (sentiment), M-M synced (POS), M-M enc-dec (translation)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">LSTM</td><td class="px-3 py-2">Cell state conveyor + 3 gates (Forget-Input-Output); <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C_t = f*C_(t-1) + i*C~</code> beats vanishing gradient</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">GRU</td><td class="px-3 py-2">LSTM lite: 2 gates (update z, reset r), no separate cell state, fewer params, faster</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Seq2seq</td><td class="px-3 py-2">Encoder squeezes source into context vector c; decoder unrolls it into target; bottleneck for long sentences</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Beam search</td><td class="px-3 py-2">Keep top-B partial sentences each step; B=1 → greedy; length-normalise scores</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">BLEU</td><td class="px-3 py-2">Clipped n-gram precision × brevity penalty; punishes SHORT candidates only</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Attention</td><td class="px-3 py-2">New context vector every decoder step = softmax-weighted sum of ALL encoder states</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">RL</td><td class="px-3 py-2">Agent–environment loop maximising cumulative discounted reward; evaluative, delayed feedback</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">RL elements</td><td class="px-3 py-2">Policy, Reward, Value function, Model (+ agent, env, state, action)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Model-based vs free</td><td class="px-3 py-2">Map-planner (VI/PI, Dyna-Q) vs habit-walker (Q-learning, SARSA)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">MDP</td><td class="px-3 py-2">(S, A, P, R, γ) + Markov property: future ⟂ past given present</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Bellman</td><td class="px-3 py-2">Value today = reward now + γ·value tomorrow; expectation form has Σπ, optimality form has max</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Value Iteration</td><td class="px-3 py-2">Bellman optimality sweeps on V; policy extracted at the end; many cheap iterations</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Policy Iteration</td><td class="px-3 py-2">Evaluate → improve → repeat; few expensive iterations; exact finite convergence</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Q-learning</td><td class="px-3 py-2">Off-policy TD; target uses <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max Q(s',a')</code>; deterministic form <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q = r + γ maxQ'</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">SARSA</td><td class="px-3 py-2">On-policy TD; target uses actual <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s',a')</code>; safer paths (cliff example)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Actor-critic</td><td class="px-3 py-2">Actor acts (π_θ), critic judges (V_w); ONE TD error δ trains both</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Every formula (write each once daily)</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl mt-2">
+RNN:      h_t = tanh(W_hh h_(t-1) + W_xh x_t + b_h) ;  y_t = softmax(W_hy h_t + b_y)
+LSTM:     f_t = σ(W_f·[h_(t-1),x_t]+b_f)   i_t = σ(W_i·[...]+b_i)   o_t = σ(W_o·[...]+b_o)
+          C~_t = tanh(W_C·[...]+b_C)       C_t = f_t*C_(t-1) + i_t*C~_t     h_t = o_t*tanh(C_t)
+GRU:      z_t = σ(W_z·[h_(t-1),x_t])       r_t = σ(W_r·[h_(t-1),x_t])
+          h~_t = tanh(W·[r_t*h_(t-1), x_t])          h_t = (1-z_t)*h_(t-1) + z_t*h~_t
+BLEU:     p_n = clipped n-gram matches / total candidate n-grams
+          BP = 1 if c&gt;r else exp(1 - r/c)            BLEU = BP·exp(Σ w_n log p_n)
+Beam:     score = (1/T_y^α) Σ log P(y_t | x, y_&lt;t)   (length-normalised, α≈0.7)
+Attention: e_tj = score(s_(t-1),h_j);  α_tj = softmax(e_tj);  c_t = Σ_j α_tj h_j
+Return:   G_t = r_(t+1) + γ r_(t+2) + γ² r_(t+3) + ...
+Bellman exp:  V^π(s) = Σ_a π(a|s) Σ_s' P(s'|s,a)[R + γV^π(s')]
+Bellman opt:  V*(s) = max_a Σ_s' P(s'|s,a)[R + γV*(s')]
+              Q*(s,a) = Σ_s' P(s'|s,a)[R + γ max_a' Q*(s',a')]
+VI backup:    V(s) ← max_a Σ_s' P[R + γV(s')]
+Q-learning:   Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') − Q(s,a)]   (det: Q ← r + γ maxQ')
+SARSA:        Q(s,a) ← Q(s,a) + α[r + γ Q(s',a') − Q(s,a)]
+TD error:     δ = r + γV(s') − V(s)
+Actor:        θ ← θ + α_a δ ∇_θ log π_θ(a|s)        Critic: w ← w + α_c δ ∇_w V_w(s)</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Diagrams to practice (draw each on rough paper twice)</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li>Unrolled RNN (3 time steps, shared weights labelled)</li>
+    <li>Five RNN types row (1-1 … M-M)</li>
+    <li><strong>LSTM cell</strong> — C-line on top, three σ gates (3-paper streak — non-negotiable)</li>
+    <li>GRU cell (z and r gates)</li>
+    <li>Encoder–decoder with context vector</li>
+    <li>Beam search tree (B=2 numeric example)</li>
+    <li>Attention weighted-sum diagram</li>
+    <li><strong>RL agent–environment loop</strong> (goes in every RL answer)</li>
+    <li>3×4 gridworld MDP (+1, −1, wall)</li>
+    <li>Q-learning 2×3 grid with 100/90/81 ripple</li>
+    <li>Actor-critic block diagram with δ arrows</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">10-minute exam-eve priority order</h3>
+  <ol class="list-decimal list-outside pl-5 space-y-1 mt-2">
+    <li>LSTM gates + 6 equations + cell diagram (streak topic)</li>
+    <li>Q-learning update term-by-term + 100/90/81 grid</li>
+    <li>MDP 5-tuple + gridworld + working loop</li>
+    <li>RL definition + framework diagram + elements</li>
+    <li>SARSA update + on/off-policy table (<strong>top predicted</strong>)</li>
+    <li>Value vs Policy Iteration table</li>
+    <li>Beam search worked example + BLEU formula with BP (<strong>predicted</strong>)</li>
+    <li>Actor-critic roles + δ equations</li>
+    <li>Bellman two forms (expectation vs optimality)</li>
+    <li>RNN types table + feed-forward vs RNN table + attention steps</li>
+  </ol>
+</section>
+
+</main>
+
+<footer class="border-t border-slate-800 mt-8">
+  <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-slate-400 flex flex-wrap items-center justify-between gap-2">
+    <span>CS-601 Machine Learning · RGPV · Target 9 SGPA</span>
+    <a href="index.html" class="text-indigo-400 hover:text-white">← Back to Dashboard</a>
+  </div>
+</footer>
+
+</body>
+</html>

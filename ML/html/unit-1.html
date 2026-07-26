@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 — Introduction &amp; Foundations of ML | CS-601 ML</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+<nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+  <ul class="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 text-sm max-w-5xl mx-auto">
+    <li><a href="index.html" class="text-slate-400 hover:text-white">🎯 Dashboard</a></li>
+    <li><a href="unit-1.html" class="text-indigo-400 font-semibold">U1 Foundations</a></li>
+    <li><a href="unit-2.html" class="text-slate-400 hover:text-white">U2 Neural Nets</a></li>
+    <li><a href="unit-3.html" class="text-slate-400 hover:text-white">U3 CNN</a></li>
+    <li><a href="unit-4.html" class="text-slate-400 hover:text-white">U4 RNN &amp; RL</a></li>
+    <li><a href="unit-5.html" class="text-slate-400 hover:text-white">U5 SVM &amp; Apps</a></li>
+    <li><a href="numericals.html" class="text-slate-400 hover:text-white">🔢 Numericals</a></li>
+  </ul>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+
+<h1 class="text-3xl font-bold text-white mb-2">Unit 1 — Introduction &amp; Foundations of Machine Learning</h1>
+
+<div class="border-l-4 border-indigo-500 bg-indigo-500/10 p-4 rounded-r-xl my-4 text-indigo-200 font-medium">
+  Exam weight: ~25.6% of offered marks (highest of all units). Q1 comes from this unit in 5/5 papers — GUARANTEED. Easiest unit to score.
+</div>
+
+<!-- ============ PYQ TABLE ============ -->
+<section id="pyq" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-4">PYQ Questions from this Unit</h2>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Year</th><th class="px-3 py-2">Question (condensed)</th><th class="px-3 py-2">Marks</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Basic design issues and approaches to ML</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Statistical theory in ML</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Training data vs Testing data</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Locally weighted linear regression</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Model selection</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Convex optimization (short note)</td><td class="px-3 py-2">3.5</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Types of ML for continuous vs non-continuous data</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">One-hot encoding vs Label encoding + effect on dimensionality</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Confusion matrix + metrics derived from it</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">KNN implementation + numerical</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Main types of ML algorithms + example applications</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Evaluation metrics for regression models</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Importance of data normalization for convergence/stability</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2024</td><td class="px-3 py-2">Convex optimization (short note)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Define ML, differentiate from traditional programming, key components</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">How hypothesis function maps inputs to predictions</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Data augmentation techniques</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dec-2024</td><td class="px-3 py-2">Scope and limitations (short note)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Define ML + scope and limitations</td><td class="px-3 py-2">8</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Role of regression, probability and statistics in ML</td><td class="px-3 py-2">6</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Data visualization methods in detail</td><td class="px-3 py-2">9</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Jun-2025</td><td class="px-3 py-2">Data preprocessing</td><td class="px-3 py-2">5</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 1. INTRODUCTION ============ -->
+<section id="introduction" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">1. Introduction to Machine Learning
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Dec-24, Jun-25 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>Open with Arthur Samuel + Tom Mitchell definitions (write Mitchell's E, T, P form).</li>
+      <li>Headed points: (a) ML vs Traditional Programming table, (b) Key components — Data, Model, Loss function, Optimizer, Evaluation, (c) Working steps of ML (5 steps), (d) Why ML is needed.</li>
+      <li>Draw the "Traditional vs ML block diagram" (data+program→output vs data+output→program).</li>
+      <li>Close with example: spam filter learns rules from labelled emails instead of hand-coded IF-ELSE rules.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition (Arthur Samuel, 1959):</strong> Machine Learning is the field of study that gives computers the ability to learn without being explicitly programmed.</p>
+  <p class="my-3"><strong class="text-white">Definition (Tom Mitchell, 1997 — write this in exam):</strong> A computer program is said to learn from <strong>experience E</strong> with respect to some <strong>task T</strong> and <strong>performance measure P</strong>, if its performance at T, as measured by P, improves with experience E.</p>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li>Example mapping — Spam filter: T = classify emails, E = labelled spam/non-spam emails, P = % of emails correctly classified.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">ML vs Traditional Programming</h3>
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">TRADITIONAL PROGRAMMING            MACHINE LEARNING
++------+   +---------+             +------+   +---------+
+| Data |--&gt;|         |             | Data |--&gt;|         |
++------+   | Program |--&gt; Output   +------+   | Learning|--&gt; Program
++------+   | (rules) |             +------+   | Algo    |    (model/rules)
+|Rules |--&gt;|         |             |Output|--&gt;|         |
++------+   +---------+             +------+   +---------+
+(Human writes rules)               (Machine learns rules from data)</pre>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Traditional Programming</th><th class="px-3 py-2">Machine Learning</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Input</td><td class="px-3 py-2">Data + hand-written rules</td><td class="px-3 py-2">Data + expected outputs (labels)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Output</td><td class="px-3 py-2">Answers/results</td><td class="px-3 py-2">Rules (a trained model)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Logic</td><td class="px-3 py-2">Explicitly coded by programmer</td><td class="px-3 py-2">Learned automatically from data</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Adaptability</td><td class="px-3 py-2">Fails on unseen situations; needs re-coding</td><td class="px-3 py-2">Improves as more data arrives</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Best for</td><td class="px-3 py-2">Fixed, well-defined logic (payroll, billing)</td><td class="px-3 py-2">Complex patterns (speech, vision, fraud)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Maintenance</td><td class="px-3 py-2">Manual updates</td><td class="px-3 py-2">Retraining on new data</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key Components of an ML System</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Data (Experience E):</strong> examples the system learns from — training set.</li>
+    <li><strong class="text-white">Task (T):</strong> what to do — classification, regression, clustering, control.</li>
+    <li><strong class="text-white">Model / Hypothesis (h):</strong> mathematical function mapping inputs → outputs, e.g. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x) = w·x + b</code>.</li>
+    <li><strong class="text-white">Loss / Cost function:</strong> measures error between prediction and truth, e.g. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">J(w) = (1/2m) Σ (h(x_i) − y_i)²</code>.</li>
+    <li><strong class="text-white">Optimizer / Learning algorithm:</strong> adjusts parameters to minimize loss (e.g. gradient descent).</li>
+    <li><strong class="text-white">Evaluation (P):</strong> performance on unseen test data — accuracy, MSE, F1.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Steps in the ML Process</h3>
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Data Collection → Preprocessing → Model Selection → Training → Evaluation → Deployment
+       ^                                                            |
+       +---------------- feedback / retraining --------------------+</pre>
+
+  <p class="my-3"><strong class="text-white">Mnemonic:</strong> <strong>C</strong>lean <strong>P</strong>andas <strong>M</strong>ake <strong>T</strong>idy <strong>E</strong>legant <strong>D</strong>ashboards (Collect, Preprocess, Model, Train, Evaluate, Deploy).</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Writing only Samuel's one-liner. Examiners award full definition marks only when Mitchell's E-T-P definition is written and mapped to an example.</div>
+</section>
+
+<!-- ============ 2. DESIGN ISSUES ============ -->
+<section id="design-issues" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">2. Basic Design Issues and Approaches to ML
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: designing a learning system needs four key choices (Mitchell's checkers-learning framework).</li>
+      <li>Headed points: (1) Choosing training experience, (2) Choosing target function, (3) Choosing representation of target function, (4) Choosing learning algorithm; then Issues: data quality/quantity, overfitting, feature selection, computational cost, interpretability.</li>
+      <li>Draw the 4-step design pipeline diagram.</li>
+      <li>Example: checkers-playing program (Mitchell's classic).</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Four Design Choices (Mitchell's framework)</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Choosing the training experience</strong> — direct (labelled board states) vs indirect (final win/loss); teacher-controlled or self-generated; how representative of real distribution.</li>
+    <li><strong class="text-white">Choosing the target function</strong> — what exactly to learn, e.g. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V: Board → R</code> (a score for each board state).</li>
+    <li><strong class="text-white">Choosing a representation for the target function</strong> — linear function of features, decision tree, neural network. Trade-off: expressive power vs training data needed.</li>
+    <li><strong class="text-white">Choosing a learning algorithm</strong> — how to fit parameters, e.g. LMS rule / gradient descent.</li>
+  </ol>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Training           Target            Representation        Learning
+Experience  ---&gt;   Function   ---&gt;   (linear/tree/NN) ---&gt; Algorithm ---&gt; Final Design
+(direct/indirect)  (what to learn)   (how to store it)     (how to fit)</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Basic Issues in Machine Learning</h3>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Quality &amp; quantity of data:</strong> noisy, biased or insufficient data → poor model.</li>
+    <li><strong class="text-white">Overfitting vs underfitting:</strong> memorizing training data vs learning too little (Section 6).</li>
+    <li><strong class="text-white">Feature selection:</strong> which attributes matter; irrelevant features hurt accuracy.</li>
+    <li><strong class="text-white">Algorithm/model selection:</strong> no single best algorithm for all problems (<em>No Free Lunch theorem</em>).</li>
+    <li><strong class="text-white">Generalization:</strong> performance must hold on unseen data, not just the training set.</li>
+    <li><strong class="text-white">Computational complexity:</strong> training cost, memory, scalability to big data.</li>
+    <li><strong class="text-white">Interpretability:</strong> black-box models (deep nets) are hard to explain.</li>
+  </ul>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> For a checkers program — experience = games against itself, target = board evaluation <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(b)</code>, representation = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(b) = w0 + w1x1 + ... + w6x6</code>, algorithm = LMS weight update.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Listing only "issues" and skipping the four design choices — the question asks for BOTH design issues AND approaches.</div>
+</section>
+
+<!-- ============ 3. SCOPE & LIMITATIONS ============ -->
+<section id="scope-limitations" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">3. Scope and Limitations of ML
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Dec-24, Jun-25 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One-line definition of ML (Mitchell short form).</li>
+      <li>Two headed halves: SCOPE — 5 bullets with application areas; LIMITATIONS — 5 bullets.</li>
+      <li>Draw the "ML application wheel" (ML at centre, applications around it).</li>
+      <li>Close: "ML is powerful where patterns exist in data, but it is not a replacement for domain knowledge or causal reasoning."</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Scope (Applications / Where ML shines)</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Domain</th><th class="px-3 py-2">Example use</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Healthcare</td><td class="px-3 py-2">Disease diagnosis from X-rays, drug discovery</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Finance</td><td class="px-3 py-2">Fraud detection, credit scoring, stock forecasting</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">E-commerce</td><td class="px-3 py-2">Recommendation systems (Amazon, Netflix)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">NLP</td><td class="px-3 py-2">Chatbots, translation, sentiment analysis</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Computer Vision</td><td class="px-3 py-2">Face recognition, self-driving cars</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Speech</td><td class="px-3 py-2">Voice assistants (Alexa, Siri)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Industry</td><td class="px-3 py-2">Predictive maintenance, quality inspection</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">                 Healthcare
+                     |
+   Speech ---- [ MACHINE ] ---- Finance
+                [ LEARNING]
+   Vision ----- [  CORE  ] ---- E-commerce
+                     |
+                    NLP</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Limitations</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Data hungry:</strong> needs large, high-quality labelled datasets; garbage in → garbage out.</li>
+    <li><strong class="text-white">No causality:</strong> learns correlations, not cause-effect; can give wrong reasons for right answers.</li>
+    <li><strong class="text-white">Bias &amp; fairness:</strong> inherits bias present in training data (e.g. biased hiring models).</li>
+    <li><strong class="text-white">Poor generalization outside training distribution:</strong> fails on data unlike what it saw.</li>
+    <li><strong class="text-white">Black-box nature:</strong> deep models are hard to interpret and audit.</li>
+    <li><strong class="text-white">Computational cost:</strong> training large models needs GPUs, energy, time.</li>
+    <li><strong class="text-white">Security:</strong> vulnerable to adversarial examples and data poisoning.</li>
+  </ol>
+
+  <p class="my-3"><strong class="text-white">Mnemonic for limitations:</strong> <strong>D</strong>ata <strong>C</strong>auses <strong>B</strong>ig <strong>G</strong>eneral <strong>B</strong>lack <strong>C</strong>ostly <strong>S</strong>ecurity issues (Data, Causality, Bias, Generalization, Black-box, Cost, Security).</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Writing only applications and 2 vague limitations. Balance both halves — 5 + 5 bullets earns the full 7.</div>
+</section>
+
+<!-- ============ 4. ML MODELS ============ -->
+<section id="ml-models" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">4. Machine Learning Models: Supervised, Unsupervised, Reinforcement
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22, May-23, May-24, Jun-25 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: ML algorithms are classified by the kind of feedback available during learning.</li>
+      <li>Headed points: Supervised (definition, 2 sub-types: classification/regression), Unsupervised (clustering/association/dim-reduction), Reinforcement (agent-environment-reward), Semi-supervised (1 line).</li>
+      <li>Draw the 3-branch tree diagram AND the agent-environment loop for RL.</li>
+      <li>Close with the big comparison table + 1 application each (spam filter / customer segmentation / game playing).</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Classification Tree</h3>
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">                    MACHINE LEARNING
+        +----------------+----------------+
+        |                |                |
+   SUPERVISED       UNSUPERVISED     REINFORCEMENT
+   (labelled data)  (no labels)      (reward signal)
+     |      |          |     |            |
+Classifi- Regression Cluster Associa-  Q-learning,
+cation    (contin-   -ing    tion/     SARSA, MDP
+(discrete) uous)             Dim.Red.</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">4.1 Supervised Learning</h3>
+  <p class="my-3"><strong class="text-white">Definition:</strong> Learning a mapping <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f: X → Y</code> from a training set of <strong>labelled</strong> pairs <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(x_i, y_i)</code>; the "supervisor" is the known correct output.</p>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Classification</strong> — output is <strong>discrete/non-continuous</strong> (categories). Ex: spam/not-spam.</li>
+    <li><strong class="text-white">Regression</strong> — output is <strong>continuous</strong> (real numbers). Ex: house price.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">4.2 Unsupervised Learning</h3>
+  <p class="my-3"><strong class="text-white">Definition:</strong> Learning hidden structure/patterns from <strong>unlabelled</strong> data — no target output is given.</p>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Clustering</strong> — group similar points (K-means, hierarchical).</li>
+    <li><strong class="text-white">Association rule mining</strong> — find co-occurrence rules (Apriori: "bread → butter").</li>
+    <li><strong class="text-white">Dimensionality reduction</strong> — compress features (PCA).</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">4.3 Reinforcement Learning</h3>
+  <p class="my-3"><strong class="text-white">Definition:</strong> An <strong>agent</strong> learns by <strong>trial and error</strong>, interacting with an <strong>environment</strong>, receiving <strong>rewards/penalties</strong>, and learning a <strong>policy</strong> that maximizes cumulative reward.</p>
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">        +--------+   action a_t    +-------------+
+        | AGENT  | --------------&gt; | ENVIRONMENT |
+        |        | &lt;-------------- |             |
+        +--------+  state s_t+1,   +-------------+
+                    reward r_t+1</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Grand Comparison Table (memorize this)</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Supervised</th><th class="px-3 py-2">Unsupervised</th><th class="px-3 py-2">Reinforcement</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Data</td><td class="px-3 py-2">Labelled (x, y)</td><td class="px-3 py-2">Unlabelled (x only)</td><td class="px-3 py-2">No dataset; interaction</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Feedback</td><td class="px-3 py-2">Direct (correct answer)</td><td class="px-3 py-2">None</td><td class="px-3 py-2">Delayed reward signal</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Goal</td><td class="px-3 py-2">Predict output for new x</td><td class="px-3 py-2">Discover hidden structure</td><td class="px-3 py-2">Learn optimal policy</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Output type</td><td class="px-3 py-2">Class / value</td><td class="px-3 py-2">Clusters / rules / components</td><td class="px-3 py-2">Sequence of actions</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Algorithms</td><td class="px-3 py-2">Linear/Logistic Regression, KNN, SVM, Decision Tree, Naive Bayes</td><td class="px-3 py-2">K-means, Hierarchical clustering, PCA, Apriori, DBSCAN</td><td class="px-3 py-2">Q-learning, SARSA, DQN, Policy gradient</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Applications</td><td class="px-3 py-2">Spam filter, disease diagnosis, price prediction</td><td class="px-3 py-2">Customer segmentation, anomaly detection, market-basket analysis</td><td class="px-3 py-2">Game playing (chess/Go), robotics, self-driving control</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Human effort</td><td class="px-3 py-2">High (labelling)</td><td class="px-3 py-2">Low</td><td class="px-3 py-2">Reward design</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Continuous vs Non-continuous data (May-23 angle):</strong></p>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Data type</th><th class="px-3 py-2">Supervised technique</th><th class="px-3 py-2">Example</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Continuous output</td><td class="px-3 py-2">Regression (linear, polynomial)</td><td class="px-3 py-2">Predicting temperature, salary</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Non-continuous (categorical) output</td><td class="px-3 py-2">Classification (logistic regression, KNN, SVM)</td><td class="px-3 py-2">Spam detection, digit recognition</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Continuous input, no labels</td><td class="px-3 py-2">Clustering / PCA</td><td class="px-3 py-2">Grouping sensor readings</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Categorical input, no labels</td><td class="px-3 py-2">Association mining</td><td class="px-3 py-2">Market-basket items</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Semi-supervised (1-line bonus):</strong> small labelled + large unlabelled data combined — e.g. web-page classification.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Forgetting to give one ALGORITHM and one APPLICATION per type — May-24 explicitly asked "with example applications".</div>
+</section>
+
+<!-- ============ 5. TRAIN VS TEST & CV ============ -->
+<section id="train-test-cv" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">5. Training Data vs Testing Data &amp; Cross-Validation
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: dataset is split so learning and evaluation happen on different data, ensuring generalization.</li>
+      <li>Headed points: definition of training/validation/test sets, comparison table, typical split ratios, k-fold cross-validation with diagram, why testing on training data is wrong.</li>
+      <li>Draw the 70/15/15 split bar + 5-fold CV diagram.</li>
+      <li>Example: 1000 emails → 700 train, 150 validation, 150 test.</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">The Three Splits</h3>
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">FULL DATASET (100%)
++---------------------------+---------+---------+
+|        TRAINING 70%       | VAL 15% | TEST 15%|
++---------------------------+---------+---------+
+     fits model params        tunes      final,
+     (weights)                hyper-     touched
+                              params     ONCE</pre>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Training Data</th><th class="px-3 py-2">Testing Data</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Purpose</td><td class="px-3 py-2">Learn/fit model parameters</td><td class="px-3 py-2">Evaluate final generalization</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">When used</td><td class="px-3 py-2">During learning</td><td class="px-3 py-2">Only after training completes</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Size</td><td class="px-3 py-2">Larger (~70–80%)</td><td class="px-3 py-2">Smaller (~20–30%)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Seen by model?</td><td class="px-3 py-2">Yes, repeatedly</td><td class="px-3 py-2">Never during training</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Error name</td><td class="px-3 py-2">Training error (optimistic)</td><td class="px-3 py-2">Test/generalization error (realistic)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Risk if misused</td><td class="px-3 py-2">—</td><td class="px-3 py-2">Testing on training data → inflated accuracy, hidden overfitting</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Validation set:</strong> a third split used to tune hyperparameters (learning rate, k in KNN) and for model selection — keeps the test set "unseen".</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">K-Fold Cross-Validation</h3>
+  <p class="my-3"><strong class="text-white">Definition:</strong> Split data into <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">k</code> equal folds; train on <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">k−1</code> folds, validate on the remaining fold; repeat <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">k</code> times so every fold is validated once; report the <strong>average</strong> score.</p>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">5-FOLD CV  (V = validation fold, T = training folds)
+Iter1: [V][T][T][T][T]
+Iter2: [T][V][T][T][T]
+Iter3: [T][T][V][T][T]
+Iter4: [T][T][T][V][T]
+Iter5: [T][T][T][T][V]
+Final score = average of the 5 validation scores</pre>
+
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Advantages:</strong> every point used for both training &amp; validation; low-variance estimate; best for small datasets.</li>
+    <li><strong class="text-white">Variants:</strong> Stratified k-fold (keeps class ratio), Leave-One-Out (k = n, expensive).</li>
+  </ul>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> With 1000 patient records and 5-fold CV, each iteration trains on 800 and validates on 200; accuracy is the mean of 5 runs.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Saying test set is used "to improve the model" — it is used ONLY to report final performance; improving on test data leaks information.</div>
+</section>
+
+<!-- ============ 6. MODEL SELECTION ============ -->
+<section id="model-selection" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">6. Model Selection, Overfitting &amp; Underfitting
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: model selection = choosing the best model/complexity among candidates using validation performance.</li>
+      <li>Headed points: criteria (validation error, cross-validation, bias-variance, Occam's razor, AIC/BIC one-liner), overfitting vs underfitting table, remedies for each.</li>
+      <li>Draw the U-shaped error-vs-complexity curve AND the three fitting sketches.</li>
+      <li>Example: choosing polynomial degree 2 over degree 9 for house prices.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> Model selection is the process of choosing the best model type and complexity (e.g., polynomial degree, k in KNN, tree depth) among candidates, using <strong>validation-set or cross-validation error</strong>, so that generalization is maximized.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">How models are selected</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li>Split data (train/validation/test) or use k-fold CV.</li>
+    <li>Train each candidate model on the training set.</li>
+    <li>Compare <strong>validation</strong> errors (never training errors).</li>
+    <li>Apply <strong>Occam's razor</strong> — among equally good models, prefer the simpler one.</li>
+    <li>Optionally use penalized criteria: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">AIC = 2k − 2 ln(L)</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">BIC = k ln(n) − 2 ln(L)</code> (penalize complexity).</li>
+    <li>Retrain chosen model on train+validation; report score on the untouched test set.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Overfitting vs Underfitting</h3>
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Error
+  ^      \  underfit         overfit  /
+  |       \   zone            zone   /
+  |        \                        /  &lt;-- Validation error (U-shape)
+  |         \______   ____________/
+  |                \_/
+  |            best model
+  |     ______________________________
+  |                                     &lt;-- Training error (keeps falling)
+  +----------------------------------------&gt; Model complexity</pre>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">UNDERFIT           GOOD FIT           OVERFIT
+  o   o              o   o              o   o
+ ___________        __/\__/\_          /\/\/\/\
+(straight line)   (smooth curve)   (wiggles through
+ misses pattern    captures trend    every point)</pre>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Underfitting</th><th class="px-3 py-2">Overfitting</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Cause</td><td class="px-3 py-2">Model too simple / trained too little</td><td class="px-3 py-2">Model too complex / too little data / noise memorized</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Bias-Variance</td><td class="px-3 py-2">High bias, low variance</td><td class="px-3 py-2">Low bias, high variance</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Training error</td><td class="px-3 py-2">High</td><td class="px-3 py-2">Very low</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Test error</td><td class="px-3 py-2">High</td><td class="px-3 py-2">High</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Example</td><td class="px-3 py-2">Fitting a line to a curved trend</td><td class="px-3 py-2">Degree-9 polynomial through 10 points</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Remedies</td><td class="px-3 py-2">Bigger model, more features, train longer, less regularization</td><td class="px-3 py-2">More data, regularization (L1/L2), early stopping, dropout, simpler model, cross-validation, pruning</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Mnemonic:</strong> Under = <strong>"Both errors Up"</strong>; Over = <strong>"Train down, Test up"</strong>.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Drawing only the sketches without the U-shaped validation-error curve — the curve is what actually explains model <em>selection</em>.</div>
+</section>
+
+<!-- ============ 7. REGRESSION ============ -->
+<section id="regression" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">7. Regression
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22 (LWR), Jun-25 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (Regression role / types):</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: regression models the relationship between input variables and a continuous output.</li>
+      <li>Headed points: Linear regression (equation + cost + GD one-liner), Logistic regression (sigmoid + why for classification), Locally Weighted regression (weight formula + non-parametric), comparison table.</li>
+      <li>Draw: scatter + best-fit line; sigmoid curve; LWR local-line sketch.</li>
+      <li>Example: house price (linear), spam probability (logistic), non-linear temperature data (LWR).</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">7.1 Linear Regression</h3>
+  <p class="my-3"><strong class="text-white">Definition:</strong> Fits a straight line (hyperplane) <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x) = w0 + w1x1 + ... + wn xn = wᵀx + b</code> predicting a <strong>continuous</strong> output by minimizing squared error.</p>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Cost function:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">J(w) = (1/2m) Σ_{i=1..m} (h(x_i) − y_i)²</code> (MSE form)</li>
+    <li><strong class="text-white">Learning:</strong> gradient descent <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w := w − α ∂J/∂w</code>, or Normal equation <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = (XᵀX)⁻¹Xᵀy</code>.</li>
+    <li><strong class="text-white">Assumptions:</strong> linearity, independent errors, constant variance (homoscedasticity), normal residuals.</li>
+  </ul>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4"> y|        x     x
+  |     x    _/
+  |   x   _/  &lt;- best fit line  h(x)=w0+w1x
+  |  x _/   x
+  | _/  x
+  +------------------ x
+   minimizes sum of squared vertical distances</pre>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Predict house price from area: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">price = 500 + 1200 × area_sq_m</code>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">7.2 Logistic Regression</h3>
+  <p class="my-3"><strong class="text-white">Definition:</strong> A <strong>classification</strong> algorithm (despite the name) that passes a linear combination through the <strong>sigmoid</strong> to output probability of class 1.</p>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x) = sigmoid(wᵀx) = 1 / (1 + e^(−wᵀx))</code>, output in (0,1); predict class 1 if <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x) ≥ 0.5</code>.</li>
+    <li><strong class="text-white">Loss:</strong> cross-entropy / log loss <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">J = −(1/m) Σ [ y log h(x) + (1−y) log(1−h(x)) ]</code> (convex — unlike MSE here).</li>
+    <li><strong class="text-white">Decision boundary:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">wᵀx = 0</code> is a straight line/hyperplane.</li>
+  </ul>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">P(y=1) 1|            ______
+        |          /
+     0.5|--------/   &lt;- sigmoid: 1/(1+e^-z)
+        |      /
+       0|_____/
+        +---------------- z = wᵀx</pre>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Predict whether a tumour is malignant (1) or benign (0) from its size.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">7.3 Locally Weighted Linear Regression (LWR)
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22</span>
+  </h3>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="text-sm"><span class="font-semibold text-emerald-300">✍️ 7-mark answer skeleton (LWR):</span> definition (non-parametric, fits a new local line per query) → weight formula with bandwidth τ → algorithm steps (4) → comparison table vs ordinary LR → local-lines diagram → example (non-linear data) → drawback (stores all data, slow per query).</p>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> A <strong>non-parametric</strong> regression that, for each query point <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x_q</code>, fits a <em>separate</em> weighted linear regression giving <strong>higher weight to training points near x_q</strong>, then predicts from that local line.</p>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Weight of training point x_i:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w_i = exp( −(x_i − x_q)² / (2τ²) )</code> — Gaussian kernel.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">τ</code> (bandwidth/tau) controls locality: small τ → very local (wiggly, may overfit); large τ → approaches ordinary linear regression.</li>
+    <li><strong class="text-white">Local cost:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">J(w) = Σ w_i (y_i − wᵀx_i)²</code> — minimized fresh for every query.</li>
+  </ul>
+
+  <p class="my-3"><strong class="text-white">Algorithm steps:</strong></p>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li>Receive query point <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x_q</code>.</li>
+    <li>Compute weight <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w_i</code> for every training point (near → weight ≈ 1, far → ≈ 0).</li>
+    <li>Solve weighted least squares: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = (XᵀWX)⁻¹ XᵀWy</code>.</li>
+    <li>Predict <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">ŷ = wᵀx_q</code>; discard the local model; repeat for the next query.</li>
+  </ol>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4"> y|      x  x            Ordinary LR: ONE global line
+  |    x      x  x       LWR: a small local line at each
+  |  x   __     x  query, weighted by nearness
+  | x  _/  \__  x
+  |__/        \___x
+  +----^-----------  x
+       x_q  (only nearby points influence the fit here)</pre>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Linear Regression</th><th class="px-3 py-2">Locally Weighted Regression</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Type</td><td class="px-3 py-2">Parametric (fixed w learned once)</td><td class="px-3 py-2">Non-parametric (no fixed parameters)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Training</td><td class="px-3 py-2">One global fit</td><td class="px-3 py-2">No training phase; fit per query</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Memory</td><td class="px-3 py-2">Discards data after training</td><td class="px-3 py-2">Must store entire training set</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Prediction cost</td><td class="px-3 py-2">O(1) — plug into equation</td><td class="px-3 py-2">Expensive — solve regression each query</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Fits non-linear data?</td><td class="px-3 py-2">No (only straight trend)</td><td class="px-3 py-2">Yes (piecewise local lines)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Key parameter</td><td class="px-3 py-2">weights w</td><td class="px-3 py-2">bandwidth τ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Temperature vs hour-of-day (rises then falls): one global line fails, but LWR tracks the curve by fitting local lines around each queried hour.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Calling logistic regression a regression technique for continuous output — it is a classifier; only its internal score is continuous.</div>
+</section>
+
+<!-- ============ 8. PROBABILITY & STATISTICS ============ -->
+<section id="prob-stats" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">8. Probability &amp; Statistics for ML
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22, Jun-25 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton (Statistical theory / role of prob &amp; stats):</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: ML is applied statistics — data is treated as samples from an unknown probability distribution, and learning = estimating that distribution or its decision boundary.</li>
+      <li>Headed points: (a) probability basics + Bayes theorem, (b) descriptive statistics (mean/median/mode/variance), (c) inferential statistics (estimation, hypothesis testing), (d) where each is used in ML (Naive Bayes, loss = MLE, evaluation = sampling theory, regression = statistical fit).</li>
+      <li>Draw normal curve with mean ± σ regions.</li>
+      <li>Example: spam classification via Bayes theorem.</li>
+    </ol>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Probability essentials</h3>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Random variable:</strong> variable whose value depends on outcome of a random experiment.</li>
+    <li><strong class="text-white">Conditional probability:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(A|B) = P(A ∩ B) / P(B)</code>.</li>
+    <li><strong class="text-white">Independence:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(A ∩ B) = P(A)·P(B)</code>.</li>
+    <li><strong class="text-white">Bayes theorem (the ML workhorse):</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(H|D) = P(D|H) · P(H) / P(D)</code> — posterior = likelihood × prior / evidence.</li>
+    <li><strong class="text-white">Expectation:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">E[X] = Σ x·P(x)</code>; <strong>Variance:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Var(X) = E[X²] − (E[X])²</code>.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Statistics essentials</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Measure</th><th class="px-3 py-2">Formula</th><th class="px-3 py-2">Use in ML</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Mean</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">μ = (Σ x_i)/n</code></td><td class="px-3 py-2">Centre of data; imputation of missing values</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Median</td><td class="px-3 py-2">middle value</td><td class="px-3 py-2">Robust centre when outliers exist</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Mode</td><td class="px-3 py-2">most frequent value</td><td class="px-3 py-2">Imputing categorical features</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Variance</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ² = Σ(x_i − μ)²/n</code></td><td class="px-3 py-2">Spread; feature scaling; PCA</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Std. deviation</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ = √σ²</code></td><td class="px-3 py-2">Z-score normalization</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Covariance</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">cov(X,Y) = Σ(x−μx)(y−μy)/n</code></td><td class="px-3 py-2">Relation between two features</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Correlation</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">r = cov(X,Y)/(σx σy)</code>, −1 ≤ r ≤ 1</td><td class="px-3 py-2">Feature selection (drop redundant features)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Role of Regression, Probability &amp; Statistics in ML (Jun-25 form)</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Regression</strong> → the basic supervised model for continuous prediction; foundation of neural networks (a neuron = regression + activation).</li>
+    <li><strong class="text-white">Probability</strong> → models uncertainty: Naive Bayes and Bayesian learning use Bayes theorem; logistic regression outputs probabilities; generative models learn <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(x, y)</code>.</li>
+    <li><strong class="text-white">Statistics</strong> → (a) descriptive stats summarize and clean data, (b) loss minimization = <strong>Maximum Likelihood Estimation</strong> in disguise (least squares = MLE under Gaussian noise), (c) sampling theory justifies train/test splits and confidence in accuracy, (d) hypothesis testing checks if a model is genuinely better.</li>
+    <li><strong class="text-white">Statistical learning theory</strong> → bounds generalization error, explains bias-variance trade-off.</li>
+  </ol>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Spam filter — <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(spam | "lottery") = P("lottery"|spam)·P(spam) / P("lottery")</code>; classify spam if posterior &gt; 0.5.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Writing generic praise ("statistics is very important"). Score comes from formulas: write Bayes theorem, mean/variance, correlation, and name MLE.</div>
+</section>
+
+<!-- ============ 9. LINEAR ALGEBRA ============ -->
+<section id="linear-algebra" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">9. Linear Algebra for ML
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span>
+  </h2>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> Linear algebra is the mathematics of vectors and matrices; ML represents data, models and transformations as matrix operations.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Core objects</h3>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Scalar:</strong> single number <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x</code>.</li>
+    <li><strong class="text-white">Vector:</strong> ordered list <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x = [x1, x2, ..., xn]ᵀ</code> — one data point / feature vector.</li>
+    <li><strong class="text-white">Matrix:</strong> 2-D array <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">X (m×n)</code> — whole dataset: m samples × n features.</li>
+    <li><strong class="text-white">Tensor:</strong> ≥3-D array — e.g. colour image (height × width × 3).</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key operations &amp; where ML uses them</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Operation</th><th class="px-3 py-2">Formula / rule</th><th class="px-3 py-2">Use in ML</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Dot product</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">a·b = Σ a_i b_i</code></td><td class="px-3 py-2">Neuron output <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">wᵀx + b</code>; similarity</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Matrix multiplication</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(AB)_ij = Σ_k A_ik B_kj</code>; needs cols(A)=rows(B)</td><td class="px-3 py-2">Forward pass of neural networks, batch prediction <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">ŷ = Xw</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Transpose</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(Aᵀ)_ij = A_ji</code></td><td class="px-3 py-2">Normal equation <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(XᵀX)⁻¹Xᵀy</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Inverse</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">A A⁻¹ = I</code> (square, non-singular)</td><td class="px-3 py-2">Solving linear regression exactly</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Norm</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">‖x‖₂ = √(Σ x_i²)</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">‖x‖₁ = Σ|x_i|</code></td><td class="px-3 py-2">Distances (KNN), L1/L2 regularization</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Eigen decomposition</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Av = λv</code> (v = eigenvector, λ = eigenvalue)</td><td class="px-3 py-2">PCA: principal components = eigenvectors of covariance matrix with largest λ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Eigen basics (write 3 lines + example)</h3>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li>If <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Av = λv</code> for non-zero v, then <strong>v is an eigenvector</strong> (direction unchanged by A) and <strong>λ its eigenvalue</strong> (stretch factor).</li>
+    <li>Found by solving <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">det(A − λI) = 0</code>.</li>
+    <li><strong>In PCA:</strong> eigenvectors of the covariance matrix give directions of maximum variance; keeping the top-k reduces dimensions with least information loss.</li>
+  </ul>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Dataset as a matrix:
+          features (n) →
+samples   [ x11 x12 x13 ]      each ROW  = one sample (vector)
+ (m) ↓    [ x21 x22 x23 ]      each COL  = one feature
+          [ x31 x32 x33 ]      prediction: ŷ = X·w  (matrix × vector)</pre>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> For <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">A = [[2,0],[0,3]]</code>, eigenvalues are 2 and 3 with eigenvectors <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[1,0]ᵀ</code> and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">[0,1]ᵀ</code> — A stretches x-axis by 2, y-axis by 3.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Multiplying matrices with mismatched dimensions in exam work — always write dimensions (m×n)(n×1) = (m×1) beside every product.</div>
+</section>
+
+<!-- ============ 10. CONVEX OPTIMIZATION ============ -->
+<section id="convex-optimization" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">10. Convex Optimization
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-22, May-24 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: minimizing a convex function over a convex set — the setting where local minimum = global minimum.</li>
+      <li>Headed points: convex set (with figure), convex function + Jensen inequality, why ML cares (any local min is global; GD guaranteed to converge), examples of convex ML problems (linear regression MSE, logistic loss, SVM), non-convex contrast (neural nets).</li>
+      <li>Draw convex vs non-convex bowl diagrams.</li>
+      <li>Example: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = x²</code>, minimized by gradient descent.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> Convex optimization is the problem <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">minimize f(x) subject to x ∈ C</code> where <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f</code> is a <strong>convex function</strong> and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">C</code> a <strong>convex set</strong>. Its defining property: <strong>every local minimum is the global minimum</strong>.</p>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Convex set:</strong> for any two points in the set, the whole line segment joining them lies inside: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">θx + (1−θ)y ∈ C</code> for <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">θ ∈ [0,1]</code>.</li>
+    <li><strong class="text-white">Convex function:</strong> the chord lies above the curve: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(θx + (1−θ)y) ≤ θ f(x) + (1−θ) f(y)</code> (Jensen's inequality).</li>
+    <li><strong class="text-white">Second-derivative test:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f''(x) ≥ 0</code> everywhere (or Hessian positive semi-definite).</li>
+  </ul>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">CONVEX (bowl)                NON-CONVEX (hilly)
+ \          /                 \    _    /\
+  \        /                   \  / \  /  \   /
+   \      /                     \/   \/    \_/
+    \____/                    local   local  global
+   one global min             minima trap gradient descent</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why ML cares</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li>Training = minimizing a <strong>loss function</strong>; if the loss is convex, <strong>gradient descent is guaranteed to reach the global optimum</strong> (with a suitable learning rate).</li>
+    <li><strong class="text-white">Convex ML problems:</strong> linear regression (MSE), logistic regression (cross-entropy), SVM (hinge loss + quadratic program), Lasso/Ridge.</li>
+    <li><strong class="text-white">Non-convex:</strong> deep neural networks — many local minima/saddle points; no global guarantee (that is why initialization &amp; optimizers matter).</li>
+    <li>Convexity ⇒ efficient, reliable solvers with provable convergence.</li>
+  </ol>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Gradient descent update:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x := x − α ∇f(x)</code>, α = learning rate.</li>
+  </ul>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = x²</code> is convex (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f'' = 2 &gt; 0</code>); GD from any start slides to global minimum x = 0. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = x⁴ − 3x²</code> is non-convex — two valleys.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Defining only the convex function and skipping convex <em>set</em> + the "local = global" property — that property is the whole point of the topic.</div>
+</section>
+
+<!-- ============ 11. DATA VISUALIZATION ============ -->
+<section id="data-visualization" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">11. Data Visualization
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Jun-25 (9 marks) — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-9-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: graphical representation of data to reveal patterns, trends, outliers before/after modelling (part of EDA).</li>
+      <li>Headed points: purpose (4 bullets) then one short para + tiny sketch EACH for: histogram, scatter plot, box plot, bar chart, line chart, heatmap, pie chart.</li>
+      <li>Draw at least 4 small sketches (histogram, scatter, box plot, heatmap).</li>
+      <li>Close: tools (Matplotlib, Seaborn) + example (scatter revealed linear relation → chose linear regression).</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> Data visualization is the graphical representation of data using charts and plots so that distributions, relationships, trends and outliers can be understood at a glance — the core of <strong>Exploratory Data Analysis (EDA)</strong>.</p>
+
+  <p class="my-3"><strong class="text-white">Purpose in ML:</strong> detect outliers &amp; skew before training; check feature-target relationships; choose the right model; communicate results; diagnose errors (residual plots).</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Methods (write name → what it shows → when to use)</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Method</th><th class="px-3 py-2">Shows</th><th class="px-3 py-2">Typical use</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Histogram</td><td class="px-3 py-2">Frequency distribution of ONE numeric variable</td><td class="px-3 py-2">Check normality/skewness of a feature</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Scatter plot</td><td class="px-3 py-2">Relationship between TWO numeric variables</td><td class="px-3 py-2">Spot linear/non-linear correlation before regression</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Box plot</td><td class="px-3 py-2">Median, quartiles, IQR, outliers</td><td class="px-3 py-2">Outlier detection, comparing groups</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Bar chart</td><td class="px-3 py-2">Values across categories</td><td class="px-3 py-2">Class counts, feature importance</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Line chart</td><td class="px-3 py-2">Trend over ordered axis (time)</td><td class="px-3 py-2">Loss vs epochs, sales over months</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Heatmap</td><td class="px-3 py-2">Matrix values as colours</td><td class="px-3 py-2">Correlation matrix, confusion matrix</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Pie chart</td><td class="px-3 py-2">Parts of a whole (%)</td><td class="px-3 py-2">Class proportion (use sparingly)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Pair plot</td><td class="px-3 py-2">Scatter of every feature pair</td><td class="px-3 py-2">Quick multi-feature EDA</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">HISTOGRAM        SCATTER         BOX PLOT           HEATMAP
+ |   _            |    . .        --- &lt;- max        +--+--+
+ |  | |_          |  . . .         |                |##|..|
+ | _| | |         | . ..          +-+ &lt;- Q3         +--+--+
+ || | | |_        |. .            |-| &lt;- median     |..|##|
+ ++-+-+-+--       +--------       +-+ &lt;- Q1         +--+--+
+ (bins vs freq)  (x vs y)          |   * outlier   (dark = high corr)
+                                  ---</pre>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Plotting house area vs price as a scatter showed a straight-line trend → linear regression chosen; a box plot of price exposed 3 outlier mansions that were removed before training, improving test R².</p>
+
+  <p class="my-3"><strong class="text-white">Tools:</strong> Matplotlib, Seaborn, Plotly (Python); Tableau/Power BI (BI dashboards).</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Listing chart names without saying <em>what each reveals about data</em> — the "shows/use" column is where the marks are; sketch at least 4 plots.</div>
+</section>
+
+<!-- ============ 12. HYPOTHESIS FUNCTION & TESTING ============ -->
+<section id="hypothesis" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">12. Hypothesis Function &amp; Hypothesis Testing
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Dec-24 (function) — MUST DO</span>
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ testing part DUE</span>
+  </h2>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">12.1 Hypothesis Function
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Dec-24 — MUST DO</span>
+  </h3>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: hypothesis h is the candidate function mapping input features to predicted output, chosen from hypothesis space H.</li>
+      <li>Headed points: notation <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h: X → Y</code>, parametric form for regression <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x)=w0+w1x</code> and classification (sigmoid + threshold), hypothesis space H, how learning picks the best h (minimize loss), inductive bias one-liner.</li>
+      <li>Draw the input → h(x) → prediction pipeline + line-fit sketch.</li>
+      <li>Example: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x) = 50 + 10x</code> maps 3 study hours → 80 marks.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> A hypothesis <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h</code> is a candidate function that maps input features to a predicted output, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h: X → Y</code>. The set of all functions the algorithm can choose from is the <strong>hypothesis space H</strong>; learning = searching H for the h with minimum loss.</p>
+
+  <p class="my-3"><strong class="text-white">How h maps inputs to predictions:</strong></p>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Represent input</strong> as a feature vector <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x = [x1, ..., xn]</code>.</li>
+    <li><strong class="text-white">Apply parametric form:</strong> regression <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x) = w0 + w1x1 + ... + wn xn</code>; classification <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x) = sigmoid(wᵀx)</code> then threshold at 0.5.</li>
+    <li><strong class="text-white">Parameters (w) are learned</strong> by minimizing cost <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">J(w)</code> on training data (e.g. gradient descent).</li>
+    <li><strong class="text-white">Prediction:</strong> for a new x, compute <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">ŷ = h(x)</code> — a number (regression) or class label (classification).</li>
+    <li><strong class="text-white">Inductive bias:</strong> assumptions that make H manageable (e.g. "output is linear in x").</li>
+  </ol>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">input x --&gt; [ hypothesis h(x; w) ] --&gt; prediction ŷ --&gt; compare with y
+                     ^                                     |
+                     +--------- update w (learning) -------+</pre>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Marks prediction <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">h(x) = 50 + 10x</code> (x = study hours): x = 3 → ŷ = 80. Training adjusts 50 and 10 until predictions match past students.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Confusing hypothesis <em>function</em> (a model, this section) with hypothesis <em>testing</em> (a statistics procedure, next section) — the examiner may ask either; read the question twice.</div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">12.2 Hypothesis Testing (Statistical)
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span>
+  </h3>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> A statistical procedure to decide, using sample data, whether there is enough evidence to reject a default claim (<strong>null hypothesis H0</strong>) in favour of an alternative claim (<strong>H1</strong>).</p>
+
+  <p class="my-3"><strong class="text-white">Steps (write all 5):</strong></p>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">State hypotheses:</strong> H0 (no effect / status quo, e.g. "new model accuracy = old model accuracy") vs H1 (there is an effect, e.g. "new model is better").</li>
+    <li><strong class="text-white">Choose significance level:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">α = 0.05</code> (5% risk of wrongly rejecting H0).</li>
+    <li><strong class="text-white">Compute test statistic</strong> from sample (z-test, t-test, chi-square as appropriate).</li>
+    <li><strong class="text-white">Find p-value:</strong> probability of observing data this extreme <em>if H0 were true</em>.</li>
+    <li><strong class="text-white">Decide:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">p &lt; α → reject H0</code> (result "statistically significant"); else fail to reject H0.</li>
+  </ol>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Term</th><th class="px-3 py-2">Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Null hypothesis H0</td><td class="px-3 py-2">Default assumption — no difference/effect</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Alternative H1</td><td class="px-3 py-2">What we want evidence for</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">p-value</td><td class="px-3 py-2">P(data at least this extreme | H0 true)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Type I error (α)</td><td class="px-3 py-2">Rejecting H0 when it is true (false alarm)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Type II error (β)</td><td class="px-3 py-2">Failing to reject H0 when it is false (miss)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Use in ML:</strong> deciding whether model A's accuracy is <em>significantly</em> better than model B's (not just luck of the test split); feature significance in regression (t-test on coefficients).</p>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Old spam filter 90% accurate; new one scores 93% on a sample. A t-test gives p = 0.02 &lt; 0.05 → reject H0 → improvement is statistically significant.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Saying "p-value is the probability H0 is true" — it is the probability of the observed DATA given H0, not of H0 itself.</div>
+</section>
+
+<!-- ============ 13. DATA DISTRIBUTIONS ============ -->
+<section id="data-distributions" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">13. Data Distributions
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ Never asked — DUE, likely next</span>
+  </h2>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> A data distribution describes how values of a variable are spread — which values occur and how frequently. ML algorithms assume/exploit distributions (e.g. least squares assumes Gaussian noise).</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Key distributions</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Distribution</th><th class="px-3 py-2">Shape / formula</th><th class="px-3 py-2">Property</th><th class="px-3 py-2">ML relevance</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Normal (Gaussian)</strong></td><td class="px-3 py-2">Bell curve; <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x) = (1/(σ√2π)) e^(−(x−μ)²/2σ²)</code></td><td class="px-3 py-2">Symmetric about μ; 68–95–99.7 rule</td><td class="px-3 py-2">Noise model in regression, z-score scaling, many tests assume it</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Uniform</strong></td><td class="px-3 py-2">Flat; every value in [a,b] equally likely; <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f(x)=1/(b−a)</code></td><td class="px-3 py-2">mean = (a+b)/2</td><td class="px-3 py-2">Random weight initialization, random sampling</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Bernoulli</strong></td><td class="px-3 py-2">Single trial 0/1 with <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(1)=p</code></td><td class="px-3 py-2">mean p, var p(1−p)</td><td class="px-3 py-2">Binary labels, logistic regression output</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Binomial</strong></td><td class="px-3 py-2"># successes in n Bernoulli trials</td><td class="px-3 py-2">mean np</td><td class="px-3 py-2">Counting correct classifications</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Skewed</strong></td><td class="px-3 py-2">Long tail one side</td><td class="px-3 py-2">mean ≠ median</td><td class="px-3 py-2">Income, house prices — need log transform</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">NORMAL              UNIFORM            RIGHT (positive) SKEW
+     _                ________            _
+   _/ \_             |        |          / \_
+  /     \            |        |         /    \__
+_/       \_          |        |        |        \____
+-----------         ----------        ------------------
+68% within μ±1σ     all equally        tail →  mean &gt; median &gt; mode
+95% within μ±2σ     likely             (fix with log transform)
+99.7% within μ±3σ</pre>
+
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">68–95–99.7 rule (normal):</strong> 68% of data within μ±σ, 95% within μ±2σ, 99.7% within μ±3σ — basis of outlier detection (|z| &gt; 3 → outlier).</li>
+    <li><strong class="text-white">Skewness:</strong> right/positive skew → tail on right, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">mean &gt; median</code>; left skew → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">mean &lt; median</code>. Remedy: log/sqrt transform to make data ~normal before modelling.</li>
+    <li><strong class="text-white">Why it matters in ML:</strong> choice of normalization, outlier rules, imputation (mean for normal, median for skewed), and validity of statistical tests all depend on the distribution.</li>
+  </ul>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Salaries are right-skewed (few very high earners) — impute missing salaries with <strong>median</strong>, not mean, and apply log transform before linear regression.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Using mean-imputation and z-score rules on heavily skewed data — those assume near-normal data.</div>
+</section>
+
+<!-- ============ 14. DATA PREPROCESSING ============ -->
+<section id="data-preprocessing" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">14. Data Preprocessing
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23, Jun-25 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: transforming raw, noisy, incomplete data into clean, consistent, model-ready form ("garbage in, garbage out").</li>
+      <li>Headed points: (1) Data cleaning — missing values &amp; outliers, (2) Data integration, (3) Data transformation — normalization &amp; encoding, (4) Data reduction — feature selection/PCA/sampling, (5) Data splitting.</li>
+      <li>Draw the preprocessing pipeline diagram.</li>
+      <li>Example: patient dataset — fill missing BP with median, one-hot encode gender, min-max scale age, drop duplicate records.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> Data preprocessing is the set of steps that convert raw real-world data (incomplete, noisy, inconsistent) into a clean, numeric, well-scaled dataset that ML algorithms can learn from effectively.</p>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">RAW DATA
+   |
+   v
+[1 CLEANING]------ missing values (drop / mean / median / mode / predict)
+   |               outliers (IQR rule, z-score&gt;3), noise (binning/smoothing)
+   v
+[2 INTEGRATION]--- merge multiple sources, remove duplicates, resolve conflicts
+   |
+   v
+[3 TRANSFORMATION] normalization (min-max) / standardization (z-score)
+   |               encoding categorical vars (label / one-hot)
+   v
+[4 REDUCTION]----- feature selection, PCA, sampling, discretization
+   |
+   v
+[5 SPLITTING]----- train / validation / test
+   |
+   v
+MODEL-READY DATA</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step details (one line each in exam)</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Cleaning:</strong> handle missing values — delete row, or impute with mean (normal data) / median (skewed) / mode (categorical) / model-based; treat outliers via IQR (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">outside Q1−1.5·IQR, Q3+1.5·IQR</code>) or z-score.</li>
+    <li><strong class="text-white">Integration:</strong> combine data from multiple databases/files; remove duplicates; unify units and naming.</li>
+    <li><strong class="text-white">Transformation:</strong> scale features (Section 15) and encode categories (below); log-transform skewed features.</li>
+    <li><strong class="text-white">Reduction:</strong> drop irrelevant/correlated features, PCA for dimensionality reduction, sampling for huge datasets.</li>
+    <li><strong class="text-white">Splitting:</strong> train/validation/test (Section 5).</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">Label Encoding vs One-Hot Encoding
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23</span>
+  </h3>
+
+  <p class="my-3"><strong class="text-white">Label encoding:</strong> assign each category an integer. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Red=0, Green=1, Blue=2</code> — 1 column stays 1 column.</p>
+  <p class="my-3"><strong class="text-white">One-hot encoding:</strong> create one binary column per category; exactly one is 1.</p>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Colour   | Label |    One-hot
+         |  enc  | Red Green Blue
+---------+-------+---------------
+Red      |   0   |  1    0    0
+Green    |   1   |  0    1    0
+Blue     |   2   |  0    0    1</pre>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">Label Encoding</th><th class="px-3 py-2">One-Hot Encoding</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Output</td><td class="px-3 py-2">1 integer column</td><td class="px-3 py-2">k binary columns (k = #categories)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Effect on dimensionality</strong></td><td class="px-3 py-2"><strong>Unchanged</strong></td><td class="px-3 py-2"><strong>Increases by k−1 columns per feature</strong> — can explode for high-cardinality features (curse of dimensionality)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">False ordering?</td><td class="px-3 py-2">Yes — implies Blue(2) &gt; Red(0)</td><td class="px-3 py-2">No — categories independent</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Best for</td><td class="px-3 py-2">Ordinal data (Low&lt;Medium&lt;High); tree models</td><td class="px-3 py-2">Nominal data (colour, city); linear/NN/distance models</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Memory</td><td class="px-3 py-2">Small</td><td class="px-3 py-2">Large &amp; sparse</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> "City" with 500 cities: label encoding keeps 1 column (but fakes an order); one-hot adds 500 sparse columns — use one-hot only for low-cardinality nominal features.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> One-hot encoding ordinal features (loses order) or label-encoding nominal features for KNN/linear models (invents a fake order that distorts distances).</div>
+</section>
+
+<!-- ============ 15. NORMALIZING DATA SETS ============ -->
+<section id="normalization" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">15. Normalizing Data Sets
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-24 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: rescaling features to a common range so no feature dominates due to units.</li>
+      <li>Headed points: Min-max formula, Z-score formula, comparison table, why it matters for convergence (elongated vs circular contours + GD), which algorithms need it.</li>
+      <li>Draw the gradient-descent contour diagram (elliptical vs circular).</li>
+      <li>Example: age (0–100) vs salary (0–10,00,000) before/after scaling.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> Normalization rescales numeric features to a common scale (without distorting relative differences) so that features with large ranges do not dominate learning.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">The two formulas (memorize cold)</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Technique</th><th class="px-3 py-2">Formula</th><th class="px-3 py-2">Output range</th><th class="px-3 py-2">Best when</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Min-Max normalization</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x' = (x − min) / (max − min)</code></td><td class="px-3 py-2">[0, 1]</td><td class="px-3 py-2">Bounded range needed (images, NN inputs); no big outliers</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Z-score standardization</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x' = (x − μ) / σ</code></td><td class="px-3 py-2">mean 0, std 1 (unbounded)</td><td class="px-3 py-2">Outliers present; data ~normal; PCA, SVM, logistic</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Decimal scaling (bonus line):</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x' = x / 10^j</code> where j makes max |x'| &lt; 1.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Why normalization matters for convergence &amp; stability (May-24 core)</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Faster gradient-descent convergence:</strong> unscaled features → elongated, elliptical cost contours → GD zig-zags with a tiny usable learning rate. Scaled features → near-circular contours → GD heads almost straight to the minimum.</li>
+    <li><strong class="text-white">Numerical stability:</strong> avoids overflow/underflow and exploding gradient updates from huge feature values.</li>
+    <li><strong class="text-white">Fair feature influence:</strong> distance-based algorithms (KNN, K-means, SVM) would otherwise be ruled by the largest-unit feature (salary crushes age).</li>
+    <li><strong class="text-white">Equal regularization pressure:</strong> L1/L2 penalize all weights alike only if features share scale.</li>
+    <li><strong class="text-white">One learning rate works for all weights.</strong></li>
+  </ol>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">UNSCALED (elongated contours)      SCALED (circular contours)
+   _________________                    ___
+  /  _____________  \                  / _ \
+ |  /   ____      \  |                | (.) |   . = minimum
+ |  \___\  /______/  |                 \___/
+  \______\/_________/               GD: straight path, few steps
+ GD path: \/\/\/\/ zig-zag,
+ slow, may diverge if α large</pre>
+
+  <p class="my-3"><strong class="text-white">Which algorithms need it:</strong> KNN, K-means, SVM, neural networks, PCA, gradient-descent regression → YES. Decision trees / Random Forest → largely scale-invariant.</p>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Features age ∈ [0,100] and salary ∈ [0, 10,00,000]: Euclidean distance ≈ salary difference alone; after min-max both lie in [0,1] and both contribute. Age 35 with min 20, max 60: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x' = (35−20)/(60−20) = 0.375</code>.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Computing μ, σ (or min, max) on the FULL dataset — they must be computed on the training set only and then applied to the test set, else information leaks.</div>
+</section>
+
+<!-- ============ 16. DATA AUGMENTATION ============ -->
+<section id="data-augmentation" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">16. Data Augmentation
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ Dec-24 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: artificially enlarging the training set by label-preserving transformations of existing samples.</li>
+      <li>Headed points: why (small data, overfitting, class imbalance, robustness), image techniques (6), text techniques (3), audio techniques (3), numeric/tabular (SMOTE).</li>
+      <li>Draw the "one cat image → 6 variants" diagram.</li>
+      <li>Example: 1,000 X-rays → 10,000 by rotation/flip/zoom; close with caution (don't flip digits 6/9).</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> Data augmentation artificially increases the size and diversity of the training set by applying <strong>label-preserving transformations</strong> to existing samples, improving generalization and reducing overfitting without collecting new data.</p>
+
+  <p class="my-3"><strong class="text-white">Why it is needed:</strong> small labelled datasets are expensive; deep models overfit small data; balances rare classes; makes models invariant to rotation/lighting/noise.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Techniques by data type</h3>
+
+  <p class="my-3"><strong class="text-white">Images (most-asked list):</strong></p>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Geometric:</strong> rotation (±15°), horizontal/vertical flip, translation (shift), scaling/zoom, cropping, shearing.</li>
+    <li><strong class="text-white">Colour/photometric:</strong> brightness, contrast, saturation jitter; grayscale.</li>
+    <li><strong class="text-white">Noise-based:</strong> Gaussian noise, blur.</li>
+    <li><strong class="text-white">Erasing:</strong> random erasing / cutout (mask random patch).</li>
+    <li><strong class="text-white">Mixing (advanced, 1 line):</strong> Mixup (blend two images+labels), CutMix.</li>
+  </ol>
+
+  <p class="my-3"><strong class="text-white">Text:</strong> synonym replacement, random insertion/swap/deletion of words, back-translation (English→German→English).</p>
+  <p class="my-3"><strong class="text-white">Audio:</strong> time shift, pitch shift, speed change, adding background noise.</p>
+  <p class="my-3"><strong class="text-white">Tabular/numeric:</strong> adding small Gaussian noise; <strong>SMOTE</strong> — Synthetic Minority Over-sampling: creates synthetic minority-class points by interpolating between a sample and its nearest neighbours (fixes class imbalance).</p>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">                 +-- rotate 15°   --&gt; [cat tilted]
+                 +-- flip horiz.  --&gt; [cat mirrored]
+ORIGINAL         +-- zoom/crop    --&gt; [cat close-up]
+[cat image] -----+-- brightness+  --&gt; [cat brighter]
+  (1 sample)     +-- add noise    --&gt; [cat grainy]
+                 +-- random erase --&gt; [cat w/ patch hidden]
+                     ==&gt; 1 image becomes 7 training samples</pre>
+
+  <p class="my-3"><strong class="text-white">Rules of use:</strong> apply ONLY on training data (never on test set); transformation must not change the label (don't vertically flip "6" → looks like "9"; don't over-rotate text).</p>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> A pneumonia-detection CNN with 1,000 X-rays reached 78% accuracy; after augmentation (rotation, shift, zoom, brightness → 10,000 effective images) it reached 89% with less overfitting.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Augmenting the test set or using label-destroying transforms — both invalidate evaluation.</div>
+</section>
+
+<!-- ============ 17. EVALUATION METRICS ============ -->
+<section id="evaluation-metrics" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">17. Evaluation Metrics
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23, May-24 — MUST DO</span>
+  </h2>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">17.1 Confusion Matrix &amp; Classification Metrics
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23 — MUST DO</span>
+  </h3>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: a 2×2 table comparing actual vs predicted classes, from which all classification metrics derive.</li>
+      <li>Headed points: define TP/FP/FN/TN, draw matrix, formulas for accuracy/precision/recall/F1/specificity, when to prefer which metric.</li>
+      <li>Draw the labelled 2×2 matrix.</li>
+      <li>Close with the worked numerical below (memorize the numbers).</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> A confusion matrix is an N×N table that summarizes classifier performance by cross-tabulating <strong>actual</strong> classes against <strong>predicted</strong> classes; for binary problems it yields TP, FP, FN, TN.</p>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">                    PREDICTED
+                 Positive   Negative
+ACTUAL Positive |   TP    |   FN    |   &lt;- FN = "miss" (Type II)
+       Negative |   FP    |   TN    |   &lt;- FP = "false alarm" (Type I)</pre>
+
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">TP:</strong> actual +, predicted + (correct detection)</li>
+    <li><strong class="text-white">FP:</strong> actual −, predicted + (false alarm — Type I error)</li>
+    <li><strong class="text-white">FN:</strong> actual +, predicted − (missed case — Type II error)</li>
+    <li><strong class="text-white">TN:</strong> actual −, predicted − (correct rejection)</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Derived metrics (all formulas)</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Metric</th><th class="px-3 py-2">Formula</th><th class="px-3 py-2">Meaning / when to use</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Accuracy</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(TP+TN) / (TP+TN+FP+FN)</code></td><td class="px-3 py-2">Overall correctness; misleading on imbalanced data</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Precision</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">TP / (TP+FP)</code></td><td class="px-3 py-2">Of predicted positives, how many are truly correct; use when FP is costly (spam filter)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Recall (Sensitivity/TPR)</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">TP / (TP+FN)</code></td><td class="px-3 py-2">Of actual positives, how many caught; use when FN is costly (cancer detection)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">F1-score</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2·P·R / (P+R)</code></td><td class="px-3 py-2">Harmonic mean; single number for imbalanced data</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Specificity (TNR)</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">TN / (TN+FP)</code></td><td class="px-3 py-2">How well negatives are recognized</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Error rate</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">1 − Accuracy</code></td><td class="px-3 py-2">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Worked 2×2 example (write this in exam)</h3>
+  <p class="my-3">100 patients tested for a disease; 40 actually diseased. Model predicts: TP = 30, FN = 10, FP = 5, TN = 55.</p>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">                 PRED +   PRED −
+ACTUAL +   |  30 (TP) | 10 (FN) |  = 40 diseased
+ACTUAL −   |   5 (FP) | 55 (TN) |  = 60 healthy</pre>
+
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Accuracy  = (30+55)/100            = 0.85   (85%)</code></li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Precision = 30/(30+5)  = 30/35     = 0.8571 (85.71%)</code></li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Recall    = 30/(30+10) = 30/40     = 0.75   (75%)</code></li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">F1 = 2×0.8571×0.75/(0.8571+0.75) = 1.2857/1.6071 = 0.8000</code></li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Specificity = 55/(55+5) = 55/60 = 0.9167 (91.67%)</code></li>
+  </ul>
+
+  <p class="my-3"><strong class="text-white">Mnemonic:</strong> <strong>P</strong>recision = <strong>P</strong>redicted-positive denominator; <strong>R</strong>ecall = <strong>R</strong>eal-positive denominator.</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Swapping FP and FN. Anchor it: FP = false alarm (healthy called sick), FN = dangerous miss (sick called healthy).</div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6 flex flex-wrap items-center gap-2">17.2 Evaluation Metrics for Regression
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-24 — MUST DO</span>
+  </h3>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: regression outputs are continuous, so metrics measure the size of prediction errors, not right/wrong counts.</li>
+      <li>Headed points: MAE, MSE, RMSE, R², (Adjusted R² one line) — formula + interpretation + outlier sensitivity for each.</li>
+      <li>Draw scatter with residual (vertical error) lines.</li>
+      <li>Example: compute MAE/MSE/RMSE on 3 points (below).</li>
+    </ol>
+  </div>
+
+  <p class="my-3">Let <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y_i</code> = actual, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">ŷ_i</code> = predicted, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">n</code> = samples, residual <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">e_i = y_i − ŷ_i</code>.</p>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Metric</th><th class="px-3 py-2">Formula</th><th class="px-3 py-2">Interpretation</th><th class="px-3 py-2">Outlier sensitivity</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>MAE</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1/n) Σ |y_i − ŷ_i|</code></td><td class="px-3 py-2">Average absolute error, same units as y</td><td class="px-3 py-2">Robust</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>MSE</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(1/n) Σ (y_i − ŷ_i)²</code></td><td class="px-3 py-2">Average squared error; smooth, differentiable (used as loss)</td><td class="px-3 py-2">High (squares big errors)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>RMSE</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">√MSE</code></td><td class="px-3 py-2">MSE back in y's units; most reported</td><td class="px-3 py-2">High</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>R² (coeff. of determination)</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">1 − Σ(y_i−ŷ_i)² / Σ(y_i−ȳ)²</code></td><td class="px-3 py-2">Fraction of variance explained; 1 = perfect, 0 = mean-model, &lt;0 = worse than mean</td><td class="px-3 py-2">—</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2"><strong>Adjusted R²</strong></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">1 − (1−R²)(n−1)/(n−k−1)</code></td><td class="px-3 py-2">R² penalized for adding useless features (k = #features)</td><td class="px-3 py-2">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4"> y |        x           residual e_i = vertical gap
+   |      x |           between point and line
+   |    ____|______
+   |   /|  line ŷ
+   | x/ |
+   +----------------- x</pre>
+
+  <p class="my-3"><strong class="text-white">Mini worked example:</strong> actual y = (3, 5, 7), predicted ŷ = (2, 5, 9).</p>
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li>Errors: 1, 0, −2 → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">MAE = (1+0+2)/3 = 3/3 = 1.0</code></li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">MSE = (1+0+4)/3 = 5/3 = 1.6667</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">RMSE = √1.6667 = 1.2910</code></li>
+  </ul>
+
+  <p class="my-3"><strong class="text-white">Choosing:</strong> outliers present → MAE; want differentiable training loss → MSE; report to humans → RMSE; explain fit quality → R².</p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Using accuracy/confusion matrix for regression — those apply only to classification; regression uses error magnitudes.</div>
+</section>
+
+<!-- ============ 18. KNN ============ -->
+<section id="knn" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-2xl font-bold text-white mb-2 flex flex-wrap items-center gap-2">18. K-Nearest Neighbours (KNN) — Concept
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">🔥 PYQ May-23 — MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-300 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1 text-sm">
+      <li>One line: instance-based, lazy, non-parametric classifier — a point takes the majority class of its k nearest training points.</li>
+      <li>Headed points: algorithm steps (5), distance formula, choosing k, lazy vs eager, pros/cons.</li>
+      <li>Draw the "query point with k=3 circle" diagram.</li>
+      <li>Close: mention numerical practice (full solved numerical in the Numericals file) + need for normalization.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong class="text-white">Definition:</strong> KNN is a <strong>lazy, instance-based, non-parametric</strong> algorithm: it stores all training data and classifies a new point by a <strong>majority vote of its k nearest neighbours</strong> (for regression: their average).</p>
+
+  <p class="my-3"><strong class="text-white">Algorithm steps:</strong></p>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li>Choose k (e.g. 3 or 5) and a distance metric.</li>
+    <li>Compute distance from the query point to every training point — Euclidean: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">d = √(Σ (x_i − y_i)²)</code> (Manhattan: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ|x_i − y_i|</code>).</li>
+    <li>Sort distances; pick the k smallest.</li>
+    <li><strong class="text-white">Classification:</strong> predict the majority class among the k. <strong>Regression:</strong> predict their mean.</li>
+    <li>(Optional) weight votes by 1/d so nearer points count more.</li>
+  </ol>
+
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">            k = 3 neighbourhood
+        B          _____
+    B          _--'     '--_        A, B = training classes
+       A     /    A          \      ? = query point
+        \   |   ?      A      |     3 nearest = A, A, B
+         \   \_          _   /      majority A --&gt; predict A
+   B       \   '--_____--'
+              A         B</pre>
+
+  <p class="my-3"><strong class="text-white">Choosing k:</strong> small k → noisy, overfits; large k → over-smooth, underfits; use odd k (avoids ties) and pick via cross-validation; rule of thumb <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">k ≈ √n</code>.</p>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Basis</th><th class="px-3 py-2">KNN (lazy learner)</th><th class="px-3 py-2">Eager learners (e.g. decision tree)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Training</td><td class="px-3 py-2">None — just store data</td><td class="px-3 py-2">Builds model upfront</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Prediction</td><td class="px-3 py-2">Slow — O(n) distances per query</td><td class="px-3 py-2">Fast</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Memory</td><td class="px-3 py-2">Stores whole dataset</td><td class="px-3 py-2">Stores compact model</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Boundary</td><td class="px-3 py-2">Highly flexible, local</td><td class="px-3 py-2">Fixed by model form</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="list-disc pl-5 space-y-1 my-3">
+    <li><strong class="text-white">Pros:</strong> simple, no training, naturally multi-class, adapts to complex boundaries.</li>
+    <li><strong class="text-white">Cons:</strong> slow at prediction, memory-heavy, curse of dimensionality, <strong>needs feature normalization</strong> (distances!), sensitive to irrelevant features.</li>
+  </ul>
+
+  <p class="my-3"><strong class="text-white">Example:</strong> Classify a fruit (weight 150 g, red) — its 3 nearest labelled fruits are apple, apple, cherry → predict apple. <em>(Full May-23 numerical solved step-by-step in <a href="numericals.html" class="text-indigo-400 hover:underline">Numericals-and-Short-Notes</a>.)</em></p>
+
+  <div class="mt-4 text-sm text-rose-300/90 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3">⚠️ <strong>Common mistake:</strong> Forgetting to normalize features before computing distances — the large-scale feature otherwise decides everything.</div>
+</section>
+
+<!-- ============ QUICK REVISION BOX ============ -->
+<section id="quick-revision" class="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-6">
+  <h2 class="text-2xl font-bold text-white mb-4">⚡ Quick Revision Box</h2>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">One-liners (scan in 10 minutes)</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">#</th><th class="px-3 py-2">Topic</th><th class="px-3 py-2">One-liner</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">1</td><td class="px-3 py-2">Define ML</td><td class="px-3 py-2">Mitchell: improves at task T with experience E as measured by P; learns rules FROM data instead of hand-coding them</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">2</td><td class="px-3 py-2">ML vs Traditional</td><td class="px-3 py-2">Traditional: data+rules→output; ML: data+output→rules(model)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">3</td><td class="px-3 py-2">Design issues</td><td class="px-3 py-2">4 choices: training experience → target function → representation → learning algorithm; issues: data quality, overfitting, features, generalization</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">4</td><td class="px-3 py-2">Scope</td><td class="px-3 py-2">Healthcare, finance, NLP, vision, speech, recommendations</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">5</td><td class="px-3 py-2">Limitations</td><td class="px-3 py-2">Data-hungry, no causality, bias, poor out-of-distribution, black-box, costly, adversarial</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">6</td><td class="px-3 py-2">Supervised</td><td class="px-3 py-2">Labelled data; classification (discrete) + regression (continuous); KNN/SVM/LR</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">7</td><td class="px-3 py-2">Unsupervised</td><td class="px-3 py-2">No labels; clustering (K-means), association (Apriori), PCA</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">8</td><td class="px-3 py-2">Reinforcement</td><td class="px-3 py-2">Agent + environment + reward → learn policy; Q-learning</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">9</td><td class="px-3 py-2">Train vs Test</td><td class="px-3 py-2">Train fits params (~70%), test measures generalization (~30%), touched once; validation tunes hyperparams</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">10</td><td class="px-3 py-2">K-fold CV</td><td class="px-3 py-2">k rotations of train/validate; average score; great for small data</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">11</td><td class="px-3 py-2">Model selection</td><td class="px-3 py-2">Pick complexity with lowest VALIDATION error; Occam's razor; U-curve</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">12</td><td class="px-3 py-2">Underfit / Overfit</td><td class="px-3 py-2">Both errors high = underfit (high bias); train low + test high = overfit (high variance)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">13</td><td class="px-3 py-2">Linear regression</td><td class="px-3 py-2">Fit line minimizing MSE; GD or normal equation</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">14</td><td class="px-3 py-2">Logistic regression</td><td class="px-3 py-2">Sigmoid of wᵀx → probability → classifier; cross-entropy loss</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">15</td><td class="px-3 py-2">LWR</td><td class="px-3 py-2">Non-parametric; new weighted fit per query; Gaussian weights, bandwidth τ</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">16</td><td class="px-3 py-2">Prob &amp; stats role</td><td class="px-3 py-2">Bayes theorem, MLE = loss minimization, sampling justifies splits</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">17</td><td class="px-3 py-2">Linear algebra</td><td class="px-3 py-2">Data = matrix, sample = vector; Av=λv eigen → PCA</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">18</td><td class="px-3 py-2">Convex optimization</td><td class="px-3 py-2">Convex fn over convex set; local min = global min; GD converges (lin/log regression convex; NN not)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">19</td><td class="px-3 py-2">Visualization</td><td class="px-3 py-2">Histogram(distribution), scatter(relation), box(outliers), heatmap(correlation), line(trend)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">20</td><td class="px-3 py-2">Hypothesis function</td><td class="px-3 py-2">h: X→Y candidate from space H; learned by minimizing J(w)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">21</td><td class="px-3 py-2">Hypothesis testing</td><td class="px-3 py-2">H0 vs H1; p &lt; α (0.05) → reject H0; Type I = false alarm, Type II = miss</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">22</td><td class="px-3 py-2">Distributions</td><td class="px-3 py-2">Normal 68-95-99.7; uniform flat; skewed → use median + log transform</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">23</td><td class="px-3 py-2">Preprocessing</td><td class="px-3 py-2">Clean → Integrate → Transform → Reduce → Split</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">24</td><td class="px-3 py-2">Label vs One-hot</td><td class="px-3 py-2">Label: 1 col, fake order, ordinal; One-hot: k cols (dimensionality UP), nominal</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">25</td><td class="px-3 py-2">Normalization</td><td class="px-3 py-2">Min-max [0,1] vs z-score (μ=0,σ=1); circular contours → fast stable GD; must for KNN/SVM/NN</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">26</td><td class="px-3 py-2">Augmentation</td><td class="px-3 py-2">Label-preserving transforms: rotate/flip/crop/noise/brightness; SMOTE for tabular; train set only</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">27</td><td class="px-3 py-2">Confusion matrix</td><td class="px-3 py-2">TP FP FN TN; precision = TP/(TP+FP), recall = TP/(TP+FN)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">28</td><td class="px-3 py-2">Regression metrics</td><td class="px-3 py-2">MAE robust, MSE trainable, RMSE reportable, R² variance explained</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">29</td><td class="px-3 py-2">KNN</td><td class="px-3 py-2">Lazy; k nearest by Euclidean distance; majority vote; normalize first; odd k via CV</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Every formula in one place</h3>
+<pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Mitchell:        learn ⇔ P(T) improves with E
+Linear reg:      h(x) = w0 + w1x1 + ... + wnxn
+MSE cost:        J(w) = (1/2m) Σ (h(x_i) − y_i)²
+GD update:       w := w − α ∂J/∂w
+Normal eqn:      w = (XᵀX)⁻¹ Xᵀ y
+Sigmoid:         σ(z) = 1 / (1 + e^(−z))
+Log loss:        J = −(1/m) Σ [y log h + (1−y) log(1−h)]
+LWR weights:     w_i = exp(−(x_i − x_q)² / (2τ²))
+Bayes:           P(H|D) = P(D|H)·P(H) / P(D)
+Mean/Var:        μ = Σx/n ;  σ² = Σ(x−μ)²/n
+Correlation:     r = cov(X,Y)/(σx·σy)
+Eigen:           A v = λ v ;  det(A − λI) = 0
+Convex fn:       f(θx+(1−θ)y) ≤ θf(x)+(1−θ)f(y) ;  f''(x) ≥ 0
+Normal dist:     f(x) = (1/(σ√2π)) e^(−(x−μ)²/2σ²)   [68-95-99.7]
+Min-max:         x' = (x − min)/(max − min)
+Z-score:         x' = (x − μ)/σ
+Accuracy:        (TP+TN)/(TP+TN+FP+FN)
+Precision:       TP/(TP+FP)          Recall: TP/(TP+FN)
+F1:              2PR/(P+R)           Specificity: TN/(TN+FP)
+MAE:             (1/n)Σ|y−ŷ|         MSE: (1/n)Σ(y−ŷ)²    RMSE: √MSE
+R²:              1 − Σ(y−ŷ)²/Σ(y−ȳ)²
+Euclidean:       d = √(Σ(x_i − y_i)²)
+IQR outlier:     outside [Q1 − 1.5·IQR, Q3 + 1.5·IQR]
+AIC/BIC:         AIC = 2k − 2lnL ;  BIC = k·ln(n) − 2lnL</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Diagrams to practice (draw each once from memory)</h3>
+  <ol class="list-decimal pl-5 space-y-1 my-3">
+    <li>Traditional programming vs ML block diagram</li>
+    <li>ML process pipeline (Collect→…→Deploy)</li>
+    <li>3-branch ML types tree + RL agent-environment loop</li>
+    <li>Train/validation/test split bar + 5-fold CV grid</li>
+    <li>Error vs complexity U-curve + underfit/goodfit/overfit sketches</li>
+    <li>Best-fit line scatter; sigmoid curve; LWR local-lines sketch</li>
+    <li>Convex bowl vs non-convex hilly curve</li>
+    <li>Histogram, scatter, box plot, heatmap mini-sketches</li>
+    <li>Normal / uniform / skewed distribution shapes</li>
+    <li>Preprocessing pipeline flowchart</li>
+    <li>GD contours: elongated (unscaled) vs circular (scaled)</li>
+    <li>One image → 6 augmented variants</li>
+    <li>Labelled 2×2 confusion matrix</li>
+    <li>KNN k=3 neighbourhood circle</li>
+  </ol>
+
+  <p class="my-3 font-semibold text-white">Exam-hall reminder: Q1 is ALWAYS from this unit — bank a near-perfect 14 here first, in your best handwriting, with every diagram labelled.</p>
+</section>
+
+</main>
+
+<footer class="border-t border-slate-800 mt-10 py-6 text-center text-sm text-slate-500">
+  CS-601 Machine Learning · RGPV · Target 9 SGPA · <a href="index.html" class="text-indigo-400 hover:text-white hover:underline">← Back to Dashboard</a>
+</footer>
+
+</body>
+</html>

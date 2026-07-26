@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solved Numericals &amp; Q8 Short-Notes Bank | CS-601 ML</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+<nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+  <ul class="max-w-5xl mx-auto flex flex-wrap gap-x-4 gap-y-1 px-4 py-3 text-sm">
+    <li><a href="index.html" class="text-slate-400 hover:text-white">🎯 Dashboard</a></li>
+    <li><a href="unit-1.html" class="text-slate-400 hover:text-white">U1 Foundations</a></li>
+    <li><a href="unit-2.html" class="text-slate-400 hover:text-white">U2 Neural Nets</a></li>
+    <li><a href="unit-3.html" class="text-slate-400 hover:text-white">U3 CNN</a></li>
+    <li><a href="unit-4.html" class="text-slate-400 hover:text-white">U4 RNN &amp; RL</a></li>
+    <li><a href="unit-5.html" class="text-slate-400 hover:text-white">U5 SVM &amp; Apps</a></li>
+    <li><a href="numericals.html" class="text-indigo-400 font-semibold">🔢 Numericals</a></li>
+  </ul>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+
+<h1 class="text-3xl font-bold text-white mb-2">CS-601 Machine Learning — Solved Numericals &amp; Q8 Short-Notes Bank (All Units)</h1>
+
+<div class="border-l-4 border-amber-500 bg-amber-500/5 p-4 rounded-r-xl my-4 text-sm">
+  <strong class="text-amber-400">Exam weight:</strong> Numericals separate a 12/14 from a 7/14. Q8 (14 marks) is pure short-notes — a memorized bank makes it free marks.
+</div>
+
+<!-- ============ PYQ TABLE ============ -->
+<section id="pyq" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">PYQ Questions from this Unit</h2>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Year</th><th class="px-3 py-2">Question (condensed)</th><th class="px-3 py-2">Marks</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Q2b: Backpropagation numerical — 2-2-1 network with bias, input [0,1], target 1, sigmoid, lr = 0.3; update all 6 weights in one pass</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Q6a: KNN numerical — predict Draft for Speed = 6.75, Agility = 3.00 with k = 3 from 10 training athletes</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2023</td><td class="px-3 py-2">Q7a: Bayesian Belief Network — build CPT of every node from counts; compute P(Mileage=Lo, Engine=Bad, AC=Broken)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">May-2022</td><td class="px-3 py-2">Bayes theorem style — disease test: 1% prior, 90% sensitivity, 8% false positive; find P(disease | positive)</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Every year</td><td class="px-3 py-2">Q8: Write short notes on any two/four (attention, batch norm, dropout, MDP, BLEU, momentum, etc.)</td><td class="px-3 py-2">14</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ PART A ============ -->
+<h2 id="part-a" class="text-2xl font-bold text-white mt-10 mb-4">PART A — SOLVED NUMERICALS</h2>
+
+<!-- A1 -->
+<section id="a1" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">A1. Backpropagation — One Full Weight-Update Pass
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-23 Q2b</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-400 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1.5 text-sm">
+      <li>Draw the labelled network diagram with all 9 weights written on the arrows.</li>
+      <li><strong>Step 1 — Forward pass:</strong> net and sigmoid output of z1, z2, then y.</li>
+      <li><strong>Step 2 — Error:</strong> E = ½(t − y)².</li>
+      <li><strong>Step 3 — Output delta</strong> δ_y, then <strong>hidden deltas</strong> δ_z1, δ_z2.</li>
+      <li><strong>Step 4 — Weight update rule</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w_new = w_old + η·δ·input</code> applied to all 6 weights.</li>
+      <li>Close with a neat <strong>table of old vs new weights</strong> — this table is what the checker ticks.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong>Given:</strong> Inputs x1 = 0, x2 = 1; target t = 1; sigmoid activation <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ(x) = 1/(1+e^-x)</code>; learning rate η = 0.3. Update weights only (not biases).</p>
+
+  <p class="my-3"><strong>Weights:</strong> w(x1→z1) = 0.5, w(x1→z2) = −0.1, w(x2→z1) = 0.6, w(x2→z2) = 0.7, bias→z1 = 0.2, bias→z2 = 0.4, w(z1→y) = 0.3, w(z2→y) = 0.2, bias→y = 0.4.</p>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">        0.5
+  x1 ---------&gt; z1 ---0.3---\
+   \  -0.1    ^  ^            \
+    \        /   |0.2          v
+     \  0.6 /   bias           y ---&gt; output
+      \    /     |0.4         ^  ^
+       \  /      v           /   |0.4
+  x2 ---------&gt; z2 ---0.2---/   bias
+        0.7</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 1 — Forward pass</h3>
+
+  <p class="my-3"><strong>Hidden neuron z1:</strong></p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">net_z1 = w(x1→z1)·x1 + w(x2→z1)·x2 + b_z1
+       = 0.5(0) + 0.6(1) + 0.2
+       = 0.8
+out_z1 = σ(0.8) = 1/(1 + e^-0.8) = 1/(1 + 0.4493) = 0.6900</pre>
+
+  <p class="my-3"><strong>Hidden neuron z2:</strong></p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">net_z2 = (-0.1)(0) + 0.7(1) + 0.4
+       = 1.1
+out_z2 = σ(1.1) = 1/(1 + e^-1.1) = 1/(1 + 0.3329) = 0.7503</pre>
+
+  <p class="my-3"><strong>Output neuron y:</strong></p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">net_y = 0.3(0.6900) + 0.2(0.7503) + 0.4
+      = 0.2070 + 0.1501 + 0.4
+      = 0.7570
+out_y = σ(0.7570) = 1/(1 + e^-0.7570) = 1/(1 + 0.4691) = 0.6807</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 2 — Error</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">E = ½(t − out_y)² = ½(1 − 0.6807)² = ½(0.3193)² = 0.0510</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 3 — Backward pass (deltas)</h3>
+
+  <p class="my-3"><strong>Output delta</strong> (rule: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ_y = (t − out_y)·out_y·(1 − out_y)</code>):</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">δ_y = (1 − 0.6807) × 0.6807 × (1 − 0.6807)
+    = 0.3193 × 0.6807 × 0.3193
+    = 0.0694</pre>
+
+  <p class="my-3"><strong>Hidden deltas</strong> (rule: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ_h = out_h·(1 − out_h)·(δ_y·w(h→y))</code>):</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">δ_z1 = 0.6900 × (1 − 0.6900) × (0.0694 × 0.3)
+     = 0.6900 × 0.3100 × 0.0208
+     = 0.0045
+
+δ_z2 = 0.7503 × (1 − 0.7503) × (0.0694 × 0.2)
+     = 0.7503 × 0.2497 × 0.0139
+     = 0.0026</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 4 — Weight updates (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w_new = w_old + η · δ · input_to_that_weight</code>)</h3>
+
+  <p class="my-3"><strong>Output-layer weights</strong> (input = hidden outputs):</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Δw(z1→y) = 0.3 × 0.0694 × 0.6900 = 0.0144   →  w(z1→y) = 0.3 + 0.0144 = 0.3144
+Δw(z2→y) = 0.3 × 0.0694 × 0.7503 = 0.0156   →  w(z2→y) = 0.2 + 0.0156 = 0.2156</pre>
+
+  <p class="my-3"><strong>Hidden-layer weights</strong> (input = x1 or x2):</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Δw(x1→z1) = 0.3 × 0.0045 × 0 = 0            →  w(x1→z1) = 0.5      (x1 = 0, no change)
+Δw(x2→z1) = 0.3 × 0.0045 × 1 = 0.0013       →  w(x2→z1) = 0.6 + 0.0013 = 0.6013
+Δw(x1→z2) = 0.3 × 0.0026 × 0 = 0            →  w(x1→z2) = −0.1     (x1 = 0, no change)
+Δw(x2→z2) = 0.3 × 0.0026 × 1 = 0.0008       →  w(x2→z2) = 0.7 + 0.0008 = 0.7008</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Final answer table (draw this in exam)</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Weight</th><th class="px-3 py-2">Old</th><th class="px-3 py-2">Δw</th><th class="px-3 py-2">New</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">w(x1→z1)</td><td class="px-3 py-2">0.5</td><td class="px-3 py-2">0</td><td class="px-3 py-2"><strong>0.5000</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">w(x1→z2)</td><td class="px-3 py-2">−0.1</td><td class="px-3 py-2">0</td><td class="px-3 py-2"><strong>−0.1000</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">w(x2→z1)</td><td class="px-3 py-2">0.6</td><td class="px-3 py-2">+0.0013</td><td class="px-3 py-2"><strong>0.6013</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">w(x2→z2)</td><td class="px-3 py-2">0.7</td><td class="px-3 py-2">+0.0008</td><td class="px-3 py-2"><strong>0.7008</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">w(z1→y)</td><td class="px-3 py-2">0.3</td><td class="px-3 py-2">+0.0144</td><td class="px-3 py-2"><strong>0.3144</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">w(z2→y)</td><td class="px-3 py-2">0.2</td><td class="px-3 py-2">+0.0156</td><td class="px-3 py-2"><strong>0.2156</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="border-l-4 border-sky-500 bg-sky-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-sky-400">How to present in exam:</strong> Diagram first (1 mark), forward pass with every net/out line (2), error + deltas (2), the 6 update lines + final table (2). Never skip the arithmetic lines — RGPV gives step marks even if a decimal slips.
+  </div>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Using <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ = (out − t)</code> instead of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(t − out)</code> and then <em>adding</em> the update — pick ONE sign convention. With <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(t − out)</code> you <strong>add</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">η·δ·input</code>; error goes down, weights toward z with larger output grow more.
+  </div>
+</section>
+
+<!-- A2 -->
+<section id="a2" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">A2. K-Nearest Neighbours — Predict Draft
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-23 Q6a</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-400 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1.5 text-sm">
+      <li>One-line KNN definition + Euclidean distance formula.</li>
+      <li><strong>Distance table</strong> — all 10 rows, squared terms shown, 4 decimals.</li>
+      <li><strong>Sort</strong> and pick the k = 3 smallest.</li>
+      <li><strong>Majority vote</strong> → final prediction, one closing sentence.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong>Given:</strong> Query athlete q = (Speed 6.75, Agility 3.00), k = 3. Formula: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">d = sqrt((6.75 − Speed)² + (3.00 − Agility)²)</code>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 1 — Distance from q to every training point</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">ID</th><th class="px-3 py-2">Speed</th><th class="px-3 py-2">Agility</th><th class="px-3 py-2">Draft</th><th class="px-3 py-2">(Δs)² + (Δa)²</th><th class="px-3 py-2">Distance</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">11</td><td class="px-3 py-2">2.00</td><td class="px-3 py-2">2.00</td><td class="px-3 py-2">no</td><td class="px-3 py-2">4.75² + 1.00² = 22.5625 + 1.0000 = 23.5625</td><td class="px-3 py-2">4.8541</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">12</td><td class="px-3 py-2">5.00</td><td class="px-3 py-2">2.50</td><td class="px-3 py-2">no</td><td class="px-3 py-2">1.75² + 0.50² = 3.0625 + 0.2500 = 3.3125</td><td class="px-3 py-2"><strong>1.8200</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">13</td><td class="px-3 py-2">8.25</td><td class="px-3 py-2">8.50</td><td class="px-3 py-2">no</td><td class="px-3 py-2">1.50² + 5.50² = 2.2500 + 30.2500 = 32.5000</td><td class="px-3 py-2">5.7009</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">14</td><td class="px-3 py-2">5.75</td><td class="px-3 py-2">8.75</td><td class="px-3 py-2">yes</td><td class="px-3 py-2">1.00² + 5.75² = 1.0000 + 33.0625 = 34.0625</td><td class="px-3 py-2">5.8363</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">15</td><td class="px-3 py-2">4.75</td><td class="px-3 py-2">6.25</td><td class="px-3 py-2">yes</td><td class="px-3 py-2">2.00² + 3.25² = 4.0000 + 10.5625 = 14.5625</td><td class="px-3 py-2">3.8161</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">16</td><td class="px-3 py-2">5.50</td><td class="px-3 py-2">6.75</td><td class="px-3 py-2">yes</td><td class="px-3 py-2">1.25² + 3.75² = 1.5625 + 14.0625 = 15.6250</td><td class="px-3 py-2">3.9528</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">17</td><td class="px-3 py-2">5.25</td><td class="px-3 py-2">9.50</td><td class="px-3 py-2">yes</td><td class="px-3 py-2">1.50² + 6.50² = 2.2500 + 42.2500 = 44.5000</td><td class="px-3 py-2">6.6708</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">18</td><td class="px-3 py-2">7.00</td><td class="px-3 py-2">4.25</td><td class="px-3 py-2">yes</td><td class="px-3 py-2">0.25² + 1.25² = 0.0625 + 1.5625 = 1.6250</td><td class="px-3 py-2"><strong>1.2748</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">19</td><td class="px-3 py-2">7.50</td><td class="px-3 py-2">8.00</td><td class="px-3 py-2">yes</td><td class="px-3 py-2">0.75² + 5.00² = 0.5625 + 25.0000 = 25.5625</td><td class="px-3 py-2">5.0559</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">20</td><td class="px-3 py-2">7.25</td><td class="px-3 py-2">5.75</td><td class="px-3 py-2">yes</td><td class="px-3 py-2">0.50² + 2.75² = 0.2500 + 7.5625 = 7.8125</td><td class="px-3 py-2"><strong>2.7951</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 2 — Pick the k = 3 nearest</h3>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Rank</th><th class="px-3 py-2">ID</th><th class="px-3 py-2">Distance</th><th class="px-3 py-2">Draft</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">1</td><td class="px-3 py-2">18</td><td class="px-3 py-2">1.2748</td><td class="px-3 py-2">yes</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">2</td><td class="px-3 py-2">12</td><td class="px-3 py-2">1.8200</td><td class="px-3 py-2">no</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">3</td><td class="px-3 py-2">20</td><td class="px-3 py-2">2.7951</td><td class="px-3 py-2">yes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 3 — Majority vote</h3>
+  <p class="my-3">Votes: <strong>yes = 2, no = 1</strong> → <strong>Prediction: Draft = YES</strong> for the query (6.75, 3.00).</p>
+
+  <div class="border-l-4 border-sky-500 bg-sky-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-sky-400">How to present in exam:</strong> The full distance table with squared terms is where the marks live. Bold/underline the 3 smallest distances, then write the vote line and the answer sentence.
+  </div>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Forgetting to take the square root is actually fine (ranking is identical) — but say so explicitly if you skip it; silently mixing d and d² loses marks. Also always use ODD k so no tie.
+  </div>
+</section>
+
+<!-- A3 -->
+<section id="a3" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">A3. Bayesian Belief Network — CPTs + Joint Probability
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-23 Q7a</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-400 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1.5 text-sm">
+      <li>Draw the DAG (Mileage→Engine, Engine→Value, AC→Value).</li>
+      <li>State the factorisation <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(M,E,A,V) = P(M)·P(A)·P(E|M)·P(V|E,A)</code>.</li>
+      <li>Build the 4 CPTs from counts (show numerator/denominator for each entry).</li>
+      <li>Plug values into the factorisation for part (ii); box the answer.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong>Given DAG:</strong></p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">  Mileage        Air-Conditioner
+     |                 |
+     v                 |
+  Engine               |
+     \                 /
+      v               v
+        Car Value (High/Low)</pre>
+
+  <p class="my-3"><strong>Counts (total records = 7+3+6+4+9+6+3+2 = 40):</strong></p>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2">Mileage</th><th class="px-3 py-2">Engine</th><th class="px-3 py-2">AC</th><th class="px-3 py-2">#High</th><th class="px-3 py-2">#Low</th><th class="px-3 py-2">Row total</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Hi</td><td class="px-3 py-2">Good</td><td class="px-3 py-2">Working</td><td class="px-3 py-2">3</td><td class="px-3 py-2">4</td><td class="px-3 py-2">7</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Hi</td><td class="px-3 py-2">Good</td><td class="px-3 py-2">Broken</td><td class="px-3 py-2">1</td><td class="px-3 py-2">2</td><td class="px-3 py-2">3</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Hi</td><td class="px-3 py-2">Bad</td><td class="px-3 py-2">Working</td><td class="px-3 py-2">1</td><td class="px-3 py-2">5</td><td class="px-3 py-2">6</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Hi</td><td class="px-3 py-2">Bad</td><td class="px-3 py-2">Broken</td><td class="px-3 py-2">0</td><td class="px-3 py-2">4</td><td class="px-3 py-2">4</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Lo</td><td class="px-3 py-2">Good</td><td class="px-3 py-2">Working</td><td class="px-3 py-2">9</td><td class="px-3 py-2">0</td><td class="px-3 py-2">9</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Lo</td><td class="px-3 py-2">Good</td><td class="px-3 py-2">Broken</td><td class="px-3 py-2">5</td><td class="px-3 py-2">1</td><td class="px-3 py-2">6</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Lo</td><td class="px-3 py-2">Bad</td><td class="px-3 py-2">Working</td><td class="px-3 py-2">1</td><td class="px-3 py-2">2</td><td class="px-3 py-2">3</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Lo</td><td class="px-3 py-2">Bad</td><td class="px-3 py-2">Broken</td><td class="px-3 py-2">0</td><td class="px-3 py-2">2</td><td class="px-3 py-2">2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Part (i) — CPT of every node</h3>
+
+  <p class="my-3"><strong>Node 1: P(Mileage)</strong> — no parent. Hi rows: 7+3+6+4 = 20; Lo rows: 9+6+3+2 = 20.</p>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Mileage</th><th class="px-3 py-2">P</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Hi</td><td class="px-3 py-2">20/40 = 0.5</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Lo</td><td class="px-3 py-2">20/40 = 0.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong>Node 2: P(AC)</strong> — no parent. Working: 7+6+9+3 = 25; Broken: 3+4+6+2 = 15.</p>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">AC</th><th class="px-3 py-2">P</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Working</td><td class="px-3 py-2">25/40 = 0.625</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Broken</td><td class="px-3 py-2">15/40 = 0.375</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong>Node 3: P(Engine | Mileage)</strong> — parent Mileage.</p>
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li>Given Hi (20 rows): Good = 7+3 = 10; Bad = 6+4 = 10.</li>
+    <li>Given Lo (20 rows): Good = 9+6 = 15; Bad = 3+2 = 5.</li>
+  </ul>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Mileage</th><th class="px-3 py-2">P(Engine=Good)</th><th class="px-3 py-2">P(Engine=Bad)</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Hi</td><td class="px-3 py-2">10/20 = 0.50</td><td class="px-3 py-2">10/20 = 0.50</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Lo</td><td class="px-3 py-2">15/20 = 0.75</td><td class="px-3 py-2">5/20 = 0.25</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong>Node 4: P(Value=High | Engine, AC)</strong> — parents Engine, AC (pool the two Mileage rows for each combo):</p>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Engine</th><th class="px-3 py-2">AC</th><th class="px-3 py-2">High / total</th><th class="px-3 py-2">P(High)</th><th class="px-3 py-2">P(Low)</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Good</td><td class="px-3 py-2">Working</td><td class="px-3 py-2">(3+9)/(7+9) = 12/16</td><td class="px-3 py-2">0.7500</td><td class="px-3 py-2">0.2500</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Good</td><td class="px-3 py-2">Broken</td><td class="px-3 py-2">(1+5)/(3+6) = 6/9</td><td class="px-3 py-2">0.6667</td><td class="px-3 py-2">0.3333</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Bad</td><td class="px-3 py-2">Working</td><td class="px-3 py-2">(1+1)/(6+3) = 2/9</td><td class="px-3 py-2">0.2222</td><td class="px-3 py-2">0.7778</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Bad</td><td class="px-3 py-2">Broken</td><td class="px-3 py-2">(0+0)/(4+2) = 0/6</td><td class="px-3 py-2">0.0000</td><td class="px-3 py-2">1.0000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Part (ii) — P(Mileage = Lo, Engine = Bad, AC = Broken)</h3>
+  <p class="my-3">Value is not mentioned, so it is summed out — only the three named nodes remain. AC has no parent and no arrow from M or E, so it is independent of them.</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">P(Lo, Bad, Broken) = P(Mileage=Lo) × P(Engine=Bad | Mileage=Lo) × P(AC=Broken)
+                   = 0.5 × 0.25 × 0.375
+                   = 0.0469</pre>
+
+  <p class="my-3"><strong>Answer: 0.0469 (i.e. 3/64).</strong></p>
+
+  <div class="border-l-4 border-sky-500 bg-sky-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-sky-400">How to present in exam:</strong> DAG + factorisation line first — that alone earns 2 marks. Then each CPT as a small table with the fraction shown (e.g. 15/20), then the 3-term product.
+  </div>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Multiplying P(Engine=Bad) marginally (15/40) instead of the <strong>conditional</strong> P(Bad | Lo) = 0.25 — the network structure forces the conditional.
+  </div>
+</section>
+
+<!-- A4 -->
+<section id="a4" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">A4. Bayes Theorem — Disease Test Paradox
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 PYQ May-22 style</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h2>
+
+  <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl my-4">
+    <p class="font-semibold text-emerald-400 mb-2">✍️ 7-mark answer skeleton:</p>
+    <ol class="list-decimal pl-5 space-y-1.5 text-sm">
+      <li>Define Bayes theorem <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(H|E) = P(E|H)·P(H) / P(E)</code> and name each term (prior, likelihood, evidence, posterior).</li>
+      <li>List the given data in symbols.</li>
+      <li>Expand P(E) by total probability.</li>
+      <li>Substitute, compute, and end with the one-line "surprise" interpretation.</li>
+    </ol>
+  </div>
+
+  <p class="my-3"><strong>Given:</strong> Disease prevalence P(D) = 0.01 (1%); test sensitivity P(+|D) = 0.90; false-positive rate P(+|¬D) = 0.08. Find P(D|+).</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 1 — Evidence by total probability</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">P(+) = P(+|D)·P(D) + P(+|¬D)·P(¬D)
+     = (0.90)(0.01) + (0.08)(0.99)
+     = 0.0090 + 0.0792
+     = 0.0882</pre>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Step 2 — Bayes theorem</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">P(D|+) = P(+|D)·P(D) / P(+)
+       = 0.0090 / 0.0882
+       = 0.1020   ≈ 10.2%</pre>
+
+  <p class="my-3"><strong>Surprise result:</strong> Even after testing positive on a "90% accurate" test, the chance of actually having the disease is only <strong>about 10%</strong>. Reason: the disease is rare, so the 8% false positives among the huge healthy population (792 people per 10,000) swamp the true positives (90 per 10,000).</p>
+
+  <p class="my-3"><strong>Intuition table per 10,000 people (draw it — checkers love it):</strong></p>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2"></th><th class="px-3 py-2">Test +</th><th class="px-3 py-2">Test −</th><th class="px-3 py-2">Total</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Diseased</td><td class="px-3 py-2">90</td><td class="px-3 py-2">10</td><td class="px-3 py-2">100</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Healthy</td><td class="px-3 py-2">792</td><td class="px-3 py-2">9,108</td><td class="px-3 py-2">9,900</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Total</td><td class="px-3 py-2">882</td><td class="px-3 py-2">9,118</td><td class="px-3 py-2">10,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3">P(D|+) = 90/882 = 0.1020. ✔ matches.</p>
+
+  <div class="border-l-4 border-sky-500 bg-sky-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-sky-400">How to present in exam:</strong> State the theorem with all four terms named (2 marks), list the given data in symbols (1), show the total-probability expansion line by line (2), then the substitution and the boxed 10.2% with the one-line interpretation (2). The 10,000-people table is a guaranteed impression-winner — draw it even if not asked.
+  </div>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Confusing P(+|D) with P(D|+) — sensitivity is NOT the answer; the prior must be multiplied in.
+  </div>
+</section>
+
+<!-- A5 -->
+<section id="a5" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">A5. CNN Output-Size &amp; Parameter-Count Drills
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">Never asked as numerical</span>
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ DUE — likely next</span>
+  </h2>
+
+  <p class="my-3"><strong>Master formula:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">O = (W − F + 2P)/S + 1</code> where W = input size, F = filter size, P = padding, S = stride. Depth of output = number of filters. If the division is not exact, take the floor.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Drill 1 — 32×32×3 image, 5×5 filter, S = 1, P = 0</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">O = (32 − 5 + 2×0)/1 + 1 = 27/1 + 1 = 28</pre>
+  <p class="my-3">Output = <strong>28 × 28</strong> per filter (with 6 filters → 28×28×6). Note: filter depth automatically = 3 to match input depth.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Drill 2 — Same input, 5×5 filter, S = 1, P = 2</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">O = (32 − 5 + 2×2)/1 + 1 = 31/1 + 1 = 32</pre>
+  <p class="my-3">Output = <strong>32 × 32</strong> — size preserved. This is "same" padding: for S = 1, choose <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P = (F − 1)/2</code>.</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Drill 3 — 28×28 input, 3×3 filter, S = 2, P = 0</h3>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">O = (28 − 3 + 0)/2 + 1 = 25/2 + 1 = 12.5 + 1 → floor(12.5) + 1 = 13</pre>
+  <p class="my-3">Output = <strong>13 × 13</strong>. When (W−F+2P)/S is fractional, the filter does not fit at the far edge — floor it (the last partial window is dropped).</p>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Drill 4 — Parameter count</h3>
+  <p class="my-3">Conv layer: input 32×32×<strong>3</strong>, six 5×5 filters.</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Params per filter = (5 × 5 × 3) + 1 bias = 75 + 1 = 76
+Total = 76 × 6 = 456 parameters</pre>
+  <p class="my-3">Compare: a fully-connected layer from 32×32×3 = 3072 inputs to just 100 neurons needs 3072×100 + 100 = 307,300 params. <strong>Weight sharing is why CNNs are cheap.</strong></p>
+
+  <div class="border-l-4 border-sky-500 bg-sky-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-sky-400">How to present in exam:</strong> Write the master formula first and define W, F, P, S (1-2 marks), then substitute with every value visible — <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(32 − 5 + 0)/1 + 1 = 28</code> — never jump straight to the answer. State the output as width × height × depth. For parameter counts, show the per-filter line <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(F·F·depth + 1)</code> before multiplying by the number of filters.
+  </div>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Forgetting the <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">+1</code> bias per filter, or forgetting to multiply filter area by input <strong>depth</strong>.
+  </div>
+</section>
+
+<!-- A6 -->
+<section id="a6" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">A6. Gradient Descent — 3 Manual Iterations
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">Never asked</span>
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ DUE — likely next</span>
+  </h2>
+
+  <p class="my-3"><strong>Problem:</strong> Minimise <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">J(w) = w²</code> starting at w₀ = 4, learning rate η = 0.1.<br>
+  <strong>Rule:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w_new = w_old − η · dJ/dw</code>, and <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">dJ/dw = 2w</code>.</p>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Iteration 1:  grad = 2(4)     = 8.0
+              w1 = 4 − 0.1(8.0)    = 4 − 0.80  = 3.2000     J(w1) = 10.2400
+Iteration 2:  grad = 2(3.2)   = 6.4
+              w2 = 3.2 − 0.1(6.4)  = 3.2 − 0.64 = 2.5600    J(w2) = 6.5536
+Iteration 3:  grad = 2(2.56)  = 5.12
+              w3 = 2.56 − 0.1(5.12) = 2.56 − 0.512 = 2.0480 J(w3) = 4.1943</pre>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Iter</th><th class="px-3 py-2">w</th><th class="px-3 py-2">Gradient 2w</th><th class="px-3 py-2">Step η·grad</th><th class="px-3 py-2">New w</th><th class="px-3 py-2">J(w)</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">1</td><td class="px-3 py-2">4.0000</td><td class="px-3 py-2">8.0000</td><td class="px-3 py-2">0.8000</td><td class="px-3 py-2">3.2000</td><td class="px-3 py-2">10.2400</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">2</td><td class="px-3 py-2">3.2000</td><td class="px-3 py-2">6.4000</td><td class="px-3 py-2">0.6400</td><td class="px-3 py-2">2.5600</td><td class="px-3 py-2">6.5536</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">3</td><td class="px-3 py-2">2.5600</td><td class="px-3 py-2">5.1200</td><td class="px-3 py-2">0.5120</td><td class="px-3 py-2">2.0480</td><td class="px-3 py-2">4.1943</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="my-3"><strong>Pattern to quote:</strong> each step multiplies w by (1 − 2η) = 0.8, so w shrinks geometrically toward the minimum w* = 0; J falls every iteration — proof the learning rate is stable. (If η = 1.1, w would oscillate and diverge — mention this for the extra mark.)</p>
+
+  <div class="border-l-4 border-sky-500 bg-sky-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-sky-400">How to present in exam:</strong> Write the update rule and the derivative <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">dJ/dw = 2w</code> first, then one labelled line per iteration (gradient → step → new w → new J), and finish with the summary table plus the "J decreases every iteration, so η is stable" sentence — that closing observation is what converts a mechanical answer into a full-marks one.
+  </div>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Adding the gradient instead of subtracting — gradient <strong>descent</strong> always moves opposite to the slope.
+  </div>
+</section>
+
+<!-- A7 -->
+<section id="a7" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h2 class="text-xl font-bold text-white mb-4 flex flex-wrap items-center gap-2">A7. Max &amp; Average Pooling Drill
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">Never asked</span>
+    <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400">⚠️ DUE — likely next</span>
+  </h2>
+
+  <p class="my-3"><strong>Given 4×4 feature map, 2×2 window, stride 2</strong> (windows never overlap → four blocks):</p>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Input:            Blocks:
+1  3 | 2  4       TL = [1 3; 5 6]   TR = [2 4; 7 8]
+5  6 | 7  8
+-----+-----
+3  2 | 1  0       BL = [3 2; 1 2]   BR = [1 0; 3 4]
+1  2 | 3  4</pre>
+
+  <p class="my-3"><strong>Max pooling</strong> (take largest in each block):</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">max(1,3,5,6) = 6      max(2,4,7,8) = 8
+max(3,2,1,2) = 3      max(1,0,3,4) = 4
+
+Output:  6  8
+         3  4</pre>
+
+  <p class="my-3"><strong>Average pooling</strong> (mean of each block):</p>
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">(1+3+5+6)/4 = 15/4 = 3.75      (2+4+7+8)/4 = 21/4 = 5.25
+(3+2+1+2)/4 =  8/4 = 2.00      (1+0+3+4)/4 =  8/4 = 2.00
+
+Output:  3.75  5.25
+         2.00  2.00</pre>
+
+  <p class="my-3">Output size check: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">O = (4 − 2)/2 + 1 = 2</code> → 2×2. ✔ Pooling has <strong>zero learnable parameters</strong> and gives translation invariance.</p>
+
+  <div class="border-l-4 border-sky-500 bg-sky-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-sky-400">How to present in exam:</strong> Redraw the input matrix with the four 2×2 blocks boxed off (this alone shows the examiner you understand stride), then write one max/mean line per block with the elements listed, give both 2×2 output matrices, and close with the size-check formula and the "zero learnable parameters + translation invariance" sentence.
+  </div>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Letting windows overlap (stride 1) when the question says stride 2 — with stride = window size, blocks tile the input exactly.
+  </div>
+</section>
+
+<!-- ============ PART B ============ -->
+<h2 id="part-b" class="text-2xl font-bold text-white mt-10 mb-2 flex flex-wrap items-center gap-2">PART B — Q8 SHORT-NOTES BANK
+  <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 asked every year</span>
+  <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+</h2>
+
+<p class="text-slate-400 italic text-sm mb-6">Q8 = "Write short notes on any two (7+7)" or "any four". Each note below is a ready half-page: definition → 4-5 headed points → mini diagram → example. Memorize the definitions verbatim.</p>
+
+<!-- B1 -->
+<section id="b1" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B1. Convex Optimization
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">⚠️ Q8 favourite</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Convex optimization is minimisation of a convex function over a convex set — a function where the line segment joining any two points on its graph lies on or above the graph, so any local minimum is automatically the <strong>global minimum</strong>.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Test:</strong> f is convex if <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">f''(x) ≥ 0</code> (e.g. <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">J(w) = w²</code>); for many variables, the Hessian is positive semi-definite.</li>
+    <li><strong>Why ML cares:</strong> Linear regression (MSE), logistic regression, and SVM losses are convex → gradient descent is guaranteed to reach the global optimum.</li>
+    <li><strong>Non-convex contrast:</strong> Deep neural network loss surfaces are non-convex — many local minima and saddle points, no guarantee.</li>
+    <li><strong>Properties:</strong> unique global minimum (if strictly convex), no bad local traps, efficient solvers exist.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4"> Convex (bowl):  \___/     one minimum
+ Non-convex:    \_/\_/     many minima</pre>
+
+  <p class="my-3"><strong>Example:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">J(w) = (w − 3)² + 2</code> — convex; gradient descent from any start reaches w = 3.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Saying neural network training is convex — it is not; only the classical linear models are.
+  </div>
+</section>
+
+<!-- B2 -->
+<section id="b2" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B2. Multilayer Network (MLP)
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 staple</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> A multilayer network (multilayer perceptron) is a feed-forward neural network with an input layer, one or more hidden layers of neurons with non-linear activations, and an output layer, trained by backpropagation.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Structure:</strong> each neuron computes <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">out = σ(Σ w·x + b)</code>; layers are fully connected.</li>
+    <li><strong>Why hidden layers:</strong> a single perceptron only draws a straight line (fails on XOR); hidden layers give non-linear decision boundaries.</li>
+    <li><strong>Universal approximation:</strong> one hidden layer with enough neurons can approximate any continuous function.</li>
+    <li><strong>Training:</strong> forward pass → error <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">E = ½Σ(t − o)²</code> → backpropagate deltas → update <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w += η·δ·input</code>.</li>
+    <li><strong>Activations used:</strong> sigmoid, tanh, ReLU.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">x1 --o      o
+      \    / \
+x2 --o--o     o--&gt; y      (input - hidden - output)
+      /    \ /
+x3 --o      o</pre>
+
+  <p class="my-3"><strong>Example:</strong> XOR solved by a 2-2-1 network — the classic proof that hidden layers add power.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Drawing arrows backwards — signal flows forward; only the <em>error</em> flows backward.
+  </div>
+</section>
+
+<!-- B3 -->
+<section id="b3" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B3. Attention Model
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 favourite</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Attention is a mechanism that lets a model focus on the most relevant parts of the input when producing each output, by computing a weighted sum of all encoder states instead of squeezing everything into one fixed vector.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Weights:</strong> score each encoder state against the current decoder state, softmax the scores → attention weights α (sum to 1); context = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Σ αᵢ·hᵢ</code>.</li>
+    <li><strong>Solves:</strong> the fixed-length bottleneck of plain encoder–decoder; long sentences no longer degrade.</li>
+    <li><strong>Types:</strong> additive (Bahdanau), dot-product (Luong), <strong>self-attention</strong> (Transformer: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">softmax(QKᵀ/√d)·V</code>).</li>
+    <li><strong>Bonus:</strong> attention weights are interpretable — you can see which source word each output word looked at.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Encoder: h1  h2  h3  h4
+          \  |   |  /
+       α1 α2  α3  α4  (softmax weights)
+            \ | /
+          context c  --&gt; decoder step</pre>
+
+  <p class="my-3"><strong>Example:</strong> Translating "the cat sat" → "billi baithi": while producing "billi" the model puts high α on "cat".</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Calling attention a layer that "selects one word" — it is a <em>soft</em> weighted average over all words.
+  </div>
+</section>
+
+<!-- B4 -->
+<section id="b4" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B4. Natural Language Processing (NLP)
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 staple</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> NLP is the field of AI that enables computers to read, understand, and generate human language by combining linguistics with machine learning.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Pipeline:</strong> text cleaning → tokenization → stop-word removal → stemming/lemmatization → feature extraction (Bag-of-Words, TF-IDF, word embeddings) → model.</li>
+    <li><strong>Core tasks:</strong> sentiment analysis, machine translation, named-entity recognition, question answering, summarisation, speech recognition.</li>
+    <li><strong>Evolution:</strong> rule-based → statistical (n-grams, HMM) → neural (RNN/LSTM) → Transformers (BERT, GPT).</li>
+    <li><strong>Challenges:</strong> ambiguity ("bank"), sarcasm, word order, low-resource languages.</li>
+  </ul>
+
+  <p class="my-3"><strong>Example:</strong> Spam filter — email text → TF-IDF vector → Naive Bayes → spam/ham.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Writing only applications with no pipeline — the pipeline diagram/bullets carry the marks.
+  </div>
+</section>
+
+<!-- B5 -->
+<section id="b5" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B5. Batch Normalization
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 favourite</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Batch normalization is a layer that normalises its inputs over the current mini-batch to zero mean and unit variance, then rescales with learnable parameters γ and β, stabilising and accelerating deep-network training.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Formulas:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">μ = mean(batch)</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ² = var(batch)</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x̂ = (x − μ)/sqrt(σ² + ε)</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">y = γ·x̂ + β</code>.</li>
+    <li><strong>Fixes internal covariate shift:</strong> each layer's input distribution stays stable while earlier layers keep changing.</li>
+    <li><strong>Benefits:</strong> allows higher learning rates, reduces vanishing gradients, acts as a mild regularizer, less sensitivity to weight initialization.</li>
+    <li><strong>At test time:</strong> uses running (population) averages of μ and σ collected during training — not the test batch.</li>
+  </ul>
+
+  <p class="my-3"><strong>Example:</strong> Deep CNNs (ResNet) use BN after nearly every convolution — training that took weeks became days.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Forgetting γ and β — without them the network would be forced to always keep zero-mean activations.
+  </div>
+</section>
+
+<!-- B6 -->
+<section id="b6" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B6. Inception Network (GoogLeNet)
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">⚠️ Q8 asked</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Inception (GoogLeNet, ILSVRC-2014 winner) is a CNN built from "Inception modules" that apply 1×1, 3×3, 5×5 convolutions and 3×3 max-pooling <strong>in parallel</strong> on the same input and concatenate the outputs — letting the network choose the filter size automatically.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>1×1 convolutions</strong> act as "bottlenecks" to reduce depth before the expensive 3×3/5×5 → drastic computation saving.</li>
+    <li><strong>22 layers deep</strong> yet only ~5 million parameters (AlexNet had ~60M).</li>
+    <li><strong>Auxiliary classifiers</strong> at middle layers inject gradient during training to fight vanishing gradients.</li>
+    <li><strong>Idea in one line:</strong> go <em>wider</em> per layer, not only deeper.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">        input
+   /    |     |     \
+ 1x1   1x1   1x1   3x3pool
+  |     |     |      |
+  |    3x3   5x5    1x1
+   \    |     |     /
+    concatenate (depth-wise)</pre>
+
+  <p class="my-3"><strong>Example:</strong> Won ImageNet 2014 with top-5 error ≈ 6.7%.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Saying 1×1 conv "does nothing" — it mixes channels and reduces depth; it is the whole trick.
+  </div>
+</section>
+
+<!-- B7 -->
+<section id="b7" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B7. Dropout
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 favourite</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Dropout is a regularization technique that randomly "drops" (sets to zero) each neuron with probability p during every training step, preventing co-adaptation and overfitting.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Training:</strong> each mini-batch samples a different thinned sub-network → like training an ensemble of exponentially many networks.</li>
+    <li><strong>Testing:</strong> no neurons dropped; activations scaled by (1 − p) (or inverted dropout scales during training) so expected values match.</li>
+    <li><strong>Typical p:</strong> 0.5 for hidden layers, 0.2 for input layer.</li>
+    <li><strong>Effect:</strong> forces redundant, robust features because no neuron can rely on a specific partner.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Training:  o  x  o  x  o    (x = dropped this step)
+Testing :  o  o  o  o  o    (all active, scaled)</pre>
+
+  <p class="my-3"><strong>Example:</strong> AlexNet used dropout 0.5 in its fully-connected layers — a key reason it did not overfit ImageNet.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Applying dropout at test time — it is training-only.
+  </div>
+</section>
+
+<!-- B8 -->
+<section id="b8" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B8. Momentum
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">⚠️ Q8 asked</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Momentum is a gradient-descent modification that accumulates an exponentially decaying moving average of past gradients (a "velocity") and moves along it, like a heavy ball rolling downhill.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Update:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">v = β·v − η·∇J(w)</code> then <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w + v</code> (β ≈ 0.9).</li>
+    <li><strong>Speeds up</strong> movement along directions of consistent gradient; <strong>damps oscillation</strong> across steep, narrow ravines.</li>
+    <li><strong>Escapes</strong> small local dips and flat plateaus that stall plain SGD.</li>
+    <li><strong>Variant:</strong> Nesterov momentum looks ahead (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">∇J(w + β·v)</code>) for a smarter step; Adam = momentum + per-parameter adaptive rates.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Plain SGD:   \ /\ /\ /   zig-zags across the valley
+Momentum:    \___→___/   smooth run along the valley floor</pre>
+
+  <p class="my-3"><strong>Example:</strong> With β = 0.9, the effective step is up to <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">1/(1−β)</code> = 10× a single gradient step in a consistent direction.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Confusing momentum β with learning rate η — β weights past velocity, η weights the new gradient.
+  </div>
+</section>
+
+<!-- B9 -->
+<section id="b9" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B9. ImageNet Competition (ILSVRC)
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">⚠️ Q8 asked</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> The ImageNet Large Scale Visual Recognition Challenge (2010-2017) was an annual competition to classify 1.2 million images into 1000 categories; it triggered the deep-learning revolution.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Metric:</strong> top-5 error — prediction counts as correct if the true label is in the model's top 5 guesses.</li>
+    <li><strong>2012 breakthrough:</strong> AlexNet (8 layers, ReLU, dropout, GPU training) cut error from ~26% to ~16% — the "big bang" of deep learning.</li>
+    <li><strong>Milestones:</strong> ZFNet 2013 → GoogLeNet/VGG 2014 (~7%) → <strong>ResNet 2015 (152 layers, ~3.6% — beat human ~5%)</strong>.</li>
+    <li><strong>Legacy:</strong> pre-trained ImageNet weights are the standard starting point for transfer learning everywhere.</li>
+  </ul>
+
+  <p class="my-3"><strong>Example timeline to draw:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">2011: 26% → 2012 AlexNet: 16% → 2014 GoogLeNet: 6.7% → 2015 ResNet: 3.6%</code>.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Writing "ImageNet is a network" — it is a <strong>dataset + competition</strong>; AlexNet/ResNet are networks.
+  </div>
+</section>
+
+<!-- B10 -->
+<section id="b10" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B10. One-Shot Learning
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">⚠️ Q8 asked</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> One-shot learning is the task of correctly recognising a new class after seeing only <strong>one</strong> (or very few) training example(s) of it, instead of the thousands normal deep learning needs.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Approach:</strong> learn a <strong>similarity function</strong> d(img1, img2) instead of a classifier — new example is matched to stored references.</li>
+    <li><strong>Siamese network:</strong> twin CNNs with shared weights embed both images; small distance → same class.</li>
+    <li><strong>Triplet loss:</strong> train so <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">d(anchor, positive) + margin &lt; d(anchor, negative)</code>.</li>
+    <li><strong>Why needed:</strong> classes change often (new employee's face) — retraining a softmax for every new class is impossible.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">img A --CNN--\
+              --&gt; |f(A) − f(B)|  --&gt; same / different
+img B --CNN--/     (shared weights)</pre>
+
+  <p class="my-3"><strong>Example:</strong> Office face-recognition: one ID photo per employee; the system compares live face embedding to the stored one.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Calling it "training with one epoch" — it is one <em>example per class</em>, solved via similarity learning.
+  </div>
+</section>
+
+<!-- B11 -->
+<section id="b11" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B11. Tokenization
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">⚠️ Q8 asked</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Tokenization is the first step of the NLP pipeline: splitting raw text into smaller units called tokens — words, subwords, or characters — that models can process as discrete symbols.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Word-level:</strong> split on spaces/punctuation — simple but huge vocabulary, fails on unseen words.</li>
+    <li><strong>Character-level:</strong> tiny vocabulary but very long sequences, weak semantics.</li>
+    <li><strong>Subword (modern standard):</strong> Byte-Pair Encoding (BPE)/WordPiece — frequent words stay whole, rare words split into pieces ("unhappiness" → "un", "happi", "ness"); handles out-of-vocabulary gracefully. Used by BERT/GPT.</li>
+    <li><strong>Sentence tokenization:</strong> splitting a document into sentences (handles "Dr.", "e.g." carefully).</li>
+  </ul>
+
+  <p class="my-3"><strong>Example:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">"Machine learning is fun!"</code> → <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">["Machine", "learning", "is", "fun", "!"]</code>.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Ignoring punctuation/case handling — "fun!" and "fun" must not become different tokens.
+  </div>
+</section>
+
+<!-- B12 -->
+<section id="b12" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B12. Beam Search &amp; BLEU Score
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 favourite</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Beam search — definition:</strong> A decoding algorithm for sequence generation that keeps the <strong>B most probable partial sentences</strong> at every step (beam width B), instead of only the single best (greedy) or all (exhaustive).</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li>Greedy (B=1) commits early and misses better global sentences; exhaustive is exponential; beam is the practical middle path.</li>
+    <li>At each step: extend all B candidates by every vocabulary word, re-score, keep top B.</li>
+    <li>Larger B → better quality, more computation; typical B = 3-10. Length normalisation avoids bias toward short outputs.</li>
+  </ul>
+
+  <p class="my-3"><strong>BLEU score — definition:</strong> BiLingual Evaluation Understudy — an automatic metric (0 to 1) for machine translation that measures modified n-gram precision of the candidate against human reference translations.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li>Uses clipped precisions p₁..p₄ (unigram to 4-gram), combined as geometric mean.</li>
+    <li><strong>Brevity penalty</strong> punishes translations shorter than the reference.</li>
+    <li><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">BLEU = BP · exp(Σ (1/4)·log pₙ)</code>; closer to 1 (or 100%) = better.</li>
+  </ul>
+
+  <p class="my-3"><strong>Example:</strong> Candidate "the cat is on mat" vs reference "the cat is on the mat" → high unigram precision, penalised on 4-grams and brevity.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Saying BLEU measures accuracy of meaning — it only counts n-gram overlap with references.
+  </div>
+</section>
+
+<!-- B13 -->
+<section id="b13" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B13. Markov Decision Process (MDP)
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 staple</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> An MDP is the mathematical framework of reinforcement learning, defined by the 5-tuple <strong>(S, A, P, R, γ)</strong> — states, actions, transition probabilities P(s'|s,a), reward function R(s,a), and discount factor γ ∈ [0,1].</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Markov property:</strong> the next state depends only on the current state and action, not on history.</li>
+    <li><strong>Policy π(s):</strong> mapping from state to action; goal is the policy maximising expected discounted return <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">G = Σ γᵗ·rₜ</code>.</li>
+    <li><strong>Value functions:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(s)</code> = expected return from s; <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a)</code> = expected return taking a in s.</li>
+    <li><strong>Bellman equation:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(s) = max_a [R(s,a) + γ·Σ P(s'|s,a)·V(s')]</code> — solved by value/policy iteration.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">        action a, reward r
+ (s) --------------------&gt; (s')      Agent --a--&gt; Environment --s',r--&gt; Agent</pre>
+
+  <p class="my-3"><strong>Example:</strong> Grid-world robot: states = cells, actions = up/down/left/right, reward +10 at goal, −1 per step, γ = 0.9.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Omitting γ — without discounting, infinite-horizon returns can diverge.
+  </div>
+</section>
+
+<!-- B14 -->
+<section id="b14" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B14. Q-Learning vs SARSA
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 staple</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Both are model-free temporal-difference RL algorithms that learn action values Q(s,a); they differ in which next action appears in the update.</p>
+
+  <div class="overflow-x-auto my-4">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Aspect</th><th class="px-3 py-2">Q-Learning</th><th class="px-3 py-2">SARSA</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Type</td><td class="px-3 py-2"><strong>Off-policy</strong></td><td class="px-3 py-2"><strong>On-policy</strong></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Update</td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a) += α[r + γ·max_a' Q(s',a') − Q(s,a)]</code></td><td class="px-3 py-2"><code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s,a) += α[r + γ·Q(s',a') − Q(s,a)]</code></td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Next action used</td><td class="px-3 py-2">Best possible (max)</td><td class="px-3 py-2">The action actually taken (ε-greedy)</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Behaviour</td><td class="px-3 py-2">Learns optimal path even while exploring</td><td class="px-3 py-2">Learns the safer path its own policy follows</td></tr>
+        <tr class="border-b border-slate-800"><td class="px-3 py-2">Name origin</td><td class="px-3 py-2">Quality values</td><td class="px-3 py-2">State-Action-Reward-State-Action</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li>Q-learning converges to the optimal Q* independent of the exploration policy.</li>
+    <li>SARSA accounts for exploration risk — in the classic "cliff-walk" grid, SARSA walks the safe long path, Q-learning hugs the cliff edge.</li>
+    <li>Both need decaying ε (exploration) and learning rate α for convergence.</li>
+  </ul>
+
+  <p class="my-3"><strong>Example:</strong> Cliff-walking: reward −100 for falling; SARSA's route avoids the edge because its ε-greedy self sometimes slips.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Writing the same update for both — the <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max</code> vs actual-next-action is the whole difference.
+  </div>
+</section>
+
+<!-- B15 -->
+<section id="b15" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B15. Weight Initialization
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">⚠️ Q8 asked</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> Weight initialization is choosing the starting values of network weights so that signals and gradients keep healthy magnitudes through depth, enabling training to converge.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>All zeros = fatal:</strong> every neuron computes the same output and same gradient → symmetry never breaks; network acts like one neuron.</li>
+    <li><strong>Too large random:</strong> activations saturate (sigmoid/tanh) → vanishing gradients; <strong>too small:</strong> signals shrink layer by layer.</li>
+    <li><strong>Xavier/Glorot (sigmoid/tanh):</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Var(w) = 1/n_in</code> (or 2/(n_in + n_out)) — keeps variance stable across layers.</li>
+    <li><strong>He initialization (ReLU):</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Var(w) = 2/n_in</code> — compensates for ReLU zeroing half the activations.</li>
+    <li>Biases are usually initialized to 0 (safe, since weights already break symmetry).</li>
+  </ul>
+
+  <p class="my-3"><strong>Example:</strong> A 50-layer ReLU net with N(0,1) init overflows to NaN in a few layers; with He init it trains normally.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> "Random initialization doesn't matter" — the <em>scale</em> of randomness decides whether deep training works at all.
+  </div>
+</section>
+
+<!-- B16 -->
+<section id="b16" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+  <h3 class="text-lg font-semibold text-indigo-300 flex flex-wrap items-center gap-2">B16. Unstable Gradient Problem (Vanishing / Exploding)
+    <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400">🔥 Q8 staple</span>
+    <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400">MUST DO</span>
+  </h3>
+
+  <p class="my-3"><strong>Definition:</strong> In deep networks, backpropagated gradients are products of many layer terms (<code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w · σ'</code>); if these terms are mostly &lt; 1 the gradient shrinks exponentially (<strong>vanishing</strong>), and if mostly &gt; 1 it grows exponentially (<strong>exploding</strong>) — early layers learn too slowly or training blows up.</p>
+
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Why sigmoid is guilty:</strong> <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ'(x) ≤ 0.25</code>, so 10 layers give gradient factor ≤ 0.25¹⁰ ≈ 10⁻⁶.</li>
+    <li><strong>Symptoms:</strong> vanishing — early-layer weights barely change, loss plateaus; exploding — loss becomes NaN, weights oscillate wildly.</li>
+    <li><strong>Remedies (vanishing):</strong> ReLU activation, He/Xavier init, batch normalization, residual (skip) connections, LSTM gates for RNNs.</li>
+    <li><strong>Remedies (exploding):</strong> gradient clipping (cap the norm), smaller learning rate, proper init.</li>
+  </ul>
+
+  <pre class="bg-slate-950 border border-slate-800 font-mono text-emerald-300 text-xs sm:text-sm overflow-x-auto p-4 rounded-xl my-4">Gradient flowing back through layers:
+Layer10 -&gt; 9 -&gt; ... -&gt; 1
+ 1.0    0.2   0.04 ... 1e-6   (vanishing: each hop × small factor)</pre>
+
+  <p class="my-3"><strong>Example:</strong> Plain RNN cannot learn dependencies beyond ~10 time steps because the gradient vanishes across steps — LSTM was invented exactly for this.</p>
+  <div class="border-l-4 border-red-500 bg-red-500/5 p-4 rounded-r-xl my-4 text-sm">
+    <strong class="text-red-400">⚠️ Common mistake:</strong> Treating vanishing and exploding as different diseases — same cause (repeated multiplication), opposite direction.
+  </div>
+</section>
+
+<!-- ============ QUICK REVISION BOX ============ -->
+<section id="revision" class="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-6">
+  <h2 class="text-xl font-bold text-white mb-4">⚡ Quick Revision Box</h2>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Night-before: redo these numericals on paper (in this order)</h3>
+  <ol class="list-decimal pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>A1 Backprop (May-23)</strong> — full pass; target answers: out_y = 0.6807, δ_y = 0.0694, new weights 0.6013, 0.7008, 0.3144, 0.2156.</li>
+    <li><strong>A2 KNN (May-23)</strong> — 3 nearest = IDs 18, 12, 20 → <strong>yes</strong>.</li>
+    <li><strong>A3 BBN (May-23)</strong> — CPTs + 0.5 × 0.25 × 0.375 = <strong>0.0469</strong>.</li>
+    <li><strong>A4 Bayes disease</strong> — 0.009/0.0882 = <strong>10.2%</strong>.</li>
+    <li><strong>A5 CNN sizes</strong> — 28, 32, 13; params (5·5·3+1)·6 = 456.</li>
+    <li><strong>A6 GD</strong> — w: 4 → 3.2 → 2.56 → 2.048.</li>
+    <li><strong>A7 Pooling</strong> — max [6 8; 3 4], avg [3.75 5.25; 2 2].</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">One-liners (Part B)</h3>
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li><strong>Convex:</strong> any local min = global min; f'' ≥ 0; linear/logistic regression are convex, deep nets are not.</li>
+    <li><strong>MLP:</strong> hidden layers + non-linearity = solves XOR; trained by backprop.</li>
+    <li><strong>Attention:</strong> softmax-weighted sum of encoder states; kills the fixed-vector bottleneck.</li>
+    <li><strong>NLP:</strong> clean → tokenize → features (TF-IDF/embeddings) → model; tasks: translation, sentiment, NER.</li>
+    <li><strong>BatchNorm:</strong> normalise per mini-batch, rescale with γ, β; faster + stabler training.</li>
+    <li><strong>Inception:</strong> parallel 1×1/3×3/5×5 + pool, concatenated; 1×1 = cheap bottleneck; won ILSVRC-2014.</li>
+    <li><strong>Dropout:</strong> kill neurons with prob p in training only; ensemble effect; p ≈ 0.5.</li>
+    <li><strong>Momentum:</strong> velocity <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">v = βv − η∇J</code>; damps zig-zag, speeds valleys; β ≈ 0.9.</li>
+    <li><strong>ImageNet:</strong> 1.2M images, 1000 classes; AlexNet 2012 (16%) → ResNet 2015 (3.6%, superhuman).</li>
+    <li><strong>One-shot:</strong> learn similarity, not classes; Siamese twins + triplet loss; face ID from one photo.</li>
+    <li><strong>Tokenization:</strong> text → tokens; word vs char vs subword (BPE) — subword handles unseen words.</li>
+    <li><strong>Beam search:</strong> keep top-B partial sequences per step; B=1 is greedy. <strong>BLEU:</strong> clipped n-gram precision × brevity penalty.</li>
+    <li><strong>MDP:</strong> (S, A, P, R, γ) + Markov property; Bellman: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(s) = max_a[R + γΣP·V(s')]</code>.</li>
+    <li><strong>Q vs SARSA:</strong> off-policy <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">max Q(s',a')</code> vs on-policy actual <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q(s',a')</code>; cliff-walk shows the difference.</li>
+    <li><strong>Weight init:</strong> never zeros (symmetry); Xavier 1/n_in for tanh, He 2/n_in for ReLU.</li>
+    <li><strong>Unstable gradients:</strong> product of layer factors → vanishes (&lt;1) or explodes (&gt;1); fix with ReLU, BN, ResNet, clipping.</li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Formula sheet</h3>
+  <ul class="list-disc pl-5 space-y-1.5 text-sm my-3">
+    <li>Sigmoid: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ(x) = 1/(1+e^-x)</code>; derivative <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">σ' = σ(1−σ)</code> (max 0.25)</li>
+    <li>Backprop: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ_out = (t−o)·o(1−o)</code>; <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">δ_hid = h(1−h)·Σ δ_out·w</code>; <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w += η·δ·input</code></li>
+    <li>Error: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">E = ½(t − o)²</code></li>
+    <li>Euclidean: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">d = sqrt(Σ(qᵢ − xᵢ)²)</code></li>
+    <li>Bayes: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(H|E) = P(E|H)P(H) / [P(E|H)P(H) + P(E|¬H)P(¬H)]</code></li>
+    <li>BBN joint: product of <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P(node | parents)</code> over all nodes</li>
+    <li>CNN size: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">O = (W − F + 2P)/S + 1</code> (floor if fractional); params = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">(F·F·depth + 1)·num_filters</code></li>
+    <li>"Same" padding (S=1): <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">P = (F−1)/2</code></li>
+    <li>Gradient descent: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">w = w − η·dJ/dw</code>; momentum <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">v = βv − η∇J, w += v</code></li>
+    <li>BatchNorm: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">x̂ = (x−μ)/√(σ²+ε), y = γx̂ + β</code></li>
+    <li>Q-learning: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q += α[r + γ·max Q(s',a') − Q]</code>; SARSA: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">Q += α[r + γ·Q(s',a') − Q]</code></li>
+    <li>Return: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">G = Σ γᵗ rₜ</code>; Bellman: <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">V(s) = max_a[R + γΣP(s'|s,a)V(s')]</code></li>
+  </ul>
+
+  <h3 class="text-lg font-semibold text-indigo-300 mt-6">Diagrams to practice (5 min each)</h3>
+  <ol class="list-decimal pl-5 space-y-1.5 text-sm my-3">
+    <li>Backprop network with all 9 weights labelled (A1).</li>
+    <li>BBN DAG: Mileage→Engine→Value←AC (A3).</li>
+    <li>10,000-people Bayes table (A4).</li>
+    <li>Inception module (parallel branches → concat).</li>
+    <li>Siamese network twin CNNs.</li>
+    <li>Agent–environment MDP loop.</li>
+    <li>Attention weights fan-in diagram.</li>
+    <li>Vanishing-gradient chain (layer factors shrinking).</li>
+  </ol>
+</section>
+
+</main>
+
+<footer class="border-t border-slate-800 mt-10">
+  <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-2">
+    <span>CS-601 Machine Learning · RGPV · Target 9 SGPA</span>
+    <a href="index.html" class="text-indigo-400 hover:text-white">← Back to Dashboard</a>
+  </div>
+</footer>
+
+</body>
+</html>
