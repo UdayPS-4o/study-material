@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 SGPA Dashboard | CS-601 ML</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+<nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+    <a href="index.html" class="text-indigo-400 font-semibold">🎯 Dashboard</a>
+    <a href="unit-1.html" class="text-slate-400 hover:text-white">U1 Foundations</a>
+    <a href="unit-2.html" class="text-slate-400 hover:text-white">U2 Neural Nets</a>
+    <a href="unit-3.html" class="text-slate-400 hover:text-white">U3 CNN</a>
+    <a href="unit-4.html" class="text-slate-400 hover:text-white">U4 RNN &amp; RL</a>
+    <a href="unit-5.html" class="text-slate-400 hover:text-white">U5 SVM &amp; Apps</a>
+    <a href="numericals.html" class="text-slate-400 hover:text-white">🔢 Numericals</a>
+  </div>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+
+  <!-- HERO -->
+  <header class="mb-8">
+    <p class="text-xs uppercase tracking-widest text-indigo-400 font-semibold mb-2">RGPV · B.Tech VI Semester</p>
+    <h1 class="text-3xl font-bold text-white mb-2">CS-601 Machine Learning</h1>
+    <p class="text-slate-400 text-lg">9 SGPA Sure-Shot Strategy — built from 5 RGPV PYQ papers (2022–2025)</p>
+    <p class="text-slate-500 text-sm mt-3">Exam format: <span class="text-slate-300">70 marks · 8 questions · attempt any 5 · 14 marks each · 3 hours</span></p>
+  </header>
+
+  <!-- STAT TILES -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+      <p class="text-2xl font-bold text-white">70 marks</p>
+      <p class="text-sm text-slate-400 mt-1">5 of 8 questions</p>
+    </div>
+    <div class="bg-slate-900 border border-indigo-500/40 rounded-2xl p-5">
+      <p class="text-2xl font-bold text-indigo-400">60+/70</p>
+      <p class="text-sm text-slate-400 mt-1">Target end-sem score</p>
+    </div>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+      <p class="text-2xl font-bold text-white">~40 h</p>
+      <p class="text-sm text-slate-400 mt-1">4.5-day war plan</p>
+    </div>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+      <p class="text-2xl font-bold text-white">15</p>
+      <p class="text-sm text-slate-400 mt-1">Sure-shot topics</p>
+    </div>
+  </div>
+
+  <!-- ALERT: 4.5 days -->
+  <div class="border-l-4 border-amber-500 bg-amber-500/10 p-4 rounded-r-xl mb-8">
+    <p class="text-amber-300 font-semibold mb-1">⏰ 4.5 days left — read this first</p>
+    <p class="text-sm text-slate-300">Jump straight to the <a href="#war-plan" class="text-amber-400 underline">4.5-Day War Plan</a>. Rule: read a unit note → memorize its 7-mark skeletons + diagrams → <span class="text-white font-medium">immediately write one answer from memory</span>. Never passive-read the same page twice.</p>
+  </div>
+
+  <!-- 1. THE MATH -->
+  <section id="sgpa-math" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">1. The 9-SGPA Math <span class="inline-flex items-center rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-400 align-middle">know your number</span></h2>
+    <p class="text-sm text-slate-400 mb-4">RGPV grading (typical CBCS/CBGS scale — verify against your scheme).</p>
+    <div class="overflow-x-auto mb-5">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Total Marks (/100)</th><th class="px-3 py-2">Grade</th><th class="px-3 py-2">Grade Point</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">91–100</td><td class="px-3 py-2">A+</td><td class="px-3 py-2">10</td></tr>
+          <tr class="border-b border-slate-800 bg-indigo-500/10"><td class="px-3 py-2 text-white font-medium">81–90</td><td class="px-3 py-2 text-white font-medium">A</td><td class="px-3 py-2 text-indigo-400 font-bold">9 ← target</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">71–80</td><td class="px-3 py-2">B+</td><td class="px-3 py-2">8</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">61–70</td><td class="px-3 py-2">B</td><td class="px-3 py-2">7</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-slate-300 mb-3">Subject total = <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm">End-sem (70) + Internals (30)</code>. To land grade point 9+ you need <span class="text-white font-medium">81+ total</span>:</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Your internals (/30)</th><th class="px-3 py-2">End-sem needed (/70)</th><th class="px-3 py-2">Verdict</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">30</td><td class="px-3 py-2">51</td><td class="px-3 py-2 text-emerald-400">comfortable</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">27</td><td class="px-3 py-2">54</td><td class="px-3 py-2 text-emerald-400">very doable</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">24</td><td class="px-3 py-2">57</td><td class="px-3 py-2 text-sky-400">doable with this plan</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">21</td><td class="px-3 py-2">60</td><td class="px-3 py-2 text-amber-400">need near-perfect 5 answers</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">18</td><td class="px-3 py-2">63</td><td class="px-3 py-2 text-red-400">push internals too</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl mt-5">
+      <p class="text-sm text-slate-300"><span class="text-emerald-400 font-semibold">Working target: 60+/70</span> = five 14-mark answers averaging 12/14. That means 4 questions you can write <em>perfectly</em> and 1 you can write <em>well</em>. SGPA 9 overall = grade A in heavy theory subjects + A+ in labs (labs are free marks — don't leak them).</p>
+    </div>
+  </section>
+
+  <!-- 2. Q -> UNIT MAP -->
+  <section id="q-unit-map" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">2. Question-Number → Unit Map <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400 align-middle">core insight</span></h2>
+    <p class="text-sm text-slate-400 mb-4">Each cell = the unit each 7-mark half came from (a/b), across all 5 papers.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Q#</th><th class="px-3 py-2">May-22</th><th class="px-3 py-2">May-23</th><th class="px-3 py-2">May-24</th><th class="px-3 py-2">Dec-24</th><th class="px-3 py-2">Jun-25</th><th class="px-3 py-2">Pattern verdict</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 font-medium text-white">Q1</td><td class="px-3 py-2">U1/U1</td><td class="px-3 py-2">U1/U1</td><td class="px-3 py-2">U1/U1</td><td class="px-3 py-2">U1/U1</td><td class="px-3 py-2">U1/U1</td><td class="px-3 py-2 text-red-400 font-medium">100% Unit 1 — guaranteed</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q2</td><td class="px-3 py-2">U1/U2</td><td class="px-3 py-2">U3/U2</td><td class="px-3 py-2">U1/U2</td><td class="px-3 py-2">U1/U2</td><td class="px-3 py-2">U2/U2</td><td class="px-3 py-2 text-slate-300">Unit 2 core + U1 preprocessing</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q3</td><td class="px-3 py-2">U2/U3</td><td class="px-3 py-2">U3/U4</td><td class="px-3 py-2">U2/U2</td><td class="px-3 py-2">U2/U2</td><td class="px-3 py-2">U3/U3</td><td class="px-3 py-2 text-slate-300">Unit 2 or Unit 3</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q4</td><td class="px-3 py-2">U4/U1</td><td class="px-3 py-2">U2/U2</td><td class="px-3 py-2">U3/U3</td><td class="px-3 py-2">U3/U3</td><td class="px-3 py-2">U4/U4</td><td class="px-3 py-2 text-slate-300">Unit 3 or Unit 4</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q5</td><td class="px-3 py-2">U1/U4</td><td class="px-3 py-2">U1/U2</td><td class="px-3 py-2">U3/U4</td><td class="px-3 py-2">U3/U4</td><td class="px-3 py-2">U5/U5</td><td class="px-3 py-2 text-slate-300">mixed bridge (U3/U4/U5)</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q6</td><td class="px-3 py-2">U4/U5</td><td class="px-3 py-2">U1/U2</td><td class="px-3 py-2">U4/U4</td><td class="px-3 py-2">U4/U4</td><td class="px-3 py-2">U1/U2</td><td class="px-3 py-2 text-red-400 font-medium">Unit 4 dominant</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q7</td><td class="px-3 py-2">U5/U5</td><td class="px-3 py-2">U5/U3</td><td class="px-3 py-2">U5/U5</td><td class="px-3 py-2">U5/U5</td><td class="px-3 py-2">U4/U3</td><td class="px-3 py-2 text-red-400 font-medium">Unit 5 dominant</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q8</td><td class="px-3 py-2">4 short notes</td><td class="px-3 py-2">U5+U4</td><td class="px-3 py-2">any 2 of 4</td><td class="px-3 py-2">any 2 of 4</td><td class="px-3 py-2">3 parts</td><td class="px-3 py-2 text-slate-300">Short-notes bank, mixed</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-slate-300 mt-4"><span class="text-white font-semibold">Reading:</span> the paper walks the syllabus in order — Q1 starts at Unit 1, Q7–Q8 end at Unit 5. If you know U1 + U2 + U4 + U5 cold and CNN core from U3, you can <em>attempt all 8 questions</em> and cherry-pick your best 5.</p>
+  </section>
+
+  <!-- 3. MARKS PER UNIT -->
+  <section id="marks-per-unit" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">3. Marks Offered per Unit</h2>
+    <p class="text-sm text-slate-400 mb-4">Marks each unit was worth in each paper (out of ~112–126 offered; you attempt 70).</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Unit</th><th class="px-3 py-2">May-22</th><th class="px-3 py-2">May-23</th><th class="px-3 py-2">May-24</th><th class="px-3 py-2">Dec-24</th><th class="px-3 py-2">Jun-25</th><th class="px-3 py-2">Avg</th><th class="px-3 py-2">Share</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white">U1 — Foundations</td><td class="px-3 py-2">38.5</td><td class="px-3 py-2">28</td><td class="px-3 py-2">28</td><td class="px-3 py-2">28</td><td class="px-3 py-2">28</td><td class="px-3 py-2 font-bold text-white">30.1</td><td class="px-3 py-2 text-red-400 font-bold">25.6%</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white">U2 — Neural Networks</td><td class="px-3 py-2">17.5</td><td class="px-3 py-2">35</td><td class="px-3 py-2">28</td><td class="px-3 py-2">28</td><td class="px-3 py-2">24</td><td class="px-3 py-2 font-bold text-white">26.5</td><td class="px-3 py-2 text-red-400 font-bold">22.5%</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white">U3 — CNN</td><td class="px-3 py-2">7</td><td class="px-3 py-2">21</td><td class="px-3 py-2">21</td><td class="px-3 py-2">28</td><td class="px-3 py-2">21</td><td class="px-3 py-2 font-bold text-white">19.6</td><td class="px-3 py-2 text-amber-400 font-bold">16.7%</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white">U4 — RNN &amp; RL</td><td class="px-3 py-2">24.5</td><td class="px-3 py-2">14</td><td class="px-3 py-2">35</td><td class="px-3 py-2">21</td><td class="px-3 py-2">21</td><td class="px-3 py-2 font-bold text-white">23.1</td><td class="px-3 py-2 text-amber-400 font-bold">19.6%</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white">U5 — SVM/Bayes/Apps</td><td class="px-3 py-2">24.5</td><td class="px-3 py-2">14</td><td class="px-3 py-2">14</td><td class="px-3 py-2">21</td><td class="px-3 py-2">18</td><td class="px-3 py-2 font-bold text-white">18.3</td><td class="px-3 py-2 text-sky-400 font-bold">15.6%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-slate-300 mt-4"><span class="text-white font-semibold">Conclusion:</span> U1+U2 alone ≈ 48% of offered marks and they're the easiest units. U4 is the most <em>repetitive</em> (same 5 questions recycle). That's where the 9-SGPA leverage is.</p>
+  </section>
+
+  <!-- 4. FREQUENCY HIT LIST -->
+  <section id="hit-list" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">4. Topic Frequency Hit-List</h2>
+    <p class="text-sm text-slate-400 mb-4">Freq = times asked across 5 papers. <span class="text-red-400">Bold rows</span> = asked in 2+ consecutive recent papers (hot streak).</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Topic</th><th class="px-3 py-2">Unit</th><th class="px-3 py-2">Freq</th><th class="px-3 py-2">Years</th><th class="px-3 py-2">Status</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">Define ML / types / scope &amp; limitations</td><td class="px-3 py-2">U1</td><td class="px-3 py-2">5/5</td><td class="px-3 py-2">all</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 GUARANTEED in Q1</td></tr>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">Gradient descent (+ types/optimizers)</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">4/5</td><td class="px-3 py-2">22,23,24,25</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 GUARANTEED</td></tr>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">Bayesian learning / Bayes theorem</td><td class="px-3 py-2">U5</td><td class="px-3 py-2">4/5</td><td class="px-3 py-2">22×2,23,D24</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 GUARANTEED</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Data preprocessing (normalize/encode/augment)</td><td class="px-3 py-2">U1</td><td class="px-3 py-2">4/5</td><td class="px-3 py-2">23,24,D24,25</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Backpropagation (algo / numerical / chain rule)</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">22,23,D24</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">Padding / pooling / CNN layer mechanics</td><td class="px-3 py-2">U3</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">24,D24,25</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 3-paper streak</td></tr>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">LSTM architecture &amp; gates</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">23,D24,25</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 3-paper streak</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">MDP</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">22,24,25</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Q-learning</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">22,24,25</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">RL framework / elements</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">22,23,D24</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Transfer learning + Inception</td><td class="px-3 py-2">U3</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">23,24,D24</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Dimension reduction / PCA / curse of dim.</td><td class="px-3 py-2">U3</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">22,24,25</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">NLP (short note)</td><td class="px-3 py-2">U5</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">22,D24,25</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Activation functions (sigmoid/ReLU)</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">3/5</td><td class="px-3 py-2">23,24,25</td><td class="px-3 py-2 text-red-400">🔥 Very high</td></tr>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">Autoencoders</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">D24,25</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 2-paper streak</td></tr>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">Batch normalization</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">D24,25</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 2-paper streak</td></tr>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">TensorFlow/Keras CNN implementation</td><td class="px-3 py-2">U3</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">D24,25</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 2-paper streak</td></tr>
+          <tr class="border-b border-slate-800 bg-red-500/5"><td class="px-3 py-2 text-white font-medium">Speech processing applications</td><td class="px-3 py-2">U5</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">24,25</td><td class="px-3 py-2 text-red-400 font-semibold">🔥 2-paper streak</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Hyperparameter tuning</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">23,D24</td><td class="px-3 py-2 text-slate-300">High</td></tr>
+          <tr class="border-b border-slate-800 bg-amber-500/10"><td class="px-3 py-2 text-white font-medium">SVM</td><td class="px-3 py-2">U5</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">22,24</td><td class="px-3 py-2 text-amber-400 font-semibold">⚠️ ABSENT 2 papers → DUE</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Computer vision applications</td><td class="px-3 py-2">U5</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">23,D24</td><td class="px-3 py-2 text-slate-300">High</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">RNN types / architecture</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">23,24</td><td class="px-3 py-2 text-slate-300">High</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Convex optimization (short note)</td><td class="px-3 py-2">U1</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">22,24</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Confusion matrix / evaluation metrics</td><td class="px-3 py-2">U1</td><td class="px-3 py-2">2/5</td><td class="px-3 py-2">23,24</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">L1 / L2 regularization</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">1/5</td><td class="px-3 py-2">24</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Value / Policy iteration</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">1/5</td><td class="px-3 py-2">D24</td><td class="px-3 py-2 text-slate-400">Medium-rising</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Actor-critic</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">1/5</td><td class="px-3 py-2">24</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">BLEU score</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">1/5</td><td class="px-3 py-2">24</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Attention model</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">1/5</td><td class="px-3 py-2">22</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">KNN (numerical)</td><td class="px-3 py-2">U1</td><td class="px-3 py-2">1/5</td><td class="px-3 py-2">23</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Data visualization</td><td class="px-3 py-2">U1</td><td class="px-3 py-2">1/5</td><td class="px-3 py-2">25</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2">Hypothesis function</td><td class="px-3 py-2">U1</td><td class="px-3 py-2">1/5</td><td class="px-3 py-2">D24</td><td class="px-3 py-2 text-slate-400">Medium</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 5. DUE LIST -->
+  <section id="due-list" class="bg-slate-900 border border-amber-500/30 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">5. Never-Asked Syllabus Topics — the "Due List" <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-400 align-middle">⚠️ DUE</span></h2>
+    <p class="text-sm text-slate-400 mb-4">RGPV loves to rotate these in. Each is named in the syllabus but has never appeared in 5 papers.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Topic</th><th class="px-3 py-2">Unit</th><th class="px-3 py-2">Why it's dangerous</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-amber-400 font-medium">SARSA</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">Named in syllabus, never asked in 5 papers — top candidate</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-amber-400 font-medium">Dropout, Momentum, Weight initialization</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">Classic short-note fodder, all unasked</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-amber-400 font-medium">Beam search &amp; width</td><td class="px-3 py-2">U4</td><td class="px-3 py-2">Paired with BLEU (asked once) — due</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-amber-400 font-medium">One-shot learning, 1×1 convolution</td><td class="px-3 py-2">U3</td><td class="px-3 py-2">Named in syllabus, never asked</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-amber-400 font-medium">ImageNet case study</td><td class="px-3 py-2">U5</td><td class="px-3 py-2">Explicitly in syllabus ("Case Study: ImageNet") — never asked!</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-amber-400">Unstable gradient problem</td><td class="px-3 py-2">U2</td><td class="px-3 py-2">Pairs with sigmoid/ReLU questions</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-amber-400">Data distributions, hypothesis testing</td><td class="px-3 py-2">U1</td><td class="px-3 py-2">Only fragments asked so far</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. PREDICTED PAPER -->
+  <section id="predicted" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">6. 🔮 Predicted Next Paper</h2>
+    <p class="text-sm text-slate-400 mb-4">Projected from the Q→unit map + frequency streaks + the due list.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Q#</th><th class="px-3 py-2">Most likely (confidence)</th><th class="px-3 py-2">Backup possibility</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q1</td><td class="px-3 py-2 text-red-400">Define ML + types with examples; scope &amp; limitations (VERY HIGH)</td><td class="px-3 py-2 text-slate-400">Role of probability/statistics; hypothesis function</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q2</td><td class="px-3 py-2 text-red-400">Data preprocessing/normalization + activation functions (HIGH)</td><td class="px-3 py-2 text-slate-400">Data augmentation; weight init &amp; unstable gradients (due)</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q3</td><td class="px-3 py-2 text-red-400">Gradient descent types + L1/L2 or dropout (HIGH)</td><td class="px-3 py-2 text-slate-400">Backprop numerical (~40% — practice it)</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q4</td><td class="px-3 py-2 text-red-400">CNN architecture + padding/stride/pooling with size calculation (VERY HIGH)</td><td class="px-3 py-2 text-slate-400">Transfer learning types; one-shot learning (due)</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q5</td><td class="px-3 py-2 text-red-400">TF/Keras CNN steps or RNN vs LSTM vs GRU (HIGH)</td><td class="px-3 py-2 text-slate-400">Dimension reduction / PCA</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q6</td><td class="px-3 py-2 text-red-400">RL elements + MDP/Bellman; Value vs Policy iteration (HIGH)</td><td class="px-3 py-2 text-amber-400">SARSA vs Q-learning (due!); actor-critic; BLEU/beam search</td></tr>
+          <tr class="border-b border-slate-800 bg-amber-500/10"><td class="px-3 py-2 font-medium text-white">Q7</td><td class="px-3 py-2 text-amber-400 font-semibold">SVM full question (VERY HIGH — absent 2 straight papers) + Bayesian learning</td><td class="px-3 py-2 text-slate-400">ML in CV / speech</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-medium text-white">Q8</td><td class="px-3 py-2 text-slate-300">Short notes, 2–4 of: NLP, batch norm, <span class="text-amber-400">dropout</span>, <span class="text-amber-400">momentum</span>, <span class="text-amber-400">ImageNet</span>, tokenization, convex optimization, MDP, attention</td><td class="px-3 py-2 text-slate-500">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="text-lg font-semibold text-indigo-300 mt-6 mb-3">Sure-Shot Top-15</h3>
+    <p class="text-sm text-slate-400 mb-3">Master only these and you can already attempt ~5 full questions.</p>
+    <div class="grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-slate-300">
+      <p>1. Define ML + types + scope/limitations</p>
+      <p>2. Gradient descent + all types</p>
+      <p>3. Backpropagation + numerical</p>
+      <p>4. Activation functions (sigmoid, ReLU, tanh, softmax)</p>
+      <p>5. Data preprocessing + normalization + augmentation</p>
+      <p>6. CNN architecture + padding/stride/pooling + size formula</p>
+      <p>7. Transfer learning + Inception</p>
+      <p>8. LSTM (gates diagram) + GRU + RNN comparison</p>
+      <p>9. MDP + Bellman equations</p>
+      <p>10. Q-learning (+ SARSA comparison)</p>
+      <p>11. RL framework/elements + value vs policy iteration</p>
+      <p>12. SVM (margin, support vectors, kernel trick)</p>
+      <p>13. Bayes theorem + Bayesian learning + naive Bayes</p>
+      <p>14. Autoencoders + batch normalization</p>
+      <p>15. Applications: NLP, CV, speech + ImageNet</p>
+    </div>
+  </section>
+
+  <!-- 7. PRIORITY ORDER -->
+  <section id="priority" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">7. Priority Order of Study (ROI-ranked)</h2>
+    <p class="text-sm text-slate-400 mb-4">Rank = (marks share × repeat-rate × ease of scoring). Study in <em>this</em> order.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Rank</th><th class="px-3 py-2">Block</th><th class="px-3 py-2">Why this order</th><th class="px-3 py-2">Hours</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-indigo-400 font-bold">1</td><td class="px-3 py-2 text-white font-medium">U1 Foundations</td><td class="px-3 py-2">Q1 guaranteed + 25.6% share + easiest content = fastest marks</td><td class="px-3 py-2">8</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-indigo-400 font-bold">2</td><td class="px-3 py-2 text-white font-medium">U2 Neural Networks</td><td class="px-3 py-2">22.5% share, Q2+Q3 both draw from it, feeds U3/U4 concepts</td><td class="px-3 py-2">13</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-indigo-400 font-bold">3</td><td class="px-3 py-2 text-white font-medium">U4 (RL half)</td><td class="px-3 py-2">Most recycled questions in the paper (MDP / Q-learning / RL)</td><td class="px-3 py-2">8</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-indigo-400 font-bold">4</td><td class="px-3 py-2 text-white font-medium">U3 CNN</td><td class="px-3 py-2">3-paper hot streak on padding/pooling/TF; diagram-heavy = easy 7s</td><td class="px-3 py-2">9</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-indigo-400 font-bold">5</td><td class="px-3 py-2 text-white font-medium">U4 (RNN half)</td><td class="px-3 py-2">LSTM 3-paper streak; GRU / beam search due</td><td class="px-3 py-2">5</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-indigo-400 font-bold">6</td><td class="px-3 py-2 text-white font-medium">U5 SVM + Bayes + Apps</td><td class="px-3 py-2">SVM due + Bayes guaranteed; applications are essay-style easy</td><td class="px-3 py-2">8</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-indigo-400 font-bold">7</td><td class="px-3 py-2 text-white font-medium">Numericals drill</td><td class="px-3 py-2">Backprop, KNN, Bayes net, CNN size calcs — separates 12/14 from 7/14</td><td class="px-3 py-2">4</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-indigo-400 font-bold">8</td><td class="px-3 py-2 text-white font-medium">Short-notes bank + mock</td><td class="px-3 py-2">Q8 = 14 free marks if the bank is memorized</td><td class="px-3 py-2">6</td></tr>
+          <tr class="border-b border-slate-800 bg-slate-800/40"><td class="px-3 py-2"></td><td class="px-3 py-2 text-white font-bold">Total (ideal)</td><td class="px-3 py-2 text-slate-400">compressed to ~40 h in the 4.5-day plan below</td><td class="px-3 py-2 font-bold text-white">~61 h</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 8. 4.5 DAY WAR PLAN -->
+  <section id="war-plan" class="bg-slate-900 border border-amber-500/40 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">8. ⚔️ 4.5-Day War Plan <span class="inline-flex items-center rounded-full bg-red-500/15 px-2.5 py-0.5 text-xs font-medium text-red-400 align-middle">~9 h/day ≈ 40 h</span></h2>
+    <p class="text-sm text-slate-400 mb-4">No time for everything — this buys the <span class="text-white">most marks per hour</span>. Rule: read the unit note → memorize the 7-mark skeletons + diagrams → immediately write 1–2 answers from memory. Never passive-read twice.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Day</th><th class="px-3 py-2">Session</th><th class="px-3 py-2">h</th><th class="px-3 py-2">Topics</th><th class="px-3 py-2">Output check</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-bold text-indigo-400">1</td><td class="px-3 py-2">Morning</td><td class="px-3 py-2">4</td><td class="px-3 py-2"><span class="text-white font-medium">ALL of Unit 1</span>: define ML vs traditional programming, types (sup/unsup/RL) table, scope &amp; limitations, hypothesis function, preprocessing + normalization (formulas) + augmentation + encodings, confusion matrix + metrics, regression metrics</td><td class="px-3 py-2 text-emerald-400">Q1 answer written from memory</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2"></td><td class="px-3 py-2">Afternoon</td><td class="px-3 py-2">3</td><td class="px-3 py-2"><span class="text-white font-medium">U2-A</span>: loss functions table, gradient descent + batch/SGD/mini-batch + optimizers (momentum, Adam)</td><td class="px-3 py-2 text-emerald-400">GD-types table from memory</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2"></td><td class="px-3 py-2">Evening</td><td class="px-3 py-2">2</td><td class="px-3 py-2"><span class="text-white font-medium">U2-B</span>: activations (sigmoid/ReLU/tanh/softmax), linearity vs non-linearity, weights &amp; bias</td><td class="px-3 py-2 text-emerald-400">Sigmoid-vs-ReLU 7-marker</td></tr>
+          <tr class="border-b border-slate-800 bg-slate-800/20"><td class="px-3 py-2 font-bold text-indigo-400">2</td><td class="px-3 py-2">Morning</td><td class="px-3 py-2">4</td><td class="px-3 py-2"><span class="text-white font-medium">U2-C</span>: backprop algorithm + chain rule + <span class="text-red-400 font-medium">solve May-23 numerical unaided</span>; weight init, unstable gradients</td><td class="px-3 py-2 text-emerald-400">Full numerical, no peeking</td></tr>
+          <tr class="border-b border-slate-800 bg-slate-800/20"><td class="px-3 py-2"></td><td class="px-3 py-2">Afternoon</td><td class="px-3 py-2">3</td><td class="px-3 py-2"><span class="text-white font-medium">U2-D</span>: batch norm, dropout, L1/L2, autoencoders, hyperparameter tuning</td><td class="px-3 py-2 text-emerald-400">Short notes ×5</td></tr>
+          <tr class="border-b border-slate-800 bg-slate-800/20"><td class="px-3 py-2"></td><td class="px-3 py-2">Evening</td><td class="px-3 py-2">2</td><td class="px-3 py-2"><span class="text-white font-medium">U4-RL-A</span>: RL framework diagram + elements, MDP 5-tuple, Bellman equations</td><td class="px-3 py-2 text-emerald-400">MDP 7-mark answer</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 font-bold text-indigo-400">3</td><td class="px-3 py-2">Morning</td><td class="px-3 py-2">4</td><td class="px-3 py-2"><span class="text-white font-medium">U4-RL-B</span>: value vs policy iteration, Q-learning update rule, <span class="text-amber-400 font-medium">SARSA vs Q-learning table</span>, actor-critic; model-based vs model-free</td><td class="px-3 py-2 text-emerald-400">Q-learning vs SARSA from memory</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2"></td><td class="px-3 py-2">Afternoon</td><td class="px-3 py-2">3</td><td class="px-3 py-2"><span class="text-white font-medium">U3-A</span>: CNN architecture diagram, convolution/padding/stride/pooling + <span class="text-red-400 font-medium">output-size formula, 3 drills</span></td><td class="px-3 py-2 text-emerald-400">Solve 3 size problems</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2"></td><td class="px-3 py-2">Evening</td><td class="px-3 py-2">2</td><td class="px-3 py-2"><span class="text-white font-medium">U3-B</span>: transfer learning (feature-extraction vs fine-tuning), Inception, 1×1 conv, PCA/dim reduction, TF/Keras 6 steps</td><td class="px-3 py-2 text-emerald-400">CNN pipeline diagram from memory</td></tr>
+          <tr class="border-b border-slate-800 bg-slate-800/20"><td class="px-3 py-2 font-bold text-indigo-400">4</td><td class="px-3 py-2">Morning</td><td class="px-3 py-2">4</td><td class="px-3 py-2"><span class="text-white font-medium">U4-RNN</span>: RNN types, <span class="text-red-400 font-medium">LSTM gates diagram</span>, GRU, BLEU + beam search, attention</td><td class="px-3 py-2 text-emerald-400">LSTM cell from memory</td></tr>
+          <tr class="border-b border-slate-800 bg-slate-800/20"><td class="px-3 py-2"></td><td class="px-3 py-2">Afternoon</td><td class="px-3 py-2">3</td><td class="px-3 py-2"><span class="text-white font-medium">U5-A</span>: SVM full 14-marker (margin/support vectors/kernels), Bayes theorem + worked example, Bayesian learning, naive Bayes</td><td class="px-3 py-2 text-emerald-400">SVM + Bayes answers written</td></tr>
+          <tr class="border-b border-slate-800 bg-slate-800/20"><td class="px-3 py-2"></td><td class="px-3 py-2">Evening</td><td class="px-3 py-2">2</td><td class="px-3 py-2"><span class="text-white font-medium">U5-B</span>: applications essays — CV, speech, NLP + tokenization, ImageNet table; KNN + Bayes-net numericals once each</td><td class="px-3 py-2 text-emerald-400">3 application outlines</td></tr>
+          <tr class="border-b border-slate-800 bg-indigo-500/10"><td class="px-3 py-2 font-bold text-indigo-400">Eve</td><td class="px-3 py-2">Final half-day</td><td class="px-3 py-2">4</td><td class="px-3 py-2"><span class="text-white font-medium">Short-notes bank (16 topics)</span> → all 6 Quick Revision Boxes → redo backprop numerical once → outline answers for the Jun-25 paper (no writing, just bullet outlines) → sure-shot Top-15 sweep</td><td class="px-3 py-2 text-emerald-400">Can outline 5 full questions</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 mt-6">
+      <div class="bg-slate-800/40 border border-slate-700 rounded-xl p-4">
+        <p class="text-sm font-semibold text-slate-300 mb-2">✂️ Deliberately cut</p>
+        <p class="text-sm text-slate-400">Timed full mock (replaced by outline drill), deep dives on data visualization / convex optimization / locally weighted regression (Q8 half-pagers suffice), one-shot learning detail, translation/seq2seq depth.</p>
+      </div>
+      <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+        <p class="text-sm font-semibold text-amber-400 mb-2">📉 If you fall behind, drop in this order</p>
+        <p class="text-sm text-slate-300">Inception details → beam/attention detail → U1 tail (visualization, convex opt) → actor-critic.</p>
+      </div>
+      <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+        <p class="text-sm font-semibold text-red-400 mb-2">🚫 NEVER drop</p>
+        <p class="text-sm text-slate-300">GD + backprop numerical, MDP + Q-learning + LSTM, SVM + Bayes, Q1 definitions, short-notes bank, output-size formula.</p>
+      </div>
+    </div>
+
+    <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl mt-5">
+      <p class="text-sm text-slate-300"><span class="text-emerald-400 font-semibold">Last 24 h?</span> Only: Sure-shot Top-15 list + short-notes bank + the Quick Revision Box at the end of every unit note.</p>
+    </div>
+  </section>
+
+  <!-- 9. EXAM HALL -->
+  <section id="exam-hall" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-1">9. Exam-Hall Execution (180 minutes)</h2>
+    <div class="overflow-x-auto mt-4">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800/60 text-slate-300"><tr><th class="px-3 py-2">Time</th><th class="px-3 py-2">Action</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white font-medium whitespace-nowrap">0–10 min</td><td class="px-3 py-2">Read the whole paper. Mark 5 mains + 1 backup. Order: easiest first (bank confidence early)</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white font-medium whitespace-nowrap">10–42 min</td><td class="px-3 py-2">Best question — aim for a perfect 14</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white font-medium whitespace-nowrap">42–170 min</td><td class="px-3 py-2">Remaining 4 × 32 min. <span class="text-red-400 font-medium">Hard stop at 32 min</span> — a 5th question at 0 marks costs more than a missing conclusion</td></tr>
+          <tr class="border-b border-slate-800"><td class="px-3 py-2 text-white font-medium whitespace-nowrap">170–180 min</td><td class="px-3 py-2">Re-read: underline keywords, label diagrams, number the pages</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="border-l-4 border-emerald-500 bg-emerald-500/5 p-4 rounded-r-xl mt-5">
+      <p class="text-sm font-semibold text-emerald-400 mb-2">✍️ Per 7-mark part ≈ 15 min ≈ 2.5–3 pages</p>
+      <p class="text-sm text-slate-300">Definition (1 m) → 4–6 headed points (3–4 m) → <span class="text-white font-medium">diagram</span> (2 m) → example/application (1 m).</p>
+      <p class="text-sm text-slate-400 mt-2">RGPV checkers scan for headings, diagrams and keywords — never write a wall of paragraph text. Attempt exactly 5. If a sub-part is unknown, still write the nearest related concept + diagram — partial marks are real.</p>
+    </div>
+  </section>
+
+  <!-- 10. FILE INDEX -->
+  <section id="files" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+    <h2 class="text-xl font-bold text-white mb-4">10. Your Study Pack</h2>
+    <div class="grid md:grid-cols-3 gap-4">
+      <a href="unit-1.html" class="block bg-slate-800/40 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 transition">
+        <p class="font-semibold text-white mb-1">U1 — Foundations</p>
+        <p class="text-xs text-slate-400 mb-2">Intro, stats &amp; linear algebra, preprocessing, metrics</p>
+        <p class="text-xs"><span class="inline-flex items-center rounded-full bg-red-500/15 px-2 py-0.5 font-medium text-red-400">Q1 guaranteed · 25.6%</span></p>
+      </a>
+      <a href="unit-2.html" class="block bg-slate-800/40 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 transition">
+        <p class="font-semibold text-white mb-1">U2 — Neural Networks</p>
+        <p class="text-xs text-slate-400 mb-2">GD, backprop, activations, regularization, autoencoders</p>
+        <p class="text-xs"><span class="inline-flex items-center rounded-full bg-red-500/15 px-2 py-0.5 font-medium text-red-400">GD + backprop · 22.5%</span></p>
+      </a>
+      <a href="unit-3.html" class="block bg-slate-800/40 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 transition">
+        <p class="font-semibold text-white mb-1">U3 — CNN</p>
+        <p class="text-xs text-slate-400 mb-2">Layers, padding/stride math, Inception, transfer learning</p>
+        <p class="text-xs"><span class="inline-flex items-center rounded-full bg-red-500/15 px-2 py-0.5 font-medium text-red-400">padding/pooling 3-paper streak</span></p>
+      </a>
+      <a href="unit-4.html" class="block bg-slate-800/40 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 transition">
+        <p class="font-semibold text-white mb-1">U4 — RNN &amp; RL</p>
+        <p class="text-xs text-slate-400 mb-2">RNN/LSTM/GRU, BLEU, MDP, Q-learning, SARSA</p>
+        <p class="text-xs"><span class="inline-flex items-center rounded-full bg-red-500/15 px-2 py-0.5 font-medium text-red-400">LSTM + MDP + Q-learning</span> <span class="inline-flex items-center rounded-full bg-amber-500/15 px-2 py-0.5 font-medium text-amber-400">SARSA due</span></p>
+      </a>
+      <a href="unit-5.html" class="block bg-slate-800/40 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 transition">
+        <p class="font-semibold text-white mb-1">U5 — SVM &amp; Applications</p>
+        <p class="text-xs text-slate-400 mb-2">SVM, Bayes, CV / speech / NLP, ImageNet</p>
+        <p class="text-xs"><span class="inline-flex items-center rounded-full bg-amber-500/15 px-2 py-0.5 font-medium text-amber-400">SVM + ImageNet DUE</span></p>
+      </a>
+      <a href="numericals.html" class="block bg-slate-800/40 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 transition">
+        <p class="font-semibold text-white mb-1">🔢 Numericals &amp; Short Notes</p>
+        <p class="text-xs text-slate-400 mb-2">Every PYQ numerical solved + 16-topic Q8 bank</p>
+        <p class="text-xs"><span class="inline-flex items-center rounded-full bg-sky-500/15 px-2 py-0.5 font-medium text-sky-400">turns 7/14 into 12/14</span></p>
+      </a>
+    </div>
+    <p class="text-xs text-slate-500 mt-4">Markdown sources live in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-xs">ML/notes/</code>; the full strategy write-up is <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-xs">ML/00-Strategy-9SGPA.md</code>; papers are in <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-xs">ML/Previous years papers/</code>.</p>
+  </section>
+
+  <footer class="border-t border-slate-800 pt-5 mt-8 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-2">
+    <span>CS-601 Machine Learning · RGPV · Target 9 SGPA</span>
+    <span>Analysis of 5 papers: May-2022 · May-2023 · May-2024 · Dec-2024 · Jun-2025</span>
+  </footer>
+
+</main>
+
+</body>
+</html>
